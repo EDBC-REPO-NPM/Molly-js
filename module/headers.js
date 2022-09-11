@@ -1,7 +1,7 @@
 
 const output = new Object();
 
-function expirationCache(){
+function expirationAge(){
 
     const today = new Date();
     const tomrw = new Date();
