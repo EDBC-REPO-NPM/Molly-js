@@ -1,0 +1,89 @@
+
+/*
+ * 1. Make it work with `100vh` and height in general
+ */
+.uk-section {
+  display: flow-root;
+  box-sizing: border-box;
+  /* 1 */
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/* Desktop and bigger */
+@media (min-width: 960px) {
+  .uk-section {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-section > :last-child {
+  margin-bottom: 0;
+}
+/* Size modifiers
+ ========================================================================== */
+/*
+ * XSmall
+ */
+.uk-section-xsmall {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+/*
+ * Small
+ */
+.uk-section-small {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/*
+ * Large
+ */
+.uk-section-large {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-section-large {
+    padding-top: 140px;
+    padding-bottom: 140px;
+  }
+}
+/*
+ * XLarge
+ */
+.uk-section-xlarge {
+  padding-top: 140px;
+  padding-bottom: 140px;
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-section-xlarge {
+    padding-top: 210px;
+    padding-bottom: 210px;
+  }
+}
+/* Style modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const result = new Array();
+  for( var i in data ){
+    result.push(`
+      .uk-section-${data[i]} { background: var(--color-${data[i]}); }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
+
+/* Overlap modifier
+ ========================================================================== */
+/*
+ * Reserved modifier to make a section overlap another section with an border image
+ * Implemented by the theme
+ */

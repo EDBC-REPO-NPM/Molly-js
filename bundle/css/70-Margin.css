@@ -1,0 +1,295 @@
+
+/*
+ * Default
+ */
+.uk-margin {
+  margin-bottom: 20px;
+}
+* + .uk-margin {
+  margin-top: 20px !important;
+}
+.uk-margin-top {
+  margin-top: 20px !important;
+}
+.uk-margin-bottom {
+  margin-bottom: 20px !important;
+}
+.uk-margin-left {
+  margin-left: 20px !important;
+}
+.uk-margin-right {
+  margin-right: 20px !important;
+}
+/* Small
+ ========================================================================== */
+.uk-margin-small {
+  margin-bottom: 10px;
+}
+* + .uk-margin-small {
+  margin-top: 10px !important;
+}
+.uk-margin-small-top {
+  margin-top: 10px !important;
+}
+.uk-margin-small-bottom {
+  margin-bottom: 10px !important;
+}
+.uk-margin-small-left {
+  margin-left: 10px !important;
+}
+.uk-margin-small-right {
+  margin-right: 10px !important;
+}
+/* Medium
+ ========================================================================== */
+.uk-margin-medium {
+  margin-bottom: 40px;
+}
+* + .uk-margin-medium {
+  margin-top: 40px !important;
+}
+.uk-margin-medium-top {
+  margin-top: 40px !important;
+}
+.uk-margin-medium-bottom {
+  margin-bottom: 40px !important;
+}
+.uk-margin-medium-left {
+  margin-left: 40px !important;
+}
+.uk-margin-medium-right {
+  margin-right: 40px !important;
+}
+
+/* Large
+ ========================================================================== */
+.uk-margin-large {
+  margin-bottom: 40px;
+}
+* + .uk-margin-large {
+  margin-top: 40px !important;
+}
+.uk-margin-large-top {
+  margin-top: 40px !important;
+}
+.uk-margin-large-bottom {
+  margin-bottom: 40px !important;
+}
+.uk-margin-large-left {
+  margin-left: 40px !important;
+}
+.uk-margin-large-right {
+  margin-right: 40px !important;
+}
+
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-margin-large {
+    margin-bottom: 70px;
+  }
+  * + .uk-margin-large {
+    margin-top: 70px !important;
+  }
+  .uk-margin-large-top {
+    margin-top: 70px !important;
+  }
+  .uk-margin-large-bottom {
+    margin-bottom: 70px !important;
+  }
+  .uk-margin-large-left {
+    margin-left: 70px !important;
+  }
+  .uk-margin-large-right {
+    margin-right: 70px !important;
+  }
+}
+
+/* XLarge
+ ========================================================================== */
+.uk-margin-xlarge {
+  margin-bottom: 70px;
+}
+* + .uk-margin-xlarge {
+  margin-top: 70px !important;
+}
+.uk-margin-xlarge-top {
+  margin-top: 70px !important;
+}
+.uk-margin-xlarge-bottom {
+  margin-bottom: 70px !important;
+}
+.uk-margin-xlarge-left {
+  margin-left: 70px !important;
+}
+.uk-margin-xlarge-right {
+  margin-right: 70px !important;
+}
+
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-margin-xlarge {
+    margin-bottom: 140px;
+  }
+  * + .uk-margin-xlarge {
+    margin-top: 140px !important;
+  }
+  .uk-margin-xlarge-top {
+    margin-top: 140px !important;
+  }
+  .uk-margin-xlarge-bottom {
+    margin-bottom: 140px !important;
+  }
+  .uk-margin-xlarge-left {
+    margin-left: 140px !important;
+  }
+  .uk-margin-xlarge-right {
+    margin-right: 140px !important;
+  }
+}
+
+/* Auto
+ ========================================================================== */
+.uk-margin-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.uk-margin-auto-top {
+  margin-top: auto !important;
+}
+.uk-margin-auto-bottom {
+  margin-bottom: auto !important;
+}
+.uk-margin-auto-left {
+  margin-left: auto !important;
+}
+.uk-margin-auto-right {
+  margin-right: auto !important;
+}
+.uk-margin-auto-vertical {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .uk-margin-auto\@s {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .uk-margin-auto-left\@s {
+    margin-left: auto !important;
+  }
+  .uk-margin-auto-right\@s {
+    margin-right: auto !important;
+  }
+}
+
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-margin-auto\@m {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .uk-margin-auto-left\@m {
+    margin-left: auto !important;
+  }
+  .uk-margin-auto-right\@m {
+    margin-right: auto !important;
+  }
+}
+
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-margin-auto\@l {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .uk-margin-auto-left\@l {
+    margin-left: auto !important;
+  }
+  .uk-margin-auto-right\@l {
+    margin-right: auto !important;
+  }
+}
+
+/* Large screen and bigger */
+@media (min-width: 1600px) {
+  .uk-margin-auto\@xl {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .uk-margin-auto-left\@xl {
+    margin-left: auto !important;
+  }
+  .uk-margin-auto-right\@xl {
+    margin-right: auto !important;
+  }
+}
+
+/* Remove
+ ========================================================================== */
+.uk-margin-remove {
+  margin: 0 !important;
+}
+.uk-margin-remove-top {
+  margin-top: 0 !important;
+}
+.uk-margin-remove-bottom {
+  margin-bottom: 0 !important;
+}
+.uk-margin-remove-left {
+  margin-left: 0 !important;
+}
+.uk-margin-remove-right {
+  margin-right: 0 !important;
+}
+.uk-margin-remove-vertical {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.uk-margin-remove-adjacent + *,
+.uk-margin-remove-first-child > :first-child {
+  margin-top: 0 !important;
+}
+.uk-margin-remove-last-child > :last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .uk-margin-remove-left\@s {
+    margin-left: 0 !important;
+  }
+  .uk-margin-remove-right\@s {
+    margin-right: 0 !important;
+  }
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-margin-remove-left\@m {
+    margin-left: 0 !important;
+  }
+  .uk-margin-remove-right\@m {
+    margin-right: 0 !important;
+  }
+}
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-margin-remove-left\@l {
+    margin-left: 0 !important;
+  }
+  .uk-margin-remove-right\@l {
+    margin-right: 0 !important;
+  }
+}
+
+/* Large screen and bigger */
+@media (min-width: 1600px) {
+  .uk-margin-remove-left\@xl {
+    margin-left: 0 !important;
+  }
+  .uk-margin-remove-right\@xl {
+    margin-right: 0 !important;
+  }
+}

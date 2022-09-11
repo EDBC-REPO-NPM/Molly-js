@@ -1,0 +1,65 @@
+
+/*
+ * 1. Hide by default
+ * 2. Set position
+ * 3. Style
+ */
+.uk-dropbar {
+  --uk-position-offset: 0;
+  --uk-position-shift-offset: 0;
+  --uk-position-viewport-offset: 0;
+  /* 1 */
+  display: none;
+  /* 2 */
+  position: absolute;
+  z-index: 1020;
+  /* 3 */
+  box-sizing: border-box;
+  padding: 25px 15px 25px 15px;
+  background: #fff;
+  color: #666;
+}
+/* Show */
+.uk-dropbar.uk-open {
+  display: block;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-dropbar > :last-child {
+  margin-bottom: 0;
+}
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .uk-dropbar {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-dropbar {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+/* Size modifier
+ ========================================================================== */
+.uk-dropbar-large {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/* Direction modifier
+ ========================================================================== */
+.uk-dropbar-top {
+  box-shadow: 0 12px 7px -6px rgba(0, 0, 0, 0.05);
+}
+.uk-dropbar-bottom {
+  box-shadow: 0 -12px 7px -6px rgba(0, 0, 0, 0.05);
+}
+.uk-dropbar-left {
+  box-shadow: 12px 0 7px -6px rgba(0, 0, 0, 0.05);
+}
+.uk-dropbar-right {
+  box-shadow: -12px 0 7px -6px rgba(0, 0, 0, 0.05);
+}

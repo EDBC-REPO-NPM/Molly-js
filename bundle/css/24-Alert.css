@@ -1,0 +1,80 @@
+
+.uk-alert {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 15px 29px 15px 15px;
+  background: #f8f8f8;
+  color: #666;
+}
+/* Add margin if adjacent element */
+* + .uk-alert {
+  margin-top: 20px;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-alert > :last-child {
+  margin-bottom: 0;
+}
+/* Close
+ * Adopts `uk-close`
+ ========================================================================== */
+.uk-alert-close {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  color: inherit;
+  opacity: 0.4;
+}
+/*
+ * Remove margin from adjacent element
+ */
+.uk-alert-close:first-child + * {
+  margin-top: 0;
+}
+/*
+ * Hover
+ */
+.uk-alert-close:hover {
+  color: inherit;
+  opacity: 0.8;
+}
+/* Style modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const letr = ("0001000").split('');
+  const result = new Array();
+  for( var i in data ){
+    const color = letr[i]=='0' ? 'default' : 'secondary';
+    result.push(`
+      .uk-alert-${data[i]} {
+        background: var(--color-${data[i]});
+        color: var(--color-${color});
+      }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
+
+/*
+     * Content
+     */
+.uk-alert h1,
+.uk-alert h2,
+.uk-alert h3,
+.uk-alert h4,
+.uk-alert h5,
+.uk-alert h6 {
+  color: inherit;
+}
+.uk-alert a:not([class]) {
+  color: inherit;
+  text-decoration: underline;
+}
+.uk-alert a:not([class]):hover {
+  color: inherit;
+  text-decoration: underline;
+}

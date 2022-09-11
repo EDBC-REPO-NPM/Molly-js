@@ -1,0 +1,271 @@
+
+/*
+ * 1. Remove margins in Chrome, Safari and Opera.
+ * 2. Remove borders for `button`.
+ * 3. Address `overflow` set to `hidden` in IE.
+ * 4. Correct `font` properties and `color` not being inherited for `button`.
+ * 5. Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 6. Remove default style for `input type="submit"`in iOS.
+ * 7. Style
+ * 8. `line-height` is used to create a height because it also centers the text vertically for `a` elements.
+ *    Better would be to use height and flexbox to center the text vertically but flexbox doesn't work in Firefox on `button` elements.
+ * 9. Align text if button has a width
+ * 10. Required for `a`.
+ */
+ .uk-button {
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  border: none;
+  /* 3 */
+  overflow: visible;
+  /* 4 */
+  font: inherit;
+  color: inherit;
+  /* 5 */
+  text-transform: none;
+  /* 6 */
+  -webkit-appearance: none;
+  border-radius: 0;
+  /* 7 */
+  padding: 0 30px;
+  font-size: 0.875rem;
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: middle;
+  /* 8 */
+  line-height: 38px;
+  /* 9 */
+  text-align: center;
+  /* 10 */
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.1s ease-in-out;
+  background-color: transparent;
+  color: var(--color-secondary);
+  transition-property: color, background-color, border-color;
+}
+.uk-button:not(:disabled) {
+  cursor: pointer;
+}
+/*
+ * Remove the inner border and padding in Firefox.
+ */
+.uk-button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+/* Hover */
+.uk-button:hover {
+  /* 9 */
+  text-decoration: none;
+  color: var(--color-secondary); 
+}
+.uk-button:active {
+  color: var(--color-secondary-click);
+}
+/* OnClick + Active */
+/* Style modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const letr1 = ("0000001").split('');
+  const letr2 = ("1001010").split('');
+  const result = new Array();
+  for( var i in data ){
+    const color1 = letr1[i]=='0' ? 'secondary' : 'default';
+    const color2 = letr2[i]=='0' ? 'default' : 'secondary';
+    result.push(`
+      .uk-button.uk-${data[i]} {
+        border: 1px solid var(--color-${data[i]});
+        color: var(--color-${data[i]});
+      }
+      
+        /* Hover */
+      .uk-button.uk-${data[i]}:hover,
+      .uk-button.uk-${data[i]}.uk-enphasis {
+        background-color: var(--color-${data[i]}-hover);
+        color: var(--color-${color2});
+      }
+      
+      .uk-button.uk-enphasis.uk-${data[i]}:active,
+      .uk-button.uk-enphasis.uk-${data[i]}.uk-active{
+          background-color: var(--color-${data[i]}-click);
+          color: var(--color-${color2});
+      }
+      
+      /* OnClick + Active */
+      .uk-button.uk-${data[i]}:active,
+      .uk-button.uk-${data[i]}.uk-active {
+        border: 1px solid var(--color-${data[i]});
+        color: var(--color-${data[i]});
+        background-color: transparent;
+      }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
+
+
+/*
+ * Disabled
+ * The same for all style modifiers
+ */
+ 
+.uk-button:disabled {
+  background-color: transparent;
+  border-color: #e5e5e5;
+  color: #999;
+}
+
+/* Size modifiers
+ ========================================================================== */
+.uk-button-small {
+  padding: 0 15px;
+  line-height: 28px;
+  font-size: 0.875rem;
+}
+.uk-button-large {
+  padding: 0 40px;
+  line-height: 53px;
+  font-size: 0.875rem;
+}
+/* Text modifiers
+ ========================================================================== */
+/*
+ * Text
+ * 1. Reset
+ * 2. Style
+ */
+.uk-button.uk-text {
+  /* 1 */
+  padding: 0;
+  line-height: 1.5;
+  background: none;
+  /* 2 */
+  position: relative;
+  color: var(--color-secondary);
+}
+.uk-button.uk-text::before {
+  left: 0;
+  bottom: 0;
+  right: 100%;
+  content: "";
+  position: absolute;
+  transition: right 0.3s ease-out;
+  border-bottom: 1px solid var(--color-secondary);
+}
+/* Hover */
+.uk-button.uk-text:hover { color: var(--color-secondary); }
+.uk-button.uk-text:hover::before { right: 0; }
+/* Disabled */
+.uk-button.uk-text:disabled { color: var(--color-mute); }
+.uk-button.uk-text:disabled::before { display: none; }
+
+/* color */
+/°(()=>{
+    const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+    let result = new String();
+    for( var i in data ){
+        result += `
+            .uk-button.uk-text.uk-${data[i]} {
+                border-color: transparent;
+            }
+            .uk-button.uk-text.uk-${data[i]}:hover {
+                background-color: transparent;
+            }
+            .uk-button.uk-text.uk-${data[i]}::before {
+              border-bottom: 1px solid var(--color-${data[i]});
+            }
+        `;
+    }
+    return result;
+})();°/
+
+/*
+ * Link
+ * 1. Reset
+ * 2. Style
+ */
+.uk-button.uk-link {
+  /* 1 */
+  padding: 0;
+  line-height: 1.5;
+  background: none;
+  /* 2 */
+  border-color: transparent;
+  color: var(--color-secondary);
+}
+/* Hover */
+.uk-button.uk-link:hover {
+  color: var(--color-secondary-click);
+  text-decoration: none;
+}
+/* Disabled */
+.uk-button.uk-link:disabled {
+  color: var(--color-mute);
+  text-decoration: none;
+}
+
+/* color */
+/°(()=>{
+    const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+    let result = new String();
+    for( var i in data ){
+        result += `
+            .uk-button.uk-link.uk-${data[i]}:hover {
+                color: var(--color-${data[i]}-click);
+                background-color: transparent;
+                border-color: transparent;
+                text-decoration: none;
+            }
+            .uk-button.uk-link.uk-${data[i]}:disabled {
+                color: var(--color-${data[i]}-click);
+                background-color: transparent;
+                border-color: transparent;
+                text-decoration: none;
+            }
+        `;
+    }
+    return result;
+})();°/
+
+/* Group
+ ========================================================================== */
+/*
+ * 1. Using `flex` instead of `inline-block` to prevent whitespace betweent child elements
+ * 2. Behave like button
+ * 3. Create position context
+ */
+.uk-button-group {
+  /* 1 */
+  display: inline-flex;
+  /* 2 */
+  vertical-align: middle;
+  /* 3 */
+  position: relative;
+}
+/* Group
+     ========================================================================== */
+/*
+     * Collapse border
+     */
+.uk-button.uk-group > .uk-button:nth-child(n+2),
+.uk-button.uk-group > div:nth-child(n+2) .uk-button {
+  margin-left: -1px;
+}
+/*
+     * Create position context to superimpose the successor elements border
+     * Known issue: If you use an `a` element as button and an icon inside,
+     * the active state will not work if you click the icon inside the button
+     * Workaround: Just use a `button` or `input` element as button
+     */
+.uk-button.uk-group .uk-button:hover,
+.uk-button.uk-group .uk-button:active,
+.uk-button.uk-group .uk-button.uk-active {
+  position: relative;
+  z-index: 1;
+}
+

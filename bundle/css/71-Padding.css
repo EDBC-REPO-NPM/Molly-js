@@ -1,0 +1,49 @@
+
+.uk-padding { padding: 30px; }
+.uk-child-padding>*{ padding: 30px; }
+
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-padding { padding: 40px; }
+  .uk-child-padding>*{ padding: 40px; }
+}
+/* Small
+ ========================================================================== */
+.uk-padding-small { padding: 15px; }
+.uk-child-padding-small>*{ padding: 15px; }
+
+/* Large
+ ========================================================================== */
+.uk-padding-large { padding: 40px; }
+.uk-child-padding-large>*{ padding: 40px; }
+
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-padding-large { padding: 40px; }
+  .uk-child-padding-large>*{ padding: 40px; }
+}
+/* Remove
+ ========================================================================== */
+/* compiled */
+/°(()=>{
+  var pos = (',-top,-bottom,-left,-right').split(',');
+  var resp = new String();
+  for( var i in pos ){
+    resp += `
+      .uk-padding-remove${pos[i]} {
+        padding${pos[i]}: 0 !important;
+      }
+    `;
+  } return resp;
+})();°/
+/* compiled */
+
+.uk-padding-remove-vertical {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.uk-padding-remove-horizontal {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

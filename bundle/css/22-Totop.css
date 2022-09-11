@@ -1,0 +1,17 @@
+
+/*
+ * Addopts `uk-icon`
+ */
+.uk-totop {
+  padding: 5px;
+  color: #999;
+  transition: color 0.1s ease-in-out;
+}
+/* Hover */
+.uk-totop:hover {
+  color: #666;
+}
+/* OnClick */
+.uk-totop:active {
+  color: #333;
+}

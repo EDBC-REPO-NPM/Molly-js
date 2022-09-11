@@ -1,0 +1,15 @@
+
+/*
+ * Adopts `uk-icon`
+ */
+.uk-close {
+  color: #999;
+  transition: 0.1s ease-in-out;
+  background-color: transparent;
+  transition-property: color, opacity;
+}
+/* Hover */
+.uk-close:hover {
+  color: #666;
+}
+

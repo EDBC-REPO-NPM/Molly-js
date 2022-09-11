@@ -1,0 +1,41 @@
+
+.uk-article {
+  display: flow-root;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-article > :last-child {
+  margin-bottom: 0;
+}
+/* Adjacent sibling
+ ========================================================================== */
+.uk-article + .uk-article {
+  margin-top: 70px;
+}
+/* Title
+ ========================================================================== */
+.uk-article-title {
+  font-size: 2.23125rem;
+  line-height: 1.2;
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-article-title {
+    font-size: 2.625rem;
+  }
+}
+/* Meta
+ ========================================================================== */
+.uk-article-meta {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #999;
+}
+.uk-article-meta a {
+  color: #999;
+}
+.uk-article-meta a:hover {
+  color: #666;
+  text-decoration: none;
+}

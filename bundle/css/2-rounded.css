@@ -1,0 +1,27 @@
+
+
+.uk-rounded { border-radius: 10px !important; }
+.uk-rounded-small { border-radius: 5px !important; }
+.uk-rounded-large { border-radius: 20px !important; }
+
+.uk-rounded-top {
+    border-bottom-left-radius: initial !important;
+    border-bottom-right-radius: initial !important;
+}
+
+.uk-rounded-left {
+    border-top-right-radius: initial !important;
+    border-bottom-right-radius: initial !important;
+}
+
+.uk-rounded-right {
+    border-top-left-radius: initial !important;
+    border-bottom-left-radius: initial !important;
+}
+
+.uk-rounded-bottom {
+    border-top-left-radius: initial !important;
+    border-top-right-radius: initial !important;
+}
+
+

@@ -1,0 +1,15 @@
+
+.uk-overlay { padding: 30px 30px; }
+/*
+ * Remove margin from the last-child
+ */
+.uk-overlay > :last-child { margin-bottom: 0; }
+/* Icon
+ ========================================================================== */
+/* Style modifiers
+ ========================================================================== */
+/*
+ * Default
+ */
+.uk-overlay.uk-dark { background: var(--color-dark); }
+.uk-overlay.uk-light { background: var(--color-light); }

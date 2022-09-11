@@ -1,0 +1,132 @@
+
+.uk-heading-small {
+  font-size: 2.6rem;
+  line-height: 1.2;
+}
+.uk-heading-medium {
+  font-size: 2.8875rem;
+  line-height: 1.1;
+}
+.uk-heading-large {
+  font-size: 3.4rem;
+  line-height: 1.1;
+}
+.uk-heading-xlarge {
+  font-size: 4rem;
+  line-height: 1;
+}
+.uk-heading-2xlarge {
+  font-size: 6rem;
+  line-height: 1;
+}
+/* Tablet Landscape and bigger */
+@media (min-width: 960px) {
+  .uk-heading-small {
+    font-size: 3.25rem;
+  }
+  .uk-heading-medium {
+    font-size: 3.5rem;
+  }
+  .uk-heading-large {
+    font-size: 4rem;
+  }
+  .uk-heading-xlarge {
+    font-size: 6rem;
+  }
+  .uk-heading-2xlarge {
+    font-size: 8rem;
+  }
+}
+/* Laptop and bigger */
+@media (min-width: 1200px) {
+  .uk-heading-medium {
+    font-size: 4rem;
+  }
+  .uk-heading-large {
+    font-size: 6rem;
+  }
+  .uk-heading-xlarge {
+    font-size: 8rem;
+  }
+  .uk-heading-2xlarge {
+    font-size: 11rem;
+  }
+}
+/* Primary
+   Deprecated: Use `uk-heading-medium` instead
+ ========================================================================== */
+/* Tablet landscape and bigger */
+/* Desktop and bigger */
+/* Hero
+   Deprecated: Use `uk-heading-xlarge` instead
+ ========================================================================== */
+/* Tablet landscape and bigger */
+/* Desktop and bigger */
+/* Divider
+ ========================================================================== */
+.uk-heading-divider {
+  padding-bottom: calc(5px + 0.1em);
+  border-bottom: calc(0.2px + 0.05em) solid #e5e5e5;
+}
+/* Bullet
+ ========================================================================== */
+.uk-heading-bullet {
+  position: relative;
+}
+/*
+ * 1. Using `inline-block` to make it work with text alignment
+ * 2. Center vertically
+ * 3. Style
+ */
+.uk-heading-bullet::before {
+  content: "";
+  /* 1 */
+  display: inline-block;
+  /* 2 */
+  position: relative;
+  top: calc(-0.1 * 1em);
+  vertical-align: middle;
+  /* 3 */
+  height: calc(4px + 0.7em);
+  margin-right: calc(5px + 0.2em);
+  border-left: calc(5px + 0.1em) solid #e5e5e5;
+}
+/* Line
+ ========================================================================== */
+/*
+ * Clip the child element
+ */
+.uk-heading-line {
+  overflow: hidden;
+}
+/*
+ * Extra markup is needed to make it work with text align
+ */
+.uk-heading-line > * {
+  display: inline-block;
+  position: relative;
+}
+/*
+ * 1. Center vertically
+ * 2. Make the element as large as possible. It's clipped by the container.
+ * 3. Style
+ */
+.uk-heading-line > ::before,
+.uk-heading-line > ::after {
+  content: "";
+  /* 1 */
+  position: absolute;
+  top: calc(50% - (calc(0.2px + 0.05em) / 2));
+  /* 2 */
+  width: 2000px;
+  /* 3 */
+  border-bottom: calc(0.2px + 0.05em) solid #e5e5e5;
+}
+.uk-heading-line > ::before {
+  right: 100%;
+  margin-right: calc(5px + 0.3em);
+}
+.uk-heading-line > ::after {
+  left: 100%;
+  margin-left: calc(5px + 0.3em);
+}

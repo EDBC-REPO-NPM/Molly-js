@@ -1,0 +1,35 @@
+
+/*
+ * Adopts `uk-icon`
+ */
+.uk-slidenav {
+  padding: 5px 10px;
+  color: rgba(102, 102, 102, 0.5);
+  transition: color 0.1s ease-in-out;
+}
+/* Hover */
+.uk-slidenav:hover {
+  color: rgba(102, 102, 102, 0.9);
+}
+/* OnClick */
+.uk-slidenav:active {
+  color: rgba(102, 102, 102, 0.5);
+}
+/* Icon modifier
+ ========================================================================== */
+/*
+ * Previous
+ */
+/*
+ * Next
+ */
+/* Size modifier
+ ========================================================================== */
+.uk-slidenav-large {
+  padding: 10px 10px;
+}
+/* Container
+ ========================================================================== */
+.uk-slidenav-container {
+  display: flex;
+}

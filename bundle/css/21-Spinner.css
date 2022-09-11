@@ -1,0 +1,57 @@
+
+/*
+ * Adopts `uk-icon`
+ */
+/* SVG
+ ========================================================================== */
+ .uk-spinner > * {
+  animation: uk-spinner-rotate 1.4s linear infinite;
+}
+@keyframes uk-spinner-rotate {
+  100% { transform: rotate(270deg); }
+  0% { transform: rotate(0deg); }
+}
+
+/*
+ * Circle
+ */
+ 
+.uk-spinner > * > * {
+  animation: uk-spinner-dash 1.4s ease-in-out infinite;
+  transform-origin: center;
+  stroke-dasharray: 88px;
+  stroke-linecap: round;
+  stroke-dashoffset: 0;
+  stroke-width: 5;
+}
+
+/*
+ * Circle
+ */
+@keyframes uk-spinner-dash {
+  0% { stroke-dashoffset: 88px; }
+  50% {
+    stroke-dashoffset: 22px;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 88px;
+    transform: rotate(450deg);
+  }
+}
+
+/*
+* Color
+*/
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const result = new Array();
+  for( var i in data ){
+    result.push(`
+      .uk-spinner.uk-${data[i]} { color: var(--color-${data[i]}); }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */

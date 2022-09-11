@@ -1,0 +1,94 @@
+
+/*
+ * 1. Remove default style.
+ * 2. Define consistent box sizing.
+ * 3. Remove `margin` in all browsers.
+ * 4. Align to the center of the line box.
+ * 5. Prevent content overflow if a fixed width is used.
+ * 6. Take the full width.
+ * 7. Remove white background in Chrome.
+ */
+.uk-range {
+  /* 1 */
+  -webkit-appearance: none;
+  /* 2 */
+  box-sizing: border-box;
+  /* 3 */
+  margin: 0;
+  /* 4 */
+  vertical-align: middle;
+  /* 5 */
+  max-width: 100%;
+  /* 6 */
+  width: 100%;
+  /* 7 */
+  background: transparent;
+}
+/* Focus */
+.uk-range:focus {
+  outline: none;
+}
+.uk-range::-moz-focus-outer {
+  border: none;
+}
+/*
+ * Improves consistency of cursor style for clickable elements
+ */
+.uk-range:not(:disabled)::-webkit-slider-thumb {
+  cursor: pointer;
+}
+.uk-range:not(:disabled)::-moz-range-thumb {
+  cursor: pointer;
+}
+/*
+ * Track
+ * 1. Safari doesn't have a focus state. Using active instead.
+ */
+/* Webkit */
+.uk-range::-webkit-slider-runnable-track {
+  height: 3px;
+  background: #ebebeb;
+  border-radius: 500px;
+}
+.uk-range:focus::-webkit-slider-runnable-track,
+.uk-range:active::-webkit-slider-runnable-track {
+  background: #dedede;
+}
+/* Firefox */
+.uk-range::-moz-range-track {
+  height: 3px;
+  background: #ebebeb;
+  border-radius: 500px;
+}
+.uk-range:focus::-moz-range-track {
+  background: #dedede;
+}
+/*
+ * Thumb
+ * 1. Reset
+ * 2. Style
+ */
+/* Webkit */
+.uk-range::-webkit-slider-thumb {
+  /* 1 */
+  -webkit-appearance: none;
+  margin-top: -7px;
+  /* 2 */
+  height: 15px;
+  width: 15px;
+  border-radius: 500px;
+  background: #fff;
+  border: 1px solid #cccccc;
+}
+/* Firefox */
+.uk-range::-moz-range-thumb {
+  /* 1 */
+  border: none;
+  /* 2 */
+  height: 15px;
+  width: 15px;
+  margin-top: -7px;
+  border-radius: 500px;
+  background: #fff;
+  border: 1px solid #cccccc;
+}

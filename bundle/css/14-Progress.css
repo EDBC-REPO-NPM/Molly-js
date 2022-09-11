@@ -1,0 +1,55 @@
+
+/*
+ * 1. Add the correct vertical alignment in all browsers.
+ * 2. Behave like a block element.
+ * 3. Remove borders in Firefox.
+ * 4. Remove default style in Chrome, Safari and Edge.
+ * 5. Style
+ */
+ .uk-progress {
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */
+  display: block;
+  width: 100%;
+  /* 3 */
+  border: 0;
+  /* 5 */
+  border-radius: 500px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  height: 15px;
+}
+/* Add margin if adjacent element */
+* + .uk-progress {
+  margin-top: 20px;
+}
+/*
+ * Show background color set on `uk-progress` in Chrome, Safari and Edge.
+ */
+.uk-progress::-webkit-progress-bar {
+  background-color: rgba(145, 145, 145, 0.296);
+  transition: width 0.6s ease;
+}
+.uk-progress::-moz-progress-bar {
+  background-color: rgba(145, 145, 145, 0.296);
+  transition: width 0.6s ease;
+}
+.uk-progress::-webkit-progress-value {
+  background-color: rgba(145, 145, 145, 0.296);
+  transition: width 0.6s ease;
+}
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const result = new Array();
+  for( var i in data ){
+    result.push(`
+      .uk-progress.uk-${data[i]}::-webkit-progress-value {
+        background-color: var(--color-${data[i]});
+      }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */

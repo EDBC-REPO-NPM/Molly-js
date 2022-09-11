@@ -1,18 +1,18 @@
 {
-	"name": "mollyjs",
 	"license": "MIT",
 	"main": "main.js",
-	"version": "1.0.34",
-	"author": "bececrazy",
-	"scripts": {
-		"build": "browserify ./lib/base.js -t [ babelify --presets [@babel/preset-env] ] | uglifyjs > ./bundle.js",
-		"start": "npm run build"
-	},
+	"name": "molly-js",
+	"version": "1.0.58",
+	"author": "becerraenmanuel",
+	"scripts": { "build-molly": "./compile.sh" },
+	"repository": "https://github.com/EDBC-REPO-NPM/Molly-js",
 	"description": "Free and opensource backend framework for nodejs",
-	"repository": "https://github.com/Bececrazy/mollyjs-hybrid-framework",
+	"dependencies": {
+		"crypto-js": "^4.1.1",
+		"axios": "^0.26.1"
+	},
 	"keywords": [
 		"nodejs",
-		"molly-js",
 		"nodejs-http",
 		"nodejs-https",
 		"backend-server",
@@ -20,18 +20,11 @@
 		"backend-server",
 		"nodejs-http-server"
 	],
-	"dependencies": {
-		"@babel/core": "^7.18.6",
+	"devDependencies": {
 		"@babel/polyfill": "^7.12.1",
-		"@babel/preset-env": "^7.18.6",
-		"axios": "^0.26.1",
+		"@babel/cli": "^7.18.10",
+		"@babel/core": "^7.19.0",
 		"babelify": "^10.0.0",
-		"formidable": "^2.0.1",
-		"fs": "^0.0.1-security",
-		"http": "^0.0.1-security",
-		"http2": "^3.3.7",
-		"intersection-observer": "^0.12.2",
-		"url": "^0.11.0",
-		"url-search-params-polyfill": "^8.1.1"
+		"hls.js": "^1.2.1"
 	}
 }

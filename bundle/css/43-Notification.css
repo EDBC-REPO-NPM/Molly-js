@@ -1,0 +1,90 @@
+
+/*
+ * 1. Set position
+ * 2. Dimensions
+ */
+.uk-notification {
+  /* 1 */
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1040;
+  /* 2 */
+  box-sizing: border-box;
+  width: 350px;
+}
+/* Position modifiers
+========================================================================== */
+.uk-notification-top-right,
+.uk-notification-bottom-right {
+  left: auto;
+  right: 10px;
+}
+.uk-notification-top-center,
+.uk-notification-bottom-center {
+  left: 50%;
+  margin-left: -175px;
+}
+.uk-notification-bottom-left,
+.uk-notification-bottom-right,
+.uk-notification-bottom-center {
+  top: auto;
+  bottom: 10px;
+}
+/* Responsiveness
+========================================================================== */
+/* Phones portrait and smaller */
+@media (max-width: 639px) {
+  .uk-notification {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    margin: 0;
+  }
+}
+/* Message
+========================================================================== */
+.uk-notification-message {
+  padding: 15px;
+  cursor: pointer;
+  line-height: 1.4;
+  font-size: 1.25rem;
+  position: relative;
+  border-radius: 10px;
+  color: var(--color-default);
+  background: var(--color-secondary);
+}
+* + .uk-notification-message {
+  margin-top: 10px;
+}
+/* Close
+ * Adopts `uk-close`
+ ========================================================================== */
+.uk-notification-close {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 15px;
+}
+.uk-notification-message:hover .uk-notification-close {
+  display: block;
+}
+/* Style modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const letr = ("0001000").split('');
+  const result = new Array();
+  for( var i in data ){
+    const color = letr[i]=='0' ? 'default' : 'secondary';
+    result.push(`
+      .uk-notification-message-${data[i]} {
+        background-color: var(--color-${data[i]});
+        color: var(--color-${color});
+      }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */

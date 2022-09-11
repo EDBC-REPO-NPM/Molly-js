@@ -1,0 +1,185 @@
+
+/*
+ * 1. Remove most spacing between table cells.
+ * 2. Behave like a block element
+ * 3. Style
+ */
+.uk-table {
+  /* 1 */
+  border-collapse: collapse;
+  border-spacing: 0;
+  /* 2 */
+  width: 100%;
+  /* 3 */
+  margin-bottom: 20px;
+}
+/* Add margin if adjacent element */
+* + .uk-table {
+  margin-top: 20px;
+}
+/* Header cell
+ ========================================================================== */
+/*
+ * 1. Style
+ */
+.uk-table th {
+  padding: 16px 12px;
+  text-align: left;
+  vertical-align: bottom;
+  /* 1 */
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: #999;
+  text-transform: uppercase;
+}
+/* Cell
+ ========================================================================== */
+.uk-table td {
+  padding: 16px 12px;
+  vertical-align: top;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-table td > :last-child {
+  margin-bottom: 0;
+}
+/* Footer
+ ========================================================================== */
+.uk-table tfoot {
+  font-size: 0.875rem;
+}
+/* Caption
+ ========================================================================== */
+.uk-table caption {
+  font-size: 0.875rem;
+  text-align: left;
+  color: #999;
+}
+/* Alignment modifier
+ ========================================================================== */
+.uk-table-middle,
+.uk-table-middle td {
+  vertical-align: middle !important;
+}
+/* Style modifiers
+ ========================================================================== */
+/*
+ * Divider
+ */
+.uk-table-divider > tr:not(:first-child),
+.uk-table-divider > :not(:first-child) > tr,
+.uk-table-divider > :first-child > tr:not(:first-child) {
+  border-top: 1px solid #e5e5e5;
+}
+/*
+ * Striped
+ */
+.uk-table-striped > tr:nth-of-type(odd),
+.uk-table-striped tbody tr:nth-of-type(odd) {
+  background: #f8f8f8;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+/*
+ * Hover
+ */
+.uk-table-hover > tr:hover,
+.uk-table-hover tbody tr:hover {
+  background: #ffd;
+}
+/* Active state
+ ========================================================================== */
+.uk-table > tr.uk-active,
+.uk-table tbody tr.uk-active {
+  background: #ffd;
+}
+/* Size modifier
+ ========================================================================== */
+.uk-table-small th,
+.uk-table-small td {
+  padding: 10px 12px;
+}
+.uk-table-large th,
+.uk-table-large td {
+  padding: 22px 12px;
+}
+/* Justify modifier
+ ========================================================================== */
+.uk-table-justify th:first-child,
+.uk-table-justify td:first-child {
+  padding-left: 0;
+}
+.uk-table-justify th:last-child,
+.uk-table-justify td:last-child {
+  padding-right: 0;
+}
+/* Cell size modifier
+ ========================================================================== */
+.uk-table-shrink {
+  width: 1px;
+}
+.uk-table-expand {
+  min-width: 150px;
+}
+/* Cell link modifier
+ ========================================================================== */
+/*
+ * Does not work with `uk-table-justify` at the moment
+ */
+.uk-table-link {
+  padding: 0 !important;
+}
+.uk-table-link > a {
+  display: block;
+  padding: 16px 12px;
+}
+.uk-table-small .uk-table-link > a {
+  padding: 10px 12px;
+}
+/* Responsive table
+ ========================================================================== */
+/* Phone landscape and smaller */
+@media (max-width: 959px) {
+  .uk-table-responsive,
+  .uk-table-responsive tbody,
+  .uk-table-responsive th,
+  .uk-table-responsive td,
+  .uk-table-responsive tr {
+    display: block;
+  }
+  .uk-table-responsive thead {
+    display: none;
+  }
+  .uk-table-responsive th,
+  .uk-table-responsive td {
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+  .uk-table-responsive th:not(:first-child):not(.uk-table-link),
+  .uk-table-responsive td:not(:first-child):not(.uk-table-link),
+  .uk-table-responsive .uk-table-link:not(:first-child) > a {
+    padding-top: 5px !important;
+  }
+  .uk-table-responsive th:not(:last-child):not(.uk-table-link),
+  .uk-table-responsive td:not(:last-child):not(.uk-table-link),
+  .uk-table-responsive .uk-table-link:not(:last-child) > a {
+    padding-bottom: 5px !important;
+  }
+  .uk-table-justify.uk-table-responsive th,
+  .uk-table-justify.uk-table-responsive td {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+.uk-table tbody tr {
+  transition: background-color 0.1s linear;
+}
+.uk-table-striped > tr:nth-of-type(even):last-child,
+.uk-table-striped tbody tr:nth-of-type(even):last-child {
+  border-bottom: 1px solid #e5e5e5;
+}
+

@@ -1,0 +1,54 @@
+
+/* Muted
+ ========================================================================== */
+a.uk-link-muted,
+.uk-link-muted a,
+.uk-link-toggle .uk-link-muted {
+  color: var(--color-mute);
+}
+a.uk-link-muted:hover,
+.uk-link-muted a:hover,
+.uk-link-toggle:hover .uk-link-muted {
+  color: var(--color-mute-click);
+}
+/* Text
+ ========================================================================== */
+a.uk-link-text,
+.uk-link-text a,
+.uk-link-toggle .uk-link-text {
+  color: inherit;
+}
+a.uk-link-text:hover,
+.uk-link-text a:hover,
+.uk-link-toggle:hover .uk-link-text {
+  color: var(--color-mute-click);
+}
+/* Heading
+ ========================================================================== */
+a.uk-link-heading,
+.uk-link-heading a,
+.uk-link-toggle .uk-link-heading {
+  color: inherit;
+}
+a.uk-link-heading:hover,
+.uk-link-heading a:hover,
+.uk-link-toggle:hover .uk-link-heading {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+/* Reset
+ ========================================================================== */
+/*
+ * `!important` needed to override inverse component
+ */
+a.uk-link-reset,
+.uk-link-reset a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+/* Toggle
+ ========================================================================== */
+.uk-link-toggle {
+  color: inherit !important;
+  text-decoration: none !important;
+}

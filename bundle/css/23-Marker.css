@@ -1,0 +1,14 @@
+
+/*
+ * Addopts `uk-icon`
+ */
+.uk-marker {
+  padding: 5px;
+  background: #222;
+  color: #fff;
+  border-radius: 500px;
+}
+/* Hover */
+.uk-marker:hover {
+  color: #fff;
+}

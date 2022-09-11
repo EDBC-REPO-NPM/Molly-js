@@ -1,0 +1,267 @@
+
+ .uk-card {
+  position: relative;
+  box-sizing: border-box;
+  transition: box-shadow 0.1s ease-in-out;
+}
+/* Sections
+ ========================================================================== */
+.uk-card-body {
+  display: flow-root;
+  padding: 30px 30px;
+}
+.uk-card-header {
+  display: flow-root;
+  padding: 15px 30px;
+}
+.uk-card-footer {
+  display: flow-root;
+  padding: 15px 30px;
+}
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-card-body {
+    padding: 40px 40px;
+  }
+  .uk-card-header {
+    padding: 20px 40px;
+  }
+  .uk-card-footer {
+    padding: 20px 40px;
+  }
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-card-body > :last-child,
+.uk-card-header > :last-child,
+.uk-card-footer > :last-child {
+  margin-bottom: 0;
+}
+/* Media
+ ========================================================================== */
+/*
+ * Reserved alignment modifier to style the media element, e.g. with `border-radius`
+ * Implemented by the theme
+ */
+/* Title
+ ========================================================================== */
+.uk-card-title {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+/* Badge
+ ========================================================================== */
+/*
+ * 1. Position
+ * 2. Size
+ * 3. Style
+ * 4. Center child vertically
+ */
+.uk-card-badge {
+  /* 1 */
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+  /* 2 */
+  height: 22px;
+  padding: 0 10px;
+  /* 3 */
+  border: solid 1px var(--color-secondary);
+  color: var(--color-secondary);
+  background: transparent;
+  font-size: 0.875rem;
+  /* 4 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+/*
+* badge color
+*/
+
+.uk-card-badge{ border-color: var(--color-secondary); color: var(--color-secondary); }
+.uk-card-badge.uk-enphasis{ background: var(--color-secondary); color: var(--color-default); }
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const letr = ("0001010").split(''); const result = new Array();
+  for( var i in data ){
+    const color = letr[i]=='0' ? 'default' : 'secondary';
+    result.push(`
+      .uk-card-badge.uk-${data[i]}{ border-color: var(--color-${data[i]}); color: var(--color-${data[i]}); }
+      .uk-card-badge.uk-${data[i]}.uk-enphasis{ background: var(--color-${data[i]}); color: var(--color-${color}); }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
+
+/*
+* badge color correction
+*/
+
+/*
+ * Remove margin from adjacent element
+ */
+.uk-card-badge:first-child + * { margin-top: 0; }
+/* Hover modifier
+ ========================================================================== */
+.uk-card-hover:not(.uk-card-default):not(.uk-card-primary):not(.uk-card-secondary):hover {
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  background-color: #fff;
+}
+/* Style modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+ /°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const letr = ("0000001").split('');
+  const result = new Array();
+  for( var i in data ){
+    const color = letr[i]=='0' ? 'secondary' : 'default';
+    result.push(`
+
+      .uk-card.uk-${data[i]} {
+        /* color: var(--color-${color}); */
+        background-color: var(--color-${data[i]});
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+      .uk-card.uk-${data[i]} .uk-card-title {
+        /*color: var(--color-${color});*/
+      }
+      .uk-card.uk-${data[i]}.uk-card-hover:hover {
+        background-color: var(--color-${data[i]});
+        box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+      }
+      .uk-card.uk-${data[i]} .uk-card-header {
+        border-bottom: 1px solid var(--color-${data[i]});
+      }
+      .uk-card.uk-${data[i]} .uk-card-footer {
+        border-top: 1px solid var(--color-${data[i]});
+      }
+
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
+ 
+/* Size modifier
+ ========================================================================== */
+/*
+ * Small
+ */
+.uk-card-small.uk-card-body,
+.uk-card-small .uk-card-body {
+  padding: 20px 20px;
+}
+.uk-card-small .uk-card-header {
+  padding: 13px 20px;
+}
+.uk-card-small .uk-card-footer {
+  padding: 13px 20px;
+}
+/*
+ * Large
+ */
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-card-large.uk-card-body,
+  .uk-card-large .uk-card-body {
+    padding: 70px 70px;
+  }
+  .uk-card-large .uk-card-header {
+    padding: 35px 70px;
+  }
+  .uk-card-large .uk-card-footer {
+    padding: 35px 70px;
+  }
+}
+/*
+     * Default
+     */
+.uk-card-body > .uk-nav-default {
+  margin-left: -30px;
+  margin-right: -30px;
+}
+.uk-card-body > .uk-nav-default:only-child {
+  margin-top: -15px;
+  margin-bottom: -15px;
+}
+.uk-card-body > .uk-nav-default > li > a,
+.uk-card-body > .uk-nav-default .uk-nav-header,
+.uk-card-body > .uk-nav-default .uk-nav-divider {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.uk-card-body > .uk-nav-default .uk-nav-sub {
+  padding-left: 45px;
+}
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-card-body > .uk-nav-default {
+    margin-left: -40px;
+    margin-right: -40px;
+  }
+  .uk-card-body > .uk-nav-default:only-child {
+    margin-top: -25px;
+    margin-bottom: -25px;
+  }
+  .uk-card-body > .uk-nav-default > li > a,
+  .uk-card-body > .uk-nav-default .uk-nav-header,
+  .uk-card-body > .uk-nav-default .uk-nav-divider {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .uk-card-body > .uk-nav-default .uk-nav-sub {
+    padding-left: 55px;
+  }
+}
+/*
+     * Small
+     */
+.uk-card-small > .uk-nav-default {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.uk-card-small > .uk-nav-default:only-child {
+  margin-top: -5px;
+  margin-bottom: -5px;
+}
+.uk-card-small > .uk-nav-default > li > a,
+.uk-card-small > .uk-nav-default .uk-nav-header,
+.uk-card-small > .uk-nav-default .uk-nav-divider {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.uk-card-small > .uk-nav-default .uk-nav-sub {
+  padding-left: 35px;
+}
+/*
+     * Large
+     */
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-card-large > .uk-nav-default {
+    margin: 0;
+  }
+  .uk-card-large > .uk-nav-default:only-child {
+    margin: 0;
+  }
+  .uk-card-large > .uk-nav-default > li > a,
+  .uk-card-large > .uk-nav-default .uk-nav-header,
+  .uk-card-large > .uk-nav-default .uk-nav-divider {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .uk-card-large > .uk-nav-default .uk-nav-sub {
+    padding-left: 15px;
+  }
+}
+

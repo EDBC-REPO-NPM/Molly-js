@@ -1,0 +1,388 @@
+
+/*
+ * 1. Create position context to center navbar group
+ */
+ .uk-navbar {
+  display: flex;
+  /* 1 */
+  position: relative;
+}
+/* Container
+ ========================================================================== */
+
+ .uk-navbar-container:not(.uk-navbar-transparent) { background: var(--color-mute); }
+
+/* TODO: compiled hr color */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const result = new Array();
+  for( var i in data ){
+    result.push(`
+      .uk-navbar-container.uk-${data[i]}{ background: var(--color-${data[i]}); }
+    `);
+  } return result.join('\n');
+})();°/
+
+/* Groups
+ ========================================================================== */
+/*
+ * 1. Align navs and items vertically if they have a different height
+ */
+.uk-navbar-left,
+.uk-navbar-right,
+[class*='uk-navbar-center'] {
+  display: flex;
+  gap: 30px;
+  /* 1 */
+  align-items: center;
+}
+/*
+ * Horizontal alignment
+ * 1. Create position context for centered navbar with sub groups (left/right)
+ * 2. Fix text wrapping if content is larger than 50% of the container.
+ * 3. Needed for dropdowns because a new position context is created
+ *    `z-index` must be smaller than off-canvas
+ * 4. Align sub groups for centered navbar
+ */
+.uk-navbar-right {
+  margin-left: auto;
+}
+.uk-navbar-center:only-child {
+  margin-left: auto;
+  margin-right: auto;
+  /* 1 */
+  position: relative;
+}
+.uk-navbar-center:not(:only-child) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* 2 */
+  width: max-content;
+  box-sizing: border-box;
+  /* 3 */
+  z-index: 990;
+}
+/* 4 */
+.uk-navbar-center-left,
+.uk-navbar-center-right {
+  position: absolute;
+  top: 0;
+}
+.uk-navbar-center-left {
+  right: calc(100% + 30px);
+}
+.uk-navbar-center-right {
+  left: calc(100% + 30px);
+}
+[class*='uk-navbar-center-'] {
+  width: max-content;
+  box-sizing: border-box;
+}
+/* Nav
+ ========================================================================== */
+/*
+ * 1. Reset list
+ */
+.uk-navbar-nav {
+  display: flex;
+  gap: 30px;
+  /* 1 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/*
+ * Allow items to wrap into the next line
+ * Only not `absolute` positioned groups
+ */
+.uk-navbar-left,
+.uk-navbar-right,
+.uk-navbar-center:only-child {
+  flex-wrap: wrap;
+}
+/*
+ * Items
+ * 1. Center content vertically and horizontally
+ * 2. Imitate white space gap when using flexbox
+ * 3. Dimensions
+ * 4. Style
+ * 5. Required for `a`
+ */
+.uk-navbar-nav > li > a,
+.uk-navbar-item,
+.uk-navbar-toggle {
+  /* 1 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 2 */
+  column-gap: 0.25em;
+  /* 3 */
+  box-sizing: border-box;
+  min-height: 80px;
+  /* 4 */
+  font-size: 0.875rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* 5 */
+  text-decoration: none;
+}
+/*
+ * Nav items
+ */
+.uk-navbar-nav > li > a {
+  padding: 0 0;
+  text-transform: uppercase;
+  transition: 0.1s ease-in-out;
+  color: var(--color-secondary);
+  transition-property: color, background-color;
+}
+/*
+ * Hover
+ * Apply hover style also if dropdown is opened
+ */
+.uk-navbar-nav > li:hover > a,
+.uk-navbar-nav > li > a[aria-expanded="true"] {
+  color: var(--color-secondary);
+}
+/* OnClick */
+.uk-navbar-nav > li > a:active {
+  color: var(--color-secondary-click);
+}
+/* Active */
+.uk-navbar-nav > li.uk-active > a {
+  color: var(--color-secondary-click);
+}
+/* Parent icon modifier
+ ========================================================================== */
+.uk-navbar-parent-icon {
+  margin-left: 4px;
+}
+.uk-navbar-nav > li > a[aria-expanded="true"] .uk-navbar-parent-icon {
+  transform: rotate(180deg);
+}
+/* Item
+ ========================================================================== */
+.uk-navbar-item {
+  color: var(--color-secondary);
+  padding: 0 0;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-navbar-item > :last-child {
+  margin-bottom: 0;
+}
+/* Toggle
+ ========================================================================== */
+.uk-navbar-toggle {
+  color: var(--color-secondary);
+  padding: 0 0;
+}
+.uk-navbar-toggle:hover,
+.uk-navbar-toggle[aria-expanded="true"] {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+/*
+ * Icon
+ * Adopts `uk-icon`
+ */
+/* Hover */
+/* Subtitle
+ ========================================================================== */
+.uk-navbar-subtitle {
+  font-size: 0.875rem;
+}
+/* Justify modifier
+ ========================================================================== */
+.uk-navbar-justify .uk-navbar-left,
+.uk-navbar-justify .uk-navbar-right,
+.uk-navbar-justify .uk-navbar-nav,
+.uk-navbar-justify .uk-navbar-nav > li,
+.uk-navbar-justify .uk-navbar-item,
+.uk-navbar-justify .uk-navbar-toggle {
+  flex-grow: 1;
+}
+/* Style modifiers
+ ========================================================================== */
+/* Dropdown
+ ========================================================================== */
+/*
+ * Adopts `uk-dropdown`
+ * 1. Hide by default
+ * 2. Set position
+ * 3. Set a default width
+ * 4. Style
+ */
+.uk-navbar-dropdown {
+  /* 1 */
+  display: none;
+  /* 2 */
+  position: absolute;
+  z-index: 1020;
+  --uk-position-offset: 15px;
+  --uk-position-shift-offset: 0;
+  --uk-position-viewport-offset: 15px;
+  /* 3 */
+  box-sizing: border-box;
+  width: 200px;
+  /* 4 */
+  padding: 25px;
+  color: var(--color-secondary);
+  background: var(--color-default);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+/* Show */
+.uk-navbar-dropdown.uk-open {
+  display: block;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-navbar-dropdown > :last-child {
+  margin-bottom: 0;
+}
+/*
+ * Grid
+ * Adopts `uk-grid`
+ */
+/* Gutter Horizontal */
+.uk-navbar-dropdown-grid {
+  margin-left: -30px;
+}
+.uk-navbar-dropdown-grid > * {
+  padding-left: 30px;
+}
+/* Gutter Vertical */
+.uk-navbar-dropdown-grid > .uk-grid-margin {
+  margin-top: 30px;
+}
+/* Stack */
+.uk-navbar-dropdown-stack .uk-navbar-dropdown-grid > * {
+  width: 100% !important;
+}
+/*
+ * Width modifier
+ */
+.uk-navbar-dropdown-width-2:not(.uk-navbar-dropdown-stack) {
+  width: 400px;
+}
+.uk-navbar-dropdown-width-3:not(.uk-navbar-dropdown-stack) {
+  width: 600px;
+}
+.uk-navbar-dropdown-width-4:not(.uk-navbar-dropdown-stack) {
+  width: 800px;
+}
+.uk-navbar-dropdown-width-5:not(.uk-navbar-dropdown-stack) {
+  width: 1000px;
+}
+/*
+ * Size modifier
+ */
+.uk-navbar-dropdown-large {
+  --uk-position-shift-offset: 0;
+  padding: 40px;
+}
+/*
+ * Dropbar modifier
+ * 1. Reset dropdown width to prevent to early shifting
+ * 2. Reset style
+ * 3. Padding
+ */
+.uk-navbar-dropdown-dropbar {
+  /* 1 */
+  width: auto;
+  /* 2 */
+  background: transparent;
+  /* 3 */
+  padding: 25px 0 25px 0;
+  --uk-position-offset: 0;
+  --uk-position-shift-offset: 0;
+  --uk-position-viewport-offset: 15px;
+  box-shadow: none;
+}
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .uk-navbar-dropdown-dropbar {
+    --uk-position-viewport-offset: 30px;
+  }
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-navbar-dropdown-dropbar {
+    --uk-position-viewport-offset: 40px;
+  }
+}
+.uk-navbar-dropdown-dropbar-large {
+  --uk-position-shift-offset: 0;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/* Dropdown Nav
+ * Adopts `uk-nav`
+ ========================================================================== */
+.uk-navbar-dropdown-nav {
+  font-size: 0.875rem;
+}
+/*
+ * Items
+ */
+.uk-navbar-dropdown-nav > li > a {
+  color: var(--color-secondary);
+}
+/* Hover */
+.uk-navbar-dropdown-nav > li > a:hover {
+  color: var(--color-secondary);
+}
+/* Active */
+.uk-navbar-dropdown-nav > li.uk-active > a {
+  color: var(--color-secondary-click);
+}
+/*
+ * Subtitle
+ */
+.uk-navbar-dropdown-nav .uk-nav-subtitle {
+  font-size: 12px;
+}
+/*
+ * Header
+ */
+.uk-navbar-dropdown-nav .uk-nav-header {
+  color: var(--color-secondary-click);
+}
+/*
+ * Divider
+ */
+.uk-navbar-dropdown-nav .uk-nav-divider {
+  border-top: 1px solid #e5e5e5;
+}
+/*
+ * Sublists
+ */
+.uk-navbar-dropdown-nav .uk-nav-sub a {
+  color: var(--color-secondary);
+}
+.uk-navbar-dropdown-nav .uk-nav-sub a:hover {
+  color: var(--color-secondary);
+}
+.uk-navbar-dropdown-nav .uk-nav-sub li.uk-active > a {
+  color: var(--color-secondary-click);
+}
+/* Dropbar
+ ========================================================================== */
+/*
+ * 1. Reset dropbar
+ * 2. Width
+ */
+.uk-navbar-dropbar {
+  /* 1 */
+  display: block !important;
+  z-index: 980;
+  padding: 0;
+  /* 2 */
+  left: 0;
+  right: 0;
+}
+

@@ -1,0 +1,46 @@
+
+/*
+ * Reset list
+ */
+.uk-breadcrumb {
+  padding: 0;
+  list-style: none;
+}
+/*
+ * 1. Doesn't generate any box and replaced by child boxes
+ */
+.uk-breadcrumb > * {
+  display: contents;
+}
+/* Items
+ ========================================================================== */
+.uk-breadcrumb > * > * {
+  font-size: 0.875rem;
+  color: #999;
+}
+/* Hover */
+.uk-breadcrumb > * > :hover {
+  color: #666;
+  text-decoration: none;
+}
+/* Disabled */
+/* Active */
+.uk-breadcrumb > :last-child > span,
+.uk-breadcrumb > :last-child > a:not([href]) {
+  color: #666;
+}
+/*
+ * Divider
+ * `nth-child` makes it also work without JS if it's only one row
+ * 1. Remove space between inline block elements.
+ * 2. Style
+ */
+.uk-breadcrumb > :nth-child(n+2):not(.uk-first-column)::before {
+  content: "/";
+  display: inline-block;
+  /* 1 */
+  margin: 0 20px 0 calc(20px - 4px);
+  /* 2 */
+  font-size: 0.875rem;
+  color: #999;
+}

@@ -1,0 +1,69 @@
+
+/* Sections
+ ========================================================================== */
+.uk-comment-body {
+  display: flow-root;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+.uk-comment-header {
+  display: flow-root;
+  margin-bottom: 20px;
+}
+/*
+ * Remove margin from the last-child
+ */
+.uk-comment-body > :last-child,
+.uk-comment-header > :last-child {
+  margin-bottom: 0;
+}
+/* Title
+ ========================================================================== */
+.uk-comment-title {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+/* Meta
+ ========================================================================== */
+.uk-comment-meta {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #999;
+}
+/* Avatar
+ ========================================================================== */
+/* List
+ ========================================================================== */
+.uk-comment-list {
+  padding: 0;
+  list-style: none;
+}
+/* Adjacent siblings */
+.uk-comment-list > :nth-child(n+2) {
+  margin-top: 70px;
+}
+/*
+ * Sublists
+ * Note: General sibling selector allows reply block between comment and sublist
+ */
+.uk-comment-list .uk-comment ~ ul {
+  margin: 70px 0 0 0;
+  padding-left: 30px;
+  list-style: none;
+}
+/* Tablet and bigger */
+@media (min-width: 960px) {
+  .uk-comment-list .uk-comment ~ ul {
+    padding-left: 100px;
+  }
+}
+/* Adjacent siblings */
+.uk-comment-list .uk-comment ~ ul > :nth-child(n+2) {
+  margin-top: 70px;
+}
+/* Style modifier
+ ========================================================================== */
+.uk-comment-primary {
+  padding: 30px;
+  background-color: #f8f8f8;
+}

@@ -1,0 +1,221 @@
+
+/* Style modifiers
+ ========================================================================== */
+.uk-text-lead {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: #333;
+}
+.uk-text-meta {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #999;
+}
+.uk-text-meta a {
+  color: #999;
+}
+.uk-text-meta a:hover {
+  color: #666;
+  text-decoration: none;
+}
+/* Size modifiers
+ ========================================================================== */
+.uk-text-small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.uk-text-large {
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+.uk-text-default {
+  font-size: 16px;
+  line-height: 1.5;
+}
+/* Weight modifier
+ ========================================================================== */
+.uk-text-light {
+  font-weight: 300;
+}
+.uk-text-normal {
+  font-weight: 400;
+}
+.uk-text-bold {
+  font-weight: 700;
+}
+.uk-text-lighter {
+  font-weight: lighter;
+}
+.uk-text-bolder {
+  font-weight: bolder;
+}
+/* Style modifier
+ ========================================================================== */
+.uk-text-italic {
+  font-style: italic;
+}
+/* Transform modifier
+ ========================================================================== */
+.uk-text-capitalize {
+  text-transform: capitalize !important;
+}
+.uk-text-uppercase {
+  text-transform: uppercase !important;
+}
+.uk-text-lowercase {
+  text-transform: lowercase !important;
+}
+/* Decoration modifier
+ ========================================================================== */
+.uk-text-decoration-none {
+  text-decoration: none !important;
+}
+/* Color modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const result = new Array();
+  for( var i in data ){
+    result.push(`
+      .uk-text-${data[i]} { color: var(--color-${data[i]}) !important; }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
+
+/* Background modifier
+ ========================================================================== */
+/*
+ * 1. The background clips to the foreground text. Works in all browsers.
+ * 2. Default color is set to transparent.
+ * 3. Container fits the text
+ * 4. Style
+ */
+.uk-text-background {
+  /* 1 */
+  -webkit-background-clip: text;
+  /* 2 */
+  color: transparent !important;
+  /* 3 */
+  display: inline-block;
+  /* 4 */
+  background-color: var(--color-primary);
+}
+/* Alignment modifiers
+ ========================================================================== */
+.uk-text-left {
+  text-align: left !important;
+}
+.uk-text-right {
+  text-align: right !important;
+}
+.uk-text-center {
+  text-align: center !important;
+}
+.uk-text-justify {
+  text-align: justify !important;
+}
+/* Phone landscape and bigger */
+@media (min-width: 640px) {
+  .uk-text-left\@s {
+    text-align: left !important;
+  }
+  .uk-text-right\@s {
+    text-align: right !important;
+  }
+  .uk-text-center\@s {
+    text-align: center !important;
+  }
+}
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+  .uk-text-left\@m {
+    text-align: left !important;
+  }
+  .uk-text-right\@m {
+    text-align: right !important;
+  }
+  .uk-text-center\@m {
+    text-align: center !important;
+  }
+}
+/* Desktop and bigger */
+@media (min-width: 1200px) {
+  .uk-text-left\@l {
+    text-align: left !important;
+  }
+  .uk-text-right\@l {
+    text-align: right !important;
+  }
+  .uk-text-center\@l {
+    text-align: center !important;
+  }
+}
+/* Large screen and bigger */
+@media (min-width: 1600px) {
+  .uk-text-left\@xl {
+    text-align: left !important;
+  }
+  .uk-text-right\@xl {
+    text-align: right !important;
+  }
+  .uk-text-center\@xl {
+    text-align: center !important;
+  }
+}
+/*
+ * Vertical
+ */
+.uk-text-top {
+  vertical-align: top !important;
+}
+.uk-text-middle {
+  vertical-align: middle !important;
+}
+.uk-text-bottom {
+  vertical-align: bottom !important;
+}
+.uk-text-baseline {
+  vertical-align: baseline !important;
+}
+/* Wrap modifiers
+ ========================================================================== */
+/*
+ * Prevent text from wrapping onto multiple lines
+ */
+.uk-text-nowrap {
+  white-space: nowrap;
+}
+/*
+ * 1. Make sure a max-width is set after which truncation can occur
+ * 2. Prevent text from wrapping onto multiple lines, and truncate with an ellipsis
+ * 3. Fix for table cells
+ */
+.uk-text-truncate {
+  /* 1 */
+  max-width: 100%;
+  /* 2 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 2 */
+th.uk-text-truncate,
+td.uk-text-truncate {
+  max-width: 0;
+}
+/*
+ * Wrap long words onto the next line and break them if they are too long to fit.
+ * 1. Make it work with table cells in all browsers.
+ * Note: Not using `hyphens: auto` because it hyphenates text even if not needed.
+ */
+.uk-text-break {
+  overflow-wrap: break-word;
+}
+/* 1 */
+th.uk-text-break,
+td.uk-text-break {
+  word-break: break-word;
+}

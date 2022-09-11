@@ -1,0 +1,32 @@
+
+.uk-label {
+  background: var(--color-primary);
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 1.5;
+  font-size: 0.875rem;
+  color: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+/* Color modifiers
+ ========================================================================== */
+
+/* TODO: css compiled */
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const letr = ("0000001").split('');
+  const result = new Array();
+  for( var i in data ){
+    const color = letr[i]=='0' ? 'secondary' : 'default';
+    result.push(`
+      .uk-label-${data[i]} {
+        background-color: var(--color--${data[i]});
+        color: var(--color--${color});
+      }
+    `);
+  } return result.join('\n');
+})();°/
+/* TODO: css compiled */
