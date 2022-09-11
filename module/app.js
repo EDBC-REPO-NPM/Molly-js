@@ -57,7 +57,7 @@ module.exports = async function(I,O,P){
 		];	const module = fs.existsSync(path[0]);
 			const worker = fs.existsSync(path[1]);
 
-		if( fs.existsSync(cond[0]) || fs.existsSync(cond[1]) ){
+		if( fs.existsSync(cond[0]) || fs.existsSync(cond[1]) || process.molly.debbug ){
 			if( module ){ const done = await runModule( path[0],req,res,P ); if( done ) return 0; } 
 			else if( worker ){ const done = await runWorker( path[1],req,res,P ); if( done ) return 0; }
 		}
