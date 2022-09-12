@@ -38,7 +38,7 @@ function sendStaticFile( req,res,url,status ){
         const mimeType = setMimeType( url );
 		const range = req.headers.range;
 
-		if( (/audio|video/i).test(mimeType) && !range ){
+		if( (/audio|video/i).test(req.query.type) && !range ){
 			res.writeHead( 200,{ 'Content-Type': mimeType }); res.end();
 		} else if( !range || (/htmp/i).test(mimeType) ){
 
@@ -47,7 +47,7 @@ function sendStaticFile( req,res,url,status ){
 			fs.readFile( url,async(error,data)=>{
 				if( !error ) return encoder ( 
 					status, await bundler(req,res,data,mimeType),
-					req, res, headers.staticHeader(mimeType,size)
+					req, res, headers.staticHeader(mimeType,0)
 				); 	return res.send(404,'Oops file not found');
 			});
             
