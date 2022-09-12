@@ -38,14 +38,16 @@ function sendStaticFile( req,res,url,status ){
         const mimeType = setMimeType( url );
 		const range = req.headers.range;
 
-		if( !range || (/htmp/i).test(mimeType) ){
+		if( (/audio|video/i).test(mimeType) && !range ){
+			res.writeHead( 200,{ 'Content-Type': mimeType }); res.end();
+		} else if( !range || (/htmp/i).test(mimeType) ){
 
 			const header = { "Content-Type":mimeType };
 			
 			fs.readFile( url,async(error,data)=>{
 				if( !error ) return encoder ( 
-					status, await bundler( req,res,data,mimeType ), req, res,
-					headers.staticHeader(mimeType,size)
+					status, await bundler(req,res,data,mimeType),
+					req, res, headers.staticHeader(mimeType,size)
 				); 	return res.send(404,'Oops file not found');
 			});
             
@@ -57,29 +59,30 @@ function sendStaticFile( req,res,url,status ){
 			let end = interval[1] ? +interval[1]:
 				Math.min(chuckSize+start,size-1);
 
-			res.writeHead( 206, headers.streamHeader( mimeType,start,end,size ) );
-			const data = fs.createReadStream( url,{start,end} ); data.pipe( res );
+			const data = fs.createReadStream( url,{start,end} );
+			encoder( 206, data, req, res, headers.streamHeader(mimeType,start,end,size) );
+			
 		}
 	} catch(e) { res.send(404,e); }
 } 
 
 function sendStreamFile( req,res,url,status ){
 	try{
+		url.responseType = 'stream';
 		const range = req.headers.range;
-        const mimeType = setMimeType( url.url );
 		if( !url.headers ) url.headers = new Object();
 		url.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
-		if( !range || (/htmp/i).test(mimeType) ){
-			url.responseType = 'arraybuffer';
+		if( (/audio|video/i).test(req.query.type) && !range ){
+			res.writeHead( 200,{ 'Content-Type': req.query.type }); res.end();
+		} else if( !range ){
 			fetch(url).then(async(data)=>{
 				const mimeType = data.headers['content-type']; encoder ( 
-					status, await bundler( req,res,data.data,mimeType ), 
-					req, res, headers.staticHeader(mimeType,0) );
-			}).catch((e)=>{ res.send(504,e?.response?.data) });	
-			
+					status, data.data, req, res, 
+					headers.staticHeader(mimeType,0) );
+			}).catch((e)=>{ res.send(504,e?.response?.data); });	
 		} else { 
-			url.responseType = 'stream';
+
 			const interval = range.match(/\d+/gi);
 				
 			let chunk = +interval[0] + process.molly.chunkSize;
@@ -92,12 +95,11 @@ function sendStreamFile( req,res,url,status ){
 				const size = +interval[2];	
 				const end = +interval[1];
 
-				res.writeHead( 206, headers.streamHeader( mimeType,start,end,size ) );
-				data.pipe( res );
-			}).catch((e)=>{ res.send(504,e?.response?.data) });
+				encoder( 206, data.data, req, res, headers.streamHeader(mimeType,start,end,size) );
+			}).catch((e)=>{ res.send(504,e?.response?.data); console.log(e) });
 
 		}
-	} catch(e) { res.send(504,e.message); }
+	} catch(e) { res.send(404,e.message); }
 }
 
 module.exports = function( req,res,protocol ){
