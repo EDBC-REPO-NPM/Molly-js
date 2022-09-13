@@ -38,7 +38,7 @@ function sendStaticFile( req,res,url,status ){
         const mimeType = setMimeType( url );
 		const range = req.headers.range;
 
-		if( (/audio|video/i).test(req.query.type) && !range ){
+		if( (/audio|video/i).test(req.query?.type) && !range ){
 			res.writeHead( 200,{ 'Content-Type': mimeType }); res.end();
 		} else if( !range || (/htmp/i).test(mimeType) ){
 
@@ -73,7 +73,7 @@ function sendStreamFile( req,res,url,status ){
 		if( !url.headers ) url.headers = new Object();
 		url.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
-		if( (/audio|video/i).test(req.query.type) && !range ){
+		if( (/audio|video/i).test(req.query?.type) && !range ){
 			res.writeHead( 200,{ 'Content-Type': req.query.type }); res.end();
 		} else if( !range ){
 			fetch(url).then(async(data)=>{
