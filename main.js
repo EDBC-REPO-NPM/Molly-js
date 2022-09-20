@@ -25,11 +25,11 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
   process.molly.backend = `${process.cwd()}/Controller`;
   process.molly.frontend = `${process.cwd()}/View`;
   process.molly.threads = os.cpus().length;
-  process.molly.root = __dirname;
     
   process.molly.chunkSize = Math.pow( 10,6 )*10;
   //process.molly.maxAge = 60 *60 * 24 * 7;
   process.molly.timeout = 1000 * 60 * 2;
+  process.molly.root = __dirname;
     
 })();
 
