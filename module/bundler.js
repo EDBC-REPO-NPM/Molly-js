@@ -1,6 +1,5 @@
 const { Buffer } = require('buffer');
 const crypto = require('crypto-js');
-const fetch = require('axios');
 const fs = require('fs');
 
 function component( path ){

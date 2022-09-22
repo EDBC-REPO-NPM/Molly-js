@@ -1,8 +1,8 @@
 
 const fs = require('fs');
 const url = require('url');
-const fetch = require('axios');
 const https = require('https');
+const fetch = require('molly-fetch');
 const headers = require('./headers');
 const bundler = require('./bundler');
 const encoder = require('./encoder');
@@ -118,7 +118,7 @@ module.exports = function( req,res,protocol ){
 		return new Promise( (res,rej)=>{ try{
 			
 			if( (/$http/gi).test(_url) ){
-				fetch.get(_url,{responseType:'stream'})
+				fetch(_url,{responseType:'stream'})
 				.then((response)=>{
 					let _newPath = fs.createWriteStream(_path)
 					response.data.pipe( _newPath ); res();

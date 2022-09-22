@@ -2,14 +2,16 @@
 	"license": "MIT",
 	"main": "main.js",
 	"name": "molly-js",
-	"version": "1.0.70",
+	"version": "1.0.71",
 	"author": "becerraenmanuel",
-	"scripts": { "build-molly": "./compile.sh" },
+	"scripts": {
+		"build-molly": "./compile.sh"
+	},
 	"repository": "https://github.com/EDBC-REPO-NPM/Molly-js",
 	"description": "Free and opensource backend framework for nodejs",
 	"dependencies": {
 		"crypto-js": "^4.1.1",
-		"axios": "^0.26.1"
+		"molly-fetch": "^1.0.12"
 	},
 	"keywords": [
 		"nodejs",
@@ -19,12 +21,5 @@
 		"nodejs-backend",
 		"backend-server",
 		"nodejs-http-server"
-	],
-	"devDependencies": {
-		"@babel/polyfill": "^7.12.1",
-		"@babel/cli": "^7.18.10",
-		"@babel/core": "^7.19.0",
-		"babelify": "^10.0.0",
-		"hls.js": "^1.2.1"
-	}
+	]
 }
