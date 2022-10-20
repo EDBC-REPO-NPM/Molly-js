@@ -15,13 +15,15 @@ function expirationAge(){
 
 }
 
-output.headerExtention = ( headers,size=0 )=>{
+output.headerExtention = ( headers,cache,size )=>{
 
 	if( process.molly.strict ){
 		headers["Content-Security-Policy-Reporn-Only"] = "default-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self';";
 		headers["referrer-policy"] = "origin-when-cross-origin, strict-origin-when-cross-origin";
 		headers["Strict-Transport-Security"] = `max-age=${ expirationAge() }; preload`;
-	};	headers["Cache-Control"] = `public, max-age=${ expirationAge() }`;
+	};	
+	
+	if( cache ) headers["Cache-Control"] = `public, max-age=${ expirationAge() }`;
 
 	if( process.molly.cors ){ 
 		headers["Access-Control-Allow-Headers"] = "Origin, X-Requested-With, Content-Type, Accept";
@@ -45,18 +47,16 @@ output.headerExtention = ( headers,size=0 )=>{
 	return headers;			
 }
 	
-output.staticHeader = function( mimeType,size=0 ){
-	const headers = { "Content-Type":mimeType,
-	};	return output.headerExtention( headers,size );
+output.staticHeader = function( mimeType,cache=true,size=0 ){
+	const headers = { "Content-Type":mimeType }; 
+	return output.headerExtention( headers,cache,size );
 }
 
 output.streamHeader = function( mimeType,start,end,size ){
-	const length = end-start+1;
-	const headers = {
-		"Accept-Ranges":"bytes",
-		"Content-Type": mimeType,
+	const length = end-start+1; const headers = {
 		"Content-Range":`bytes ${start}-${end}/${size}`,
-	};	return output.headerExtention( headers,length );
+		"Accept-Ranges":"bytes", "Content-Type": mimeType,
+	};	return output.headerExtention( headers,false,length );
 }
 
 module.exports = output;

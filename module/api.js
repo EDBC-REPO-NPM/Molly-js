@@ -45,10 +45,12 @@ function sendStaticFile( req,res,url,status ){
 			const header = { "Content-Type":mimeType };
 			
 			fs.readFile( url,async(error,data)=>{
-				if( !error ) return encoder ( 
+				if( error ){ return res.send(404,'Oops file not found'); }
+				const length = Buffer.byteLength( Buffer.from(data) );
+				return encoder ( 
 					status, await bundler(req,res,data,mimeType),
-					req, res, headers.staticHeader(mimeType,0)
-				); 	return res.send(404,'Oops file not found');
+					req, res, headers.staticHeader(mimeType,length)
+				); 	
 			});
             
 		} else { 
@@ -77,9 +79,11 @@ function sendStreamFile( req,res,url,status ){
 			res.writeHead( 200,{ 'Content-Type': req.query.type }); res.end();
 		} else if( !range ){
 			fetch(url).then(async(data)=>{
+				const length = Buffer.byteLength( Buffer.from(data.data) );
 				const mimeType = data.headers['content-type']; encoder ( 
 					status, data.data, req, res, 
-					headers.staticHeader(mimeType,0) );
+					headers.staticHeader(mimeType,length) 
+				);
 			}).catch((e)=>{ res.send(504,e?.response?.data); });	
 		} else { 
 
@@ -137,8 +141,9 @@ module.exports = function( req,res,protocol ){
 	}
 
 	res.send = async ( _status, _data, _type='html' )=>{
+		const length = Buffer.byteLength( Buffer.from(_data) );
 		const mimeType = process.molly.mimeType[_type] || 'text/plain';
-		encoder( _status, _data, req, res, headers.staticHeader(mimeType) );
+		encoder( _status, _data, req, res, headers.staticHeader(mimeType,false,length) );
 		return true;
 	}
 		
