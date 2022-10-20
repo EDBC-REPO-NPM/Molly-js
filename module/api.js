@@ -46,10 +46,10 @@ function sendStaticFile( req,res,url,status ){
 			
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send(404,'Oops file not found'); }
-				const length = Buffer.byteLength( Buffer.from(data) );
+			//	const length = Buffer.byteLength( Buffer.from(data) );
 				return encoder ( 
 					status, await bundler(req,res,data,mimeType),
-					req, res, headers.staticHeader(mimeType,true,length)
+					req, res, headers.staticHeader(mimeType,true)
 				); 	
 			});
             
@@ -79,10 +79,10 @@ function sendStreamFile( req,res,url,status ){
 			res.writeHead( 200,{ 'Content-Type': req.query.type }); res.end();
 		} else if( !range ){
 			fetch(url).then(async(data)=>{
-				const length = Buffer.byteLength( Buffer.from(data.data) );
+			//	const length = Buffer.byteLength( Buffer.from(data.data) );
 				const mimeType = data.headers['content-type']; encoder ( 
 					status, data.data, req, res, 
-					headers.staticHeader(mimeType,true,length) 
+					headers.staticHeader(mimeType,true) 
 				);
 			}).catch((e)=>{ res.send(504,e?.response?.data); });	
 		} else { 
