@@ -49,7 +49,7 @@ function sendStaticFile( req,res,url,status ){
 				const length = Buffer.byteLength( Buffer.from(data) );
 				return encoder ( 
 					status, await bundler(req,res,data,mimeType),
-					req, res, headers.staticHeader(mimeType,length)
+					req, res, headers.staticHeader(mimeType,true,length)
 				); 	
 			});
             
@@ -82,7 +82,7 @@ function sendStreamFile( req,res,url,status ){
 				const length = Buffer.byteLength( Buffer.from(data.data) );
 				const mimeType = data.headers['content-type']; encoder ( 
 					status, data.data, req, res, 
-					headers.staticHeader(mimeType,length) 
+					headers.staticHeader(mimeType,true,length) 
 				);
 			}).catch((e)=>{ res.send(504,e?.response?.data); });	
 		} else { 
