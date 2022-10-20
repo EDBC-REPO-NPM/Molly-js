@@ -141,9 +141,9 @@ module.exports = function( req,res,protocol ){
 	}
 
 	res.send = async ( _status, _data, _type='html' )=>{
-		const length = Buffer.byteLength( Buffer.from(_data) );
+	//	const length = Buffer.byteLength( Buffer.from(_data) );
 		const mimeType = process.molly.mimeType[_type] || 'text/plain';
-		encoder( _status, _data, req, res, headers.staticHeader(mimeType,false,length) );
+		encoder( _status, _data, req, res, headers.staticHeader(mimeType,false) );
 		return true;
 	}
 		
