@@ -79,7 +79,7 @@
     const color2 = letr2[i]=='0' ? 'default' : 'secondary';
     result.push(`
       .uk-button.uk-${data[i]} {
-        border: 1px solid var(--color-${data[i]});
+        border: 2px solid var(--color-${data[i]});
         color: var(--color-${data[i]});
       }
       
@@ -99,7 +99,7 @@
       /* OnClick + Active */
       .uk-button.uk-${data[i]}:active,
       .uk-button.uk-${data[i]}.uk-active {
-        border: 1px solid var(--color-${data[i]});
+        border: 2px solid var(--color-${data[i]});
         color: var(--color-${data[i]});
         background-color: transparent;
       }
