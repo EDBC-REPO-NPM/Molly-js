@@ -1,8 +1,7 @@
 	//TODO: Query Variables  ---------------------------------------------------------------------//
 
+	store = window.localStorage; cookie = window.cookieStore;
 	query = new URLSearchParams( window.location.search );
-	store = window.localStorage;
-	cookie = window.cookieStore;
 	device = new Object();
 	
 	//TODO: XML Parser - Serializer --------------------------------------------------------------//
@@ -40,14 +39,10 @@
 	//TODO: Web Mobile Sensors  ------------------------------------------------------------------//
 
 	device.clipboard = require('./clipboard');
-	device.devTool = require('./devTool');
 	device.sensors = require('./sensor');
-	device.crypto = require('crypto-js');
-	device.record = require('./record');
 	base64toBlob = require('./base64');
 	device.media = require('./media');
 	device.info = require('./info');
-	device.hls = require('hls.js');
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
 	addEvent( document, 'DOMSubtreeModified', function(){ render(); });

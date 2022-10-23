@@ -56,10 +56,6 @@
 	
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadPlayer_ = function( player ){ return require('./video.js')(player) }
-
-/*--------------------------------------------------------------------------------------------------*/
-	
 	const _loadLazys_ = function( lazys ){
 		return new Promise( (response,reject)=>{ try{
 			lazys.forEach( lazy=>{ observer.observe( lazy );
@@ -78,7 +74,6 @@
 			const D = await _loadCode_($('body'));
 			const B = await _loadBases_($$('*[b64]'));
 			const C = await _loadLazys_($$('*[lazy]'));
-			const A = await _loadPlayer_($$('*[player]'));
 
 			window['_changing_'] = false;
     
