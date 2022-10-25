@@ -13,3 +13,16 @@
  */
 .uk-overlay.uk-dark { background: var(--color-dark); }
 .uk-overlay.uk-light { background: var(--color-light); }
+
+/°(()=>{
+    const types = 'default|primary|secondary|danger|mute|success|warning'.split('|');
+    const result = new Array();
+   
+    for( var i in types ){
+        result.push(`
+            .uk-overlay.uk-${types[i]} { background: var(--color-${types[i]}-transparent); }
+        `);
+    }
+
+    return result.join('\n');
+})();°/

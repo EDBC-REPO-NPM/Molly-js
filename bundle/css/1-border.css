@@ -38,7 +38,9 @@
     const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
     const result = new Array();
     for( var i in data ){
-        result.push(`.uk-border-${data[i]} { border-color: var(--color-${data[i]})!important }`);
+        result.push(`
+            .uk-border-${data[i]} { border-color: var(--color-${data[i]})!important }
+        `);
     }   return result.join('\n');
 })();°/
 /* TODO: Compiled uk-border-color */

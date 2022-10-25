@@ -10,12 +10,57 @@
  * Only works if parent element has a height set
  */
 
-.uk-height-1-1 { height: 100%; }
-.uk-child-height-1-1 > * { height: 100%; }
+ /°(()=>{
+  const result = new Array();
+  for( var i=12; i>=1; i-- ){
+    for( var j=i; j>=1; j-- ){
+      if( i == j && i!=1 && j!=1 ) continue;
+      const height = Math.floor(j / i * 100)
+      result.push(`
+        .uk-height-${j}-${i} {
+          height: ${height}%;
+        }
+      `);
+    }
+  }
+  return result.join('\n');
+})();°/
+
+/°(()=>{
+  const result = new Array();
+  for( var i=12; i>=1; i-- ){
+    for( var j=i; j>=1; j-- ){
+      if( i == j && i!=1 && j!=1 ) continue;
+      const height = Math.floor(j / i * 100)
+      result.push(`
+        .uk-child-height-${j}-${i} > * {
+          height: ${height}%;
+        }
+      `);
+    }
+  }
+  return result.join('\n');
+})();°/
 
 /*
  * Useful to create image teasers
  */
+
+/°(()=>{
+  const result = new Array();
+  for( var i=12; i>=1; i-- ){
+    for( var j=i; j>=1; j-- ){
+      if( i == j && i!=1 && j!=1 ) continue;
+      const height = Math.floor(j / i * 100);
+      result.push(`
+        .uk-height-expand-${j}-${i} {
+          height: ${height}vh;
+        }
+      `);
+    }
+  }
+  return result.join('\n');
+})();°/
 
 .uk-height-expand { min-height: 100vh; }
 .uk-height-expand-2 { min-height: 200vh; }
@@ -28,9 +73,9 @@
  */
 
 .uk-height-small { height: 150px; }
-.uk-height-medium { height: 300px; }
 .uk-height-large { height: 450px; }
+.uk-height-medium { height: 300px; }
 
 .uk-height-max-small { max-height: 150px; }
-.uk-height-max-medium { max-height: 300px; }
 .uk-height-max-large { max-height: 450px; }
+.uk-height-max-medium { max-height: 300px; }

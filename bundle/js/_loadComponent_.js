@@ -1,6 +1,6 @@
 	const config = { rootMargin:'250px 0px' };
 	const observer = new IntersectionObserver( (entries, observer)=>{
-		entries.forEach( entry=>{
+		entries.map( entry=>{
 			const object = entry.target;
 			const placeholder = object.src;
 			if( entry.isIntersecting ){
@@ -13,7 +13,7 @@
 						  	  newElement.setAttribute('src',placeholder);
 							  newElement.setAttribute('class',clss);
 						replaceElement( newElement,object );
-					} catch(e) { console.log(e) }});
+					} catch(e) {/* console.log(e) */}});
 			}
 		});
 	}, config); 
@@ -21,10 +21,10 @@
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadBases_ = function( bases ){
-		return new Promise( (response,reject)=>{ try{
-			bases.forEach( async(base,index)=>{
+		try{
+			bases.map( async(base,index)=>{
 				
-				const mimeType = base.getAttribute('type') || '';
+				const mimeType = base.getAttribute('type') || 'image/png';
 
 				const data = base.getAttribute('b64');
 				const file = base64toBlob( data, mimeType );
@@ -38,31 +38,63 @@
 				base.removeAttribute('type');
 				base.removeAttribute('b64');
 								
-			}); response(true); } catch(e) { reject(true); console.log(e); }
-		});
+			})
+		} catch(e) {/* console.log(e) */}
 	}
 	
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadCode_ = function( body ){ try{
-		var data = body.innerHTML;
-		const script = Array.from(data.match(/\/\°[^°]+\°\//gi));
-		script.map(x=>{ try{ const code = x.replace(/\/\°|\°\//gi,'');
-			data = data.replace( x,eval(code) );
-		} catch(e) { console.log(e);
-			data = `<!-- ${e?.message} -->`;
-		}}); body.innerHTML = data; return true;
-	} catch(e) { return true; } }
+	const _loadCode_ = function( body ){ 
+		try{ 
+
+			let data = body.innerHTML;
+			const script = data.match(/&lt;°[^°]+°&gt;/gi);
+			script.map((x)=>{
+				try{ 
+					const code = x.replace(/&lt;°|°&gt;/gi,'');
+					data = data.replace( x,eval(code) );
+				} catch(e) { console.log(e);
+					data = `<!-- ${e?.message} -->`;
+				}
+			}); body.innerHTML = data; 
+
+		} catch(e) {/* console.log(e) */}
+	}
 	
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadLazys_ = function( lazys ){
-		return new Promise( (response,reject)=>{ try{
-			lazys.forEach( lazy=>{ observer.observe( lazy );
-			});	response(true);
-		} catch(e) { reject(true); console.log(e); } });
+		try{
+			lazys.map( lazy=>{ 
+				observer.observe( lazy );
+			});
+		} catch(e) {/* console.log(e); */} 
 	}
 	
+/*--------------------------------------------------------------------------------------------------*/
+
+	const _loadWorkers_ = function( workers ){
+		try {
+			workers.map((wrk,i)=>{
+
+				let thread = undefined;
+				let url = undefined;
+
+				if( !wrk.getAttribute('src') ){
+					const data = wrk.innerText;
+					const blob = new Blob([data],{type: 'text/javascript'});
+						  url = URL.createObjectURL(blob);
+				} else { url = wrk.getAttribute('src'); }
+
+				if( wrk.hasAttribute('shared') )
+					 thread = new SharedWorker(url);
+				else thread = new Worker(url);
+				worker.push( thread );
+
+			});
+		} catch(e) {/* console.log(e) */}
+	}
+
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadComponents_ = async function(){ 
@@ -71,9 +103,10 @@
 			if( window['_changing_'] ) return undefined;
 				window['_changing_'] = true;
 			
-			const D = await _loadCode_($('body'));
-			const B = await _loadBases_($$('*[b64]'));
-			const C = await _loadLazys_($$('*[lazy]'));
+			_loadWorkers_($$('script[type=worker]'));
+			_loadLazys_($$('*[lazy]'));
+			_loadBases_($$('*[b64]'));
+			_loadCode_($('body'));
 
 			window['_changing_'] = false;
     

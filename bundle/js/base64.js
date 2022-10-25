@@ -1,4 +1,4 @@
-module.exports = function( b64Data, contentType='', sliceSize=512 ) {
+module.exports = function( b64Data, contentType='text/plain', sliceSize=512 ) {
   
     const byteCharacters = atob(b64Data);
     const byteArrays = [];

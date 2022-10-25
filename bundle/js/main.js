@@ -2,7 +2,7 @@
 
 	store = window.localStorage; cookie = window.cookieStore;
 	query = new URLSearchParams( window.location.search );
-	device = new Object();
+	device = new Object(); worker = new Array();
 	
 	//TODO: XML Parser - Serializer --------------------------------------------------------------//
 	
