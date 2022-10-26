@@ -77,8 +77,11 @@
 		try {
 			workers.map((wrk,i)=>{
 
+				const id = wrk.getAttribute('id');
 				let thread = undefined;
 				let url = undefined;
+
+				if( !id ) return console.error('please set a worker id attribute');
 
 				if( !wrk.getAttribute('src') ){
 					const data = wrk.innerText;
@@ -89,7 +92,12 @@
 				if( wrk.hasAttribute('shared') )
 					 thread = new SharedWorker(url);
 				else thread = new Worker(url);
-				worker.push( thread );
+
+				worker[id] = {
+					worker: thread,
+					data: url,
+					id: id,
+				};
 
 			});
 		} catch(e) {/* console.log(e) */}
