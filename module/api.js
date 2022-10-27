@@ -114,13 +114,15 @@ module.exports = function( req,res,protocol ){
 				   req.socket.remoteAddress || null;
 	req.parse.origin = req.headers['Referer'];
 	req.parse.hostname = req.headers['host'];
+	req.parse.params = new Array();
 	req.parse.method = req.method;
 	req.parse.protocol = protocol;
 	req.parse.host = req.url;
 
-	const api = req.parse.pathname.match(/\/api\/.+/gi)[0]; if( api ) {
+	const reg = new RegExp('\/[-|_:@$]\/.+','gi');
+	const api = req.parse.pathname.match(reg)?.join(''); if( api ) {
 		req.parse.pathname = req.parse.pathname.replace(api,'');
-		req.parse.params = api.slice(1).split('/');
+		req.parse.params.push(...api.slice(3).split('/'));
 	}
 
 	res.send = async ( _status, _data, _type='html' )=>{
