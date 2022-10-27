@@ -118,26 +118,9 @@ module.exports = function( req,res,protocol ){
 	req.parse.protocol = protocol;
 	req.parse.host = req.url;
 
-	req.downloadFile = ( _url,_path )=>{ 
-		return new Promise( (res,rej)=>{ try{
-			
-			if( (/$http/gi).test(_url) ){
-				fetch(_url,{responseType:'stream'})
-				.then((response)=>{
-					let _newPath = fs.createWriteStream(_path)
-					response.data.pipe( _newPath ); res();
-				}).catch((e)=>{ rej(e) });
-			
-			} else if( (/$data/gi).test(_url) ) {
-				const data = _url.split('base64,').pop();
-				fs.writeFile( _path, data, {encoding: 'base64'}, (err)=>{
-					if(err) return rej(err);
-					return res('done');
-				});
-			
-			} else { rej('url not supported') }
-		
-		} catch(e) { rej(e) }});			
+	const api = req.parse.pathname.match(/\/api\/.+/gi)[0]; if( api ) {
+		req.parse.pathname = req.parse.pathname.replace(api,'');
+		req.parse.params = api.slice(1).split('/');
 	}
 
 	res.send = async ( _status, _data, _type='html' )=>{
