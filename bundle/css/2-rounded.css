@@ -24,4 +24,7 @@
     border-top-right-radius: initial !important;
 }
 
-
+.uk-rounded-top-left { border-top-left-radius: 10px !important; }
+.uk-rounded-top-right { border-top-right-radius: 10px !important; }
+.uk-rounded-bottom-left { border-bottom-left-radius: 10px !important; }
+.uk-rounded-bottom-right { border-bottom-right-radius: 10px !important; }

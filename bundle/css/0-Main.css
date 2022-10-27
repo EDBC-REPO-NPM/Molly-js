@@ -1,172 +1,47 @@
 /*done*/
 :root {
 
+  --color-black: #000;
+  --color-enphasis: #333;
+  --color-disabled: #999;
+
+  --color-mute: #F5F5F5;
+  --color-mute-hover: #F5F5F5;
+  --color-mute-click: #dddddd;
+
   --color-default: #fff;
   --color-default-hover: #fff;
   --color-default-click: #d1d1d1;
-  --color-default-transparent: #ffffffdb;
 
   --color-danger: #E91E63;
   --color-danger-hover: #E91E63;
   --color-danger-click: #d11b57;
-  --color-danger-transparent: #E91E63db;
 
   --color-primary: #536DFE;
   --color-primary-hover: #536DFE;
   --color-primary-click: #475edf;
-  --color-primary-transparent: #536DFEdb;
 
   --color-success: #4fb2aa;
   --color-success-hover: #4fb2aa;
   --color-success-click: #429891;
-  --color-success-transparent: #4fb2aadb;
 
   --color-warning: #FFC107;
   --color-warning-hover: #FFC107;
   --color-warning-click: #e7af06;
-  --color-warning-transparent: #FFC107db;
 
   --color-secondary: #212121;
   --color-secondary-hover: #212121;
   --color-secondary-click: #2f2e2e;
-  --color-secondary-transparent: #212121db;
-
-  --color-mute: #F5F5F5;
-  --color-mute-hover: #F5F5F5;
-  --color-mute-click: #dddddd;
-  --color-mute-transparent: #F5F5F5db;
-
-  --color-black: #000;
-  --color-enphasis: #333;
-  --color-disabled: #999;
-  --color-transparent: #00000000;
-
-  --color-dark: rgba(0, 0, 0, 0.8);
-  --color-light: rgba(255, 255, 255, 0.8);
 
   --color-transparent: transparent;
+  --color-transparent-mute: #F5F5F5db;
+  --color-transparent-danger: #E91E63db;
+  --color-transparent-success: #4fb2aadb;
+  --color-transparent-primary: #536DFEdb;
+  --color-transparent-default: #ffffffdb;
+  --color-transparent-warning: #FFC107db;
+  --color-transparent-secondary: #212121db;
   --color-transparent-dark: rgba(0, 0, 0, 0.8);
   --color-transparent-light: rgba(255, 255, 255, 0.8);
-
-}
-
-.uk-theme-A {
-
-  --color-default: #fff;
-  --color-default-hover: #fff;
-  --color-default-click: #d1d1d1;
-
-  --color-danger: #FF5722;
-  --color-danger-hover: #FF5722;
-  --color-danger-click: #e34b1c;
-
-  --color-primary: #03A9F4;
-  --color-primary-hover: #03A9F4;
-  --color-primary-click: #0095db;
-
-  --color-success: #8BC34A;
-  --color-success-hover: #8BC34A;
-  --color-success-click: #74a43c;
-
-  --color-warning: #FFEB3B;
-  --color-warning-hover: #FFEB3B;
-  --color-warning-click: #e7d535;
-
-  --color-secondary: #212121;
-  --color-secondary-hover: #212121;
-  --color-secondary-click: #2f2e2e;
-
-  --color-mute: #F5F5F5;
-  --color-mute-hover: #F5F5F5;
-  --color-mute-click: #dddddd;
-
-  --color-black: #000;
-  --color-enphasis: #333;
-  --color-disabled: #999;
-  --color-transparent: #00000000;
-
-  --color-dark: rgba(34, 34, 34, 0.2);
-  --color-light: rgba(255, 255, 255, 0.2);
-
-}
-
-.uk-theme-B {
-
-  --color-default: #fff;
-  --color-default-hover: #fff;
-  --color-default-click: #d1d1d1;
-
-  --color-danger: #e07a5f;
-  --color-danger-hover: #e07a5f;
-  --color-danger-click: #c76d54;
-
-  --color-primary: #6096ba;
-  --color-primary-hover: #6096ba;
-  --color-primary-click: #54819f;
-
-  --color-success: #81b29a;
-  --color-success-hover: #81b29a;
-  --color-success-click: #719e88;
-
-  --color-warning: #f8e9a1;
-  --color-warning-hover: #f8e9a1;
-  --color-warning-click: #dfd292;
-
-  --color-secondary: #3d405b;
-  --color-secondary-hover: #3d405b;
-  --color-secondary-click: #262839;
-
-  --color-mute: #F5F5F5;
-  --color-mute-hover: #F5F5F5;
-  --color-mute-click: #dddddd;
-
-  --color-black: #000;
-  --color-enphasis: #333;
-  --color-disabled: #999;
-  --color-transparent: #00000000;
-
-  --color-dark: rgba(34, 34, 34, 0.2);
-  --color-light: rgba(255, 255, 255, 0.2);
-
-}
-
-
-.uk-theme-C {
-
-  --color-default: #fff;
-  --color-default-hover: #fff;
-  --color-default-click: #d1d1d1;
-
-  --color-danger: #e63946;
-  --color-danger-hover: #e63946;
-  --color-danger-click: #c8323f;
-
-  --color-primary: #219ebc;
-  --color-primary-hover: #219ebc;
-  --color-primary-click: #1b829c;
-
-  --color-success: #6096ba;
-  --color-success-hover: #6096ba;
-  --color-success-click: #54819f;
-
-  --color-warning: #ffb703;
-  --color-warning-hover: #ffb703;
-  --color-warning-click: #dd9f01;
-
-  --color-secondary: #023047;
-  --color-secondary-hover: #023047;
-  --color-secondary-click: #011d2b;
-
-  --color-mute: #F5F5F5;
-  --color-mute-hover: #F5F5F5;
-  --color-mute-click: #dddddd;
-
-  --color-black: #000;
-  --color-enphasis: #333;
-  --color-disabled: #999;
-  --color-transparent: #00000000;
-
-  --color-dark: rgba(34, 34, 34, 0.2);
-  --color-light: rgba(255, 255, 255, 0.2);
 
 }

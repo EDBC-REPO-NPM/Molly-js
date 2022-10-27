@@ -86,22 +86,30 @@
         /* Hover */
       .uk-button.uk-${data[i]}:hover,
       .uk-button.uk-${data[i]}.uk-enphasis {
-        background-color: var(--color-${data[i]}-hover);
+        background-color: var(--color-transparent-${data[i]});
+        color: var(--color-${color2});
+      }
+      
+      /* Hover */
+      .uk-button.uk-${data[i]}.uk-enphasis:hover {
+        background-color: var(--color-transparent-${data[i]});
+        border-color: var(--color-transparent-${data[i]});
         color: var(--color-${color2});
       }
       
       .uk-button.uk-enphasis.uk-${data[i]}:active,
       .uk-button.uk-enphasis.uk-${data[i]}.uk-active{
           background-color: var(--color-${data[i]}-click);
+          border-color: var(--color-${data[i]}-click);
           color: var(--color-${color2});
       }
       
       /* OnClick + Active */
       .uk-button.uk-${data[i]}:active,
       .uk-button.uk-${data[i]}.uk-active {
-        border: 1px solid var(--color-${data[i]});
-        color: var(--color-${data[i]});
-        background-color: transparent;
+        background-color: var(--color-${data[i]}-click);
+        border-color: var(--color-${data[i]}-click);
+        color: var(--color-${color2});
       }
     `);
   } return result.join('\n');

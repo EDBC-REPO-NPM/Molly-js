@@ -12,6 +12,15 @@
     `);
   } return result.join('\n');
 })();°/
+/°(()=>{
+  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const result = new Array();
+  for( var i in data ){
+    result.push(`
+      .uk-background-transparent-${data[i]} { background-color: var(--color-transparent-${data[i]}); }
+    `);
+  } return result.join('\n');
+})();°/
 /* TODO: css compiled */
 
 /* Size

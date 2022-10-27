@@ -14,7 +14,7 @@
 
 /* TODO: compiled hr color */
 /°(()=>{
-  const data = ("mute,danger,success,default,primary,warning,secondary").split(',');
+  const data = ("mute,danger,success,default,primary,warning,secondary,trasnparent").split(',');
   const result = new Array();
   for( var i in data ){
     result.push(`
