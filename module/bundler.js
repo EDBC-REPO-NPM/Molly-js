@@ -1,5 +1,4 @@
 const { Buffer } = require('buffer');
-const crypto = require('crypto-js');
 const fs = require('fs');
 
 function component( path ){
