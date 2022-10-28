@@ -1,7 +1,7 @@
 
 /* Equal child widths
  ========================================================================== */
-[class*='uk-child-width'] > * {
+ [class*='uk-child-width'] > * {
   box-sizing: border-box;
   width: 100%;
 }
@@ -11,7 +11,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const width = Math.floor(j / i * 100);
+      const width = parseInt(j / i * 100);
       result.push(`
         .uk-child-width-${j}-${i} > * {
           width: ${width}%;
@@ -46,10 +46,10 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-child-width-${j}-${i}\@s > * {
-            width: ${width}%;
+          .uk-child-width-${j}-${i}\\@s > * {
+            width: ${width}% !important;
           }
         `);
       }
@@ -74,9 +74,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-child-width-${j}-${i}\@m > * {
+          .uk-child-width-${j}-${i}\\@m > * {
             width: ${width}%;
           }
         `);
@@ -102,9 +102,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-child-width-${j}-${i}\@l > * {
+          .uk-child-width-${j}-${i}\\@l > * {
             width: ${width}%;
           }
         `);
@@ -130,9 +130,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-child-width-${j}-${i}\@xl > * {
+          .uk-child-width-${j}-${i}\\@xl > * {
             width: ${width}%;
           }
         `);
@@ -167,7 +167,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const width = Math.floor(j / i * 100);
+      const width = parseInt(j / i * 100);
       result.push(`
         .uk-width-${j}-${i} {
           width: ${width}%;
@@ -212,9 +212,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-width-${j}-${i}\@s {
+          .uk-width-${j}-${i}\\@s {
             width: ${width}%;
           }
         `);
@@ -258,9 +258,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-width-${j}-${i}\@m {
+          .uk-width-${j}-${i}\\@m {
             width: ${width}%;
           }
         `);
@@ -304,9 +304,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-width-${j}-${i}\@l {
+          .uk-width-${j}-${i}\\@l {
             width: ${width}%;
           }
         `);
@@ -350,9 +350,9 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.floor(j / i * 100)
+        const width = parseInt(j / i * 100)
         result.push(`
-          .uk-width-${j}-${i}\@xl {
+          .uk-width-${j}-${i}\\@xl {
             width: ${width}%;
           }
         `);

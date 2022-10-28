@@ -15,6 +15,17 @@
 
     <body class="uk-height-expand-1-1">
 
+        <div class="uk-flex uk-padding-small uk-child-width-1-2@s uk-flex-wrap">
+            <°(function(){
+                const color = 'primary|secondary|danger|warning|success'.split('|')
+                const result = new Array();
+                for( var i in color ){ let modifier = new String();
+                    result.push(`<a class="uk-button uk-enphasis uk-${color[i]} ">${color[i]}</a>`)
+                }
+                return result.join('\n');
+            })();°>
+        </div>
+
         <div class="uk-flex uk-padding-small">
             <°(function(){
                 const color = 'primary|secondary|danger|warning|success'.split('|')
