@@ -15,7 +15,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const height = Math.floor(j / i * 100)
+      const height = parseInt(j / i * 100)
       result.push(`
         .uk-height-${j}-${i} {
           height: ${height}%;
@@ -31,7 +31,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const height = Math.floor(j / i * 100)
+      const height = parseInt(j / i * 100)
       result.push(`
         .uk-child-height-${j}-${i} > * {
           height: ${height}%;
@@ -51,7 +51,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const height = Math.floor(j / i * 100);
+      const height = parseInt(j / i * 100);
       result.push(`
         .uk-height-expand-${j}-${i} {
           height: ${height}vh;
