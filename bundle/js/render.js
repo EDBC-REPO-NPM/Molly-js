@@ -7,7 +7,7 @@
 				object.src = object.getAttribute('lazy');
 				observer.unobserve( object );
 				object.removeAttribute('lazy');
-				addEvent(object,'error',(el)=>{
+				object.addEventListener('error',(el)=>{
 					try{const clss = object.getAttribute('class');
 						const newElement = createElement( object.tagName );
 						  	  newElement.setAttribute('src',placeholder);
@@ -22,7 +22,7 @@
 
 	const _loadBases_ = function( bases ){
 		try{
-			bases.map( async(base,index)=>{
+			bases.map( (base,index)=>{
 				
 				const mimeType = base.getAttribute('type') || 'image/png';
 
@@ -48,19 +48,21 @@
 		try{ 
 
 			let data = body.innerHTML;
-			const script = data.match(/&lt;°[^°]+°&gt;/gi);
+			const script = data.match(/\/\°[^°]+\°\//gi);
 			script.map((x)=>{
 				try{ 
-					const code = x.replace(/&lt;°|°&gt;/gi,'');
+					const code = x.replace(/\/\°|\°\//gi,'');
 					data = data.replace( x,eval(code) );
 				} catch(e) { console.log(e);
 					data = `<!-- ${e?.message} -->`;
 				}
-			}); body.innerHTML = data; 
+			}); 
+			
+			if( script ) body.innerHTML = data; 
 
 		} catch(e) {/* console.log(e) */}
 	}
-	
+
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadLazys_ = function( lazys ){
@@ -105,7 +107,7 @@
 
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadComponents_ = async function(){ 
+	const _loadComponents_ = function(){ 
 		try{
 
 			if( window['_changing_'] ) return undefined;
@@ -118,7 +120,7 @@
 
 			window['_changing_'] = false;
     
-		} catch(e) { console.error(e) }
+		} catch(e) {/* console.error(e) */}
 	}
 
 module.exports = _loadComponents_;

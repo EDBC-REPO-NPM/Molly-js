@@ -40,11 +40,11 @@
 
 	device.clipboard = require('./clipboard');
 	device.sensors = require('./sensor');
+	device.render = require('./render'); 
 	base64toBlob = require('./base64');
 	device.media = require('./media');
 	device.info = require('./info');
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
-	addEvent( document, 'DOMSubtreeModified', function(){ render(); });
-	addEvent( document, 'DOMContentLoaded', function(){ render(); });
-	render = require('./_loadComponent_');
+	addEvent( document, 'DOMSubtreeModified', function(){ device.render(); });
+	addEvent( window, 'load', function(){ device.render(); });
