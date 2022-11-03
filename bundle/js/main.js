@@ -47,4 +47,4 @@
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
 	addEvent( document, 'DOMSubtreeModified', function(){ device.render(); });
-	addEvent( window, 'load', function(){ device.render(); });
+	addEvent( document, 'DOMContentLoaded', function(){ device.render(); });
