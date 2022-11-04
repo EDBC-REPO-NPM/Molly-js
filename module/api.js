@@ -123,7 +123,7 @@ module.exports = function( req,res,protocol ){
 	const api = req.parse.pathname.match(reg)?.join(''); if( api ) {
 		req.parse.pathname = req.parse.pathname.replace(api,'');
 		req.parse.params.push(...api.slice(3).split('/'));
-	}
+	};	req.params = req.parse.params;
 
 	res.send = async ( _status, _data, _type='html' )=>{
 	//	const length = Buffer.byteLength( Buffer.from(_data) );

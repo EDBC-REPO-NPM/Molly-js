@@ -18,8 +18,7 @@ function hide( data ){
   return (`
   eval(function(c,o,d,e){
   e = new Array(); o = c.split('||').reverse();
-  for( var i in o ) e.push(atob(o[i]));
-  return e.join('\\n');
+  for( var i in o ) e.push(atob(o[i])); return e.join('\\n');
   }('${b64.reverse().join('||')}'))`).replace(/\n|\t/gi,'');
 }
 
