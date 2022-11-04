@@ -11,7 +11,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const width = Math.ceil(j / i * 100);
+      const width = Math.floor(j / i * 100);
       result.push(`
         .uk-child-width-${j}-${i} > * {
           width: ${width}%;
@@ -46,7 +46,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-child-width-${j}-${i}\\@s > * {
             width: ${width}%;
@@ -74,7 +74,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-child-width-${j}-${i}\\@m > * {
             width: ${width}%;
@@ -102,7 +102,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-child-width-${j}-${i}\\@l > * {
             width: ${width}%;
@@ -130,7 +130,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-child-width-${j}-${i}\\@xl > * {
             width: ${width}%;
@@ -167,7 +167,7 @@
   for( var i=12; i>=1; i-- ){
     for( var j=i; j>=1; j-- ){
       if( i == j && i!=1 && j!=1 ) continue;
-      const width = Math.ceil(j / i * 100);
+      const width = Math.floor(j / i * 100);
       result.push(`
         .uk-width-${j}-${i} {
           width: ${width}%;
@@ -212,7 +212,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-width-${j}-${i}\\@s {
             width: ${width}%;
@@ -258,7 +258,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-width-${j}-${i}\\@m {
             width: ${width}%;
@@ -304,7 +304,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-width-${j}-${i}\\@l {
             width: ${width}%;
@@ -350,7 +350,7 @@
     for( var i=12; i>=1; i-- ){
       for( var j=i; j>=1; j-- ){
         if( i == j && i!=1 && j!=1 ) continue;
-        const width = Math.ceil(j / i * 100)
+        const width = Math.floor(j / i * 100)
         result.push(`
           .uk-width-${j}-${i}\\@xl {
             width: ${width}%;
