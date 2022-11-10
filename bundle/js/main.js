@@ -43,6 +43,7 @@
 	device.render = require('./render'); 
 	base64toBlob = require('./base64');
 	device.media = require('./media');
+	device.fetch = require('./fetch');
 	device.info = require('./info');
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//

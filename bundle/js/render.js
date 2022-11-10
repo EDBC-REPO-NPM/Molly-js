@@ -31,9 +31,8 @@
 				const url = URL.createObjectURL( file );
 
 				if( base.getAttribute('lazy') )
-					base.setAttribute('data-src',url);
-				else
-					base.setAttribute('src',url);
+					 base.setAttribute('data-src',url);
+				else base.setAttribute('src',url);
 
 				base.removeAttribute('type');
 				base.removeAttribute('b64');
@@ -66,8 +65,7 @@
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadLazys_ = function( lazys ){
-		try{
-			lazys.map( lazy=>{ 
+		try{lazys.map( lazy=>{ 
 				observer.observe( lazy );
 			});
 		} catch(e) {/* console.log(e); */} 
@@ -105,6 +103,32 @@
 		} catch(e) {/* console.log(e) */}
 	}
 
+	async function _loaddom_(body){
+		try{ 
+
+			let data = body.innerHTML;
+			const script = data.match(/\#\°[^°]+\°\#/gi);
+			for( var i in script ){ const x = script[i];
+				try{ 
+					
+					const raw = x.replace(/\#\°|\°\#| /gi,'');
+					const cmp = raw.match(/.+/);
+
+					const res = await fetch(cmp);
+					const inf = await res.text();
+
+					data = data.replace( x,inf );
+				
+				} catch(e) { console.log(e);
+					data = `<!-- ${e?.message} -->`;
+				}
+			}
+			
+			if( script ) body.innerHTML = data; 
+
+		} catch(e) {/* console.log(e) */}
+	}
+
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadComponents_ = function(){ 
@@ -117,6 +141,7 @@
 			_loadLazys_($$('*[lazy]'));
 			_loadBases_($$('*[b64]'));
 			_loadCode_($('body'));
+			_loaddom_($('body'));
 
 			window['_changing_'] = false;
     

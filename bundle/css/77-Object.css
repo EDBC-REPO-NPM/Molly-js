@@ -1,0 +1,8 @@
+/°(()=>{
+    const type = 'cover|fill|contain|none|scale-down'.split('|');
+    const result = new Array();
+    for( var i in type ){
+        const x = type[i];
+        result.push(`.uk-obj-${x}{ object-fit: ${x}; }`);
+    }   return result.join('\n');
+})()°/

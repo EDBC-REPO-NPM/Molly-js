@@ -24,14 +24,30 @@ function hide( data ){
 
 async function compile( data,req,res ){
     
+    let loadr = data.match(/\#\°[^°]+\°\#/gi) || [];
     let style = data.match(/\/\°[^°]+\°\//gi) || [];
-    if( !style.length ) return data;
+    if( !style.length && !loadr.length ) return data;
 
-    for( var i in style ){
-      const item = style[i];
+    for( var i in style ){ const item = style[i];
       try {
         let path = item.replace(/\/\°|\°\//gi,'');
         data = data.replace( item,await eval(path) );
+      } catch(e) {
+        const error = `/* something went wrong: ${e} */`;
+        data = data.replace( item,error );
+        console.error(e);
+      }
+    }
+
+    for( var i in loadr ){ const item = loadr[i];
+      try {
+        
+        const raw = item.replace(/\#\°|\°\#| /gi,'');
+        const cmp = raw.match(/.+/);
+
+        const inf = component( cmp );
+				data = data.replace( item,inf );
+
       } catch(e) {
         const error = `/* something went wrong: ${e} */`;
         data = data.replace( item,error );

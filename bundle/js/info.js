@@ -10,6 +10,19 @@ output.isMobile = function(){
 	    return navigator.userAgent.match( item );
 	});
 }
+
+output.isTV = function(){
+	const match = [ 
+		/SmartTV/i, /Espial/i, /Opera TV/i, /inetTV/i,
+		/HbbTV/i, /LG Browser/i, /Viera/i,
+		/PhilipsTV/i, /POV_TV/i, /Roku/i, 
+		/AppleTV/i, /GoogleTV/i, 
+		/TV/i, /technisat/i,
+	];
+	return match.some( (item) => {
+	    return navigator.userAgent.match( item );
+	});
+}
 	
 output.getBrowser = function(){
 	const match = [ 
@@ -30,7 +43,9 @@ output.getOS = function(){
 		/Windows Phone/i, /BlackBerry/i, /Android/i,
 		/iPhone/i, /webOS/i, /iPad/i, 
 		/iPod/i, /Linux/i, /MacOS/i,
+		/LG/i, /SmartTV/i, /Roku/i,
 		/windows/i, /ChromeOS/i,
+		/Philips/i, /Apple/i
 	];	var output = 'generic';
 		
 	for( var i in match ){
