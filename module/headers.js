@@ -11,7 +11,8 @@ function expirationAge(){
     tomrw.setMinutes(0); tomrw.setMilliseconds(0);
     timeout = (tomrw.getTime()-today.getTime()) / Math.pow(10,3);
 
-	/*console.log(timeout)*/ return process.molly.maxAge || parseInt( timeout );
+	/*console.log(timeout)*/ 
+	return process.molly.maxAge || parseInt( timeout );
 
 }
 

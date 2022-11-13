@@ -61,9 +61,8 @@ async function compile( data,req,res ){
 module.exports = ( req,res,raw,mimeType )=>{
   return new Promise(async(response,reject)=>{
     
-    const arr = new Array();
-    const data = raw.toString();
-    let style = data.match(/\/\°[^°]+\°\//gi) || [];
+    const arr = new Array(); const data = raw.toString();
+    const style = data.match(/\/\°[^°]+\°\/|\#\°[^°]+\\\#/gi) || [];
 
     if( (style.length>=1) && (/^text|^application/).test(mimeType) ){
 
