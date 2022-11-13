@@ -1,24 +1,27 @@
-	const observer = new IntersectionObserver( (entries, observer)=>{
-		entries.map( entry=>{
 
-			const object = entry.target;
-			const placeholder = object.src;
-
-			if( entry.isIntersecting ){
-				object.src = object.getAttribute('lazy');
-				observer.unobserve( object );
-				object.removeAttribute('lazy');
-				object.addEventListener('error',(el)=>{
-					try{const clss = object.getAttribute('class');
-						const newElement = createElement( object.tagName );
-						  	  newElement.setAttribute('src',placeholder);
-							  newElement.setAttribute('class',clss);
-						replaceElement( newElement,object );
-					} catch(e) {/* console.log(e) */}});
-			}
-			
-		});
-	}, config); const config = { rootMargin:'250px 0px' };
+	let observer = undefined; try{
+		observer = new IntersectionObserver( (entries, observer)=>{
+			entries.map( entry=>{
+	
+				const object = entry.target;
+				const placeholder = object.src;
+	
+				if( entry.isIntersecting ){
+					object.src = object.getAttribute('lazy');
+					observer.unobserve( object );
+					object.removeAttribute('lazy');
+					object.addEventListener('error',(el)=>{
+						try{const clss = object.getAttribute('class');
+							const newElement = createElement( object.tagName );
+									newElement.setAttribute('src',placeholder);
+								  newElement.setAttribute('class',clss);
+							replaceElement( newElement,object );
+						} catch(e) {/* console.log(e) */}});
+				}
+				
+			});
+		},{ rootMargin:'250px 0px' });
+	} catch(e) { }
 	
 /*--------------------------------------------------------------------------------------------------*/
 
@@ -66,7 +69,7 @@
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadLazys_ = function( lazys ){
-		try{lazys.map( lazy=>{ 
+		try{ lazys.map( lazy=>{ 
 				observer.observe( lazy );
 			});
 		} catch(e) {/* console.log(e); */} 
