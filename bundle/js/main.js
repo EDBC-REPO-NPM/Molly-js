@@ -1,6 +1,14 @@
+
+	//TODO: polyfills ----------------------------------------------------------------------------//
+	
+	require("@babel/polyfill/noConflict");
+	if( !window.fetch ) require('fetch-polyfill');
+	if( !window.clipboard ) require('clipboard-polyfill');
+	if( !window.IntersectionObserver) require('intersection-observer');
+	if( !window.URLSearchParams ) require('url-search-params-polyfill');
+
 	//TODO: Query Variables  ---------------------------------------------------------------------//
 
-	store = window.localStorage; cookie = window.cookieStore;
 	query = new URLSearchParams( window.location.search );
 	device = new Object(); worker = new Object();
 	

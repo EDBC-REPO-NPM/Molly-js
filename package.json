@@ -2,7 +2,7 @@
 	"license": "MIT",
 	"main": "main.js",
 	"name": "molly-js",
-	"version": "1.0.98",
+	"version": "1.1.0",
 	"author": "becerraenmanuel",
 	"scripts": {
 		"build-molly": "./compile.sh"
@@ -19,7 +19,14 @@
 		"nodejs-http-server"
 	],
 	"devDependencies": {
-		"babelify": "^10.0.0"
+		"babelify": "^10.0.0",
+		"@babel/core": "^7.20.2",
+		"fetch-polyfill": "^0.8.2",
+		"@babel/polyfill": "^7.12.1",
+		"@babel/preset-env": "^7.20.2",
+		"clipboard-polyfill": "^4.0.0-rc1",
+		"intersection-observer": "^0.12.2",
+		"url-search-params-polyfill": "^8.1.1"
 	},
 	"dependencies": {
 		"molly-fetch": "^1.0.20"

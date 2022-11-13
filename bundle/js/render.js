@@ -1,8 +1,9 @@
-	const config = { rootMargin:'250px 0px' };
 	const observer = new IntersectionObserver( (entries, observer)=>{
 		entries.map( entry=>{
+
 			const object = entry.target;
 			const placeholder = object.src;
+
 			if( entry.isIntersecting ){
 				object.src = object.getAttribute('lazy');
 				observer.unobserve( object );
@@ -15,8 +16,9 @@
 						replaceElement( newElement,object );
 					} catch(e) {/* console.log(e) */}});
 			}
+			
 		});
-	}, config); 
+	}, config); const config = { rootMargin:'250px 0px' };
 	
 /*--------------------------------------------------------------------------------------------------*/
 
@@ -49,9 +51,8 @@
 			let data = body.innerHTML;
 			const script = data.match(/\/\°[^°]+\°\//gi);
 			script.map((x)=>{
-				try{ 
-					const code = x.replace(/\/\°|\°\//gi,'');
-					data = data.replace( x,eval(code) );
+				try{ const code = x.replace(/\/\°|\°\//gi,'');
+					 data = data.replace( x,eval(code) );
 				} catch(e) { console.log(e);
 					data = `<!-- ${e?.message} -->`;
 				}
@@ -77,9 +78,9 @@
 		try {
 			workers.map((wrk,i)=>{
 
-				const id = wrk.getAttribute('id');
-				let thread = undefined;
 				let url = undefined;
+				let thread = undefined;
+				const id = wrk.getAttribute('id');
 
 				if( !id ) return console.error('please set a worker id attribute');
 

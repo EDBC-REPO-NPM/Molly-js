@@ -42,10 +42,9 @@ module.exports = async function(I,O,P){
     const cond = [
         `${process.molly.frontend}${req.parse.pathname}/index.html`,
         `${process.molly.frontend}${req.parse.pathname}.html`,
+        `${process.molly.backend}${req.parse.pathname}.ws`,
         `${process.molly.backend}${req.parse.pathname}.js`,
-        `${process.molly.backend}${req.parse.pathname}.ts`,
         `${process.molly.frontend}${req.parse.pathname}`,
-		`${process.molly.root}/bundle/bundle.css`,
         `${process.molly.root}/bundle/bundle.js`,
         `${process.molly.frontend}/404.html`,
     ];
@@ -53,7 +52,7 @@ module.exports = async function(I,O,P){
 	try{ 
 		const path = [
 			`${process.molly.backend}/main.js`,
-			`${process.molly.backend}/main.ts`
+			`${process.molly.backend}/main.ws`
 		];	const module = fs.existsSync(path[0]);
 			const worker = fs.existsSync(path[1]);
 
@@ -65,17 +64,20 @@ module.exports = async function(I,O,P){
 	
 	try{
 	
-		if( req.parse.pathname == '/molly.js' ) res.sendFile( cond[6] );
-		else if( req.parse.pathname == '/molly.css' ) res.sendFile( cond[5] );
+		if( req.parse.pathname == '/molly.js' ) res.sendFile( cond[5] );
+		else if( process.molly.ui && req.parse.pathname == '/mollyUI.css' )
+			res.sendFile( process.molly.ui.css );
+		else if( process.molly.ui && req.parse.pathname == '/mollyUI.js' )
+			res.sendFile( process.molly.ui.js );
 		
-        else if( fs.existsSync(cond[2]) ) runModule( cond[2],req,res,P );
-        else if( fs.existsSync(cond[3]) ) runWorker( cond[3],req,res,P );
+        else if( fs.existsSync(cond[2]) ) runWorker( cond[2],req,res,P );
+        else if( fs.existsSync(cond[3]) ) runModule( cond[3],req,res,P );
 
 		else if( fs.existsSync(cond[0]) ) res.sendFile(cond[0]);
 		else if( fs.existsSync(cond[1]) ) res.sendFile(cond[1]);
 		
 		else if( fs.existsSync(cond[4]) ) res.sendFile(cond[4]);
-		else if( fs.existsSync(cond[7]) ) res.sendFile(cond[7],404);
+		else if( fs.existsSync(cond[6]) ) res.sendFile(cond[6],404);
 		else res.send(404,'Oops 404 not found');
 		
 	} catch(e) { console.log(e); res.send(404,e.message); }

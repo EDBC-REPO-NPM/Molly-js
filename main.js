@@ -20,6 +20,7 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
   process.molly = new Object();
     
   process.molly.mimeType = JSON.parse( fs.readFileSync(`${__dirname}/json/mimetype.json`) );
+  try{ process.molly.ui = require('molly-ui'); } catch(e) {  }
   process.molly.keys = Object.keys( process.molly.mimeType );
     
   process.molly.backend = `${process.cwd()}/Controller`;
@@ -30,6 +31,7 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
   //process.molly.maxAge = 60 *60 * 24 * 7;
   process.molly.timeout = 1000 * 60 * 2;
   process.molly.root = __dirname;
+
     
 })();
 
