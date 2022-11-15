@@ -49,21 +49,36 @@
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadCode_ = function( body ){ 
-		try{ 
+		return new Promise(async(response,reject)=>{
+			try{ 
 
-			let data = body.innerHTML;
-			const script = data.match(/\/\°[^°]+\°\//gi);
-			script.map((x)=>{
-				try{ const code = x.replace(/\/\°|\°\//gi,'');
-					 data = data.replace( x,eval(code) );
-				} catch(e) { console.log(e);
-					data = `<!-- ${e?.message} -->`;
+				let data = body.innerHTML;
+				const script = data.match(/\/\°[^°]+\°\//gi);
+				const fragmt = data.match(/\#\°[^°]+\°\#/gi);
+
+				for( var i in script ){ const x = script[i];
+					try{ 
+						const code = x.replace(/\/\°|\°\//gi,'');
+						data = data.replace( x,eval(code) );
+					} catch(e) { console.error(e);
+						data = `/* ${e?.message} */`;
+					}
 				}
-			}); 
-			
-			if( script ) body.innerHTML = data; 
-
-		} catch(e) {/* console.log(e) */}
+				
+				for( var i in fragmt ){ const x = fragmt[i];
+					try{ 
+						const code = x.replace(/\#\°|\°\#| /gi,'');
+						const res = await fetch(code);
+						const text = await res.text();
+						data = data.replace( x,text );
+					} catch(e) { console.error(e);
+						data = `/* ${e?.message} */`;
+					}
+				}
+				
+				if( script || fragmt ) body.innerHTML = data; 
+			} catch(e) {/* console.log(e) */} response();
+		})
 	}
 
 /*--------------------------------------------------------------------------------------------------*/
@@ -107,45 +122,39 @@
 		} catch(e) {/* console.log(e) */}
 	}
 
-	async function _loaddom_(body){
-		try{ 
+	async function _loadDOM_(el){
+		return new Promise(async(response,reject)=>{
+			try{ 
 
-			let data = body.innerHTML;
-			const script = data.match(/\#\°[^°]+\°\#/gi);
-			for( var i in script ){ const x = script[i];
-				try{ 
-					
-					const raw = x.replace(/\#\°|\°\#| /gi,'');
-					const cmp = raw.match(/.+/);
-
-					const res = await fetch(cmp);
-					const inf = await res.text();
-
-					data = data.replace( x,inf );
-				
-				} catch(e) { console.log(e);
-					data = `<!-- ${e?.message} -->`;
+				for( var i in el ){ const x = el[i];
+					try{ 
+						const res = await fetch(x.getAttribute('load'));
+						const text = await res.text();
+						x.removeAttribute('load');
+						x.innerHTML = text;
+					} catch(e) { console.error(e);
+						data = `/* ${e?.message} */`;
+					}
 				}
-			}
-			
-			if( script ) body.innerHTML = data; 
-
-		} catch(e) {/* console.log(e) */}
+				
+				if( script ) body.innerHTML = data; 
+			} catch(e) {/* console.log(e) */} response();
+		});
 	}
 
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadComponents_ = function(){ 
+	const _loadComponents_ = async function(){ 
 		try{
 
 			if( window['_changing_'] ) return undefined;
 				window['_changing_'] = true;
 			
-			_loadWorkers_($$('script[type=worker]'));
-			_loadLazys_($$('*[lazy]'));
-			_loadBases_($$('*[b64]'));
-			_loadCode_($('body'));
-			_loaddom_($('body'));
+			await _loadWorkers_($$('script[type=worker]'));
+			await _loadLazys_($$('*[lazy]'));
+			await _loadBases_($$('*[b64]'));
+			await _loadDOM_($$('*[load]'));
+			await _loadCode_($('html'));
 
 			window['_changing_'] = false;
     
