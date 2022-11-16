@@ -1,27 +1,27 @@
 
 	//TODO: polyfills ----------------------------------------------------------------------------//
 	
-	require("@babel/polyfill/noConflict");
-	if( !window.fetch ) require('fetch-polyfill');
-	if( !window.clipboard ) require('clipboard-polyfill');
-	if( !window.IntersectionObserver) require('intersection-observer');
-	if( !window.URLSearchParams ) require('url-search-params-polyfill');
+	//require("@babel/polyfill/noConflict");
+	//if( !window.fetch ) require('fetch-polyfill');
+	//if( !window.clipboard ) require('clipboard-polyfill');
+	//if( !window.IntersectionObserver) require('intersection-observer');
+	//if( !window.URLSearchParams ) require('url-search-params-polyfill');
 
 	//TODO: Query Variables  ---------------------------------------------------------------------//
 
-	window.query = new URLSearchParams( window.location.search );
 	window.device = new Object(); window.worker = new Object();
+	window.query = new URLSearchParams( window.location.search );
+
+	//TODO: event  ------------------------------------------------------------------------------//
+	
+	window.addEvent = function( ...args ){ args[0].addEventListener( args[1],args[2],true ); return args; }
+	window.removeEvent = function( args ){ args[0].removeEventListener( args[1],args[2],true ); return args; }
 	
 	//TODO: XML Parser - Serializer --------------------------------------------------------------//
 	
 	window.XML = new Object();
 	window.XML.stringify = function( _object ){ return new XMLSerializer().serializeToString( _object ); }
-	window.XML.parse = function( _string ){ return new DOMParser().parseFromString( _string,"text/xml" ); }
-
-	//TODO: event  ------------------------------------------------------------------------------//
-	
-	window.removeEvent = function( args ){ args[0].removeEventListener( args[1],args[2],true ); return args; }
-	window.addEvent = function( ...args ){ args[0].addEventListener( args[1],args[2],true ); return args; }
+	window.XML.parse = function( _string, mime="text/xml" ){ return new DOMParser().parseFromString( _string,mime ); }
 	
 	//TODO: Element Modifier ---------------------------------------------------------------------//
 	

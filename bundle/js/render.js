@@ -13,7 +13,7 @@
 					object.addEventListener('error',(el)=>{
 						try{const clss = object.getAttribute('class');
 							const newElement = createElement( object.tagName );
-									newElement.setAttribute('src',placeholder);
+								  newElement.setAttribute('src',placeholder);
 								  newElement.setAttribute('class',clss);
 							replaceElement( newElement,object );
 						} catch(e) {/* console.log(e) */}});
@@ -48,11 +48,10 @@
 	
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadCode_ = function( body ){ 
+	const _loadCode_ = function( body ){ let data = body.innerHTML;
 		return new Promise(async(response,reject)=>{
 			try{ 
 
-				let data = body.innerHTML;
 				const script = data.match(/\/\°[^°]+\°\//gi);
 				const fragmt = data.match(/\#\°[^°]+\°\#/gi);
 
@@ -75,8 +74,14 @@
 						data = `/* ${e?.message} */`;
 					}
 				}
+
+				const inp = window.XML.parse(data,'text/html');
+					  await _loadDOM_($(inp,'body'));
+				const out = window.XML.stringify(inp);
+					  body.innerHTML = out;
 				
-				if( script || fragmt ) body.innerHTML = data; 
+				if( script || fragmt ) response( _loadCode_(body) );
+
 			} catch(e) {/* console.log(e) */} response();
 		})
 	}
@@ -122,10 +127,11 @@
 		} catch(e) {/* console.log(e) */}
 	}
 
-	async function _loadDOM_(el){
+	async function _loadDOM_(body){
 		return new Promise(async(response,reject)=>{
 			try{ 
 
+				const el = $$(body,'*[load]');
 				for( var i in el ){ const x = el[i];
 					try{ 
 						const res = await fetch(x.getAttribute('load'));
@@ -136,8 +142,8 @@
 						data = `/* ${e?.message} */`;
 					}
 				}
-				
-				if( script ) body.innerHTML = data; 
+				if( el.length ) response( _loadDOM_(body) );
+
 			} catch(e) {/* console.log(e) */} response();
 		});
 	}
@@ -153,7 +159,6 @@
 			await _loadWorkers_($$('script[type=worker]'));
 			await _loadLazys_($$('*[lazy]'));
 			await _loadBases_($$('*[b64]'));
-			await _loadDOM_($$('*[load]'));
 			await _loadCode_($('html'));
 
 			window['_changing_'] = false;
