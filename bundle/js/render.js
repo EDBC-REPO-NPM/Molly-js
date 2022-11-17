@@ -48,21 +48,13 @@
 	
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadCode_ = function( body ){ let data = body.innerHTML;
+	const _loadCode_ = function( body ){ 
 		return new Promise(async(response,reject)=>{
 			try{ 
 
+				let data = body.innerHTML;
 				const script = data.match(/\/\°[^°]+\°\//gi);
 				const fragmt = data.match(/\#\°[^°]+\°\#/gi);
-
-				for( var i in script ){ const x = script[i];
-					try{ 
-						const code = x.replace(/\/\°|\°\//gi,'');
-						data = data.replace( x,eval(code) );
-					} catch(e) { console.error(e);
-						data = `/* ${e?.message} */`;
-					}
-				}
 				
 				for( var i in fragmt ){ const x = fragmt[i];
 					try{ 
@@ -75,13 +67,17 @@
 					}
 				}
 
-				const inp = window.XML.parse(data,'text/html');
-					  await _loadDOM_($(inp,'body'));
-				const out = window.XML.stringify(inp);
-					  body.innerHTML = out;
-				
-				if( script || fragmt ) response( _loadCode_(body) );
+				for( var i in script ){ const x = script[i];
+					try{ 
+						const code = x.replace(/\/\°|\°\//gi,'');
+						data = data.replace( x,eval(code) );
+					} catch(e) { console.error(e);
+						data = `/* ${e?.message} */`;
+					}
+				}
 
+				body.innerHTML = data;
+				if( script || fragmt ) response( _loadCode_(body) );
 			} catch(e) {/* console.log(e) */} response();
 		})
 	}
@@ -97,8 +93,9 @@
 	
 /*--------------------------------------------------------------------------------------------------*/
 
-	const _loadWorkers_ = function( workers ){
+	const _loadWorkers_ = function( body ){
 		try {
+			const workers = $$(body,'script[type=worker]');
 			workers.map((wrk,i)=>{
 
 				let url = undefined;
@@ -117,11 +114,10 @@
 					 thread = new SharedWorker(url);
 				else thread = new Worker(url);
 
-				worker[id] = {
+				window.device.worker[id] = {
+					data: url, id: id,
 					worker: thread,
-					data: url,
-					id: id,
-				};
+				};	wrk.remove();
 
 			});
 		} catch(e) {/* console.log(e) */}
@@ -142,10 +138,49 @@
 						data = `/* ${e?.message} */`;
 					}
 				}
-				if( el.length ) response( _loadDOM_(body) );
 
+				if( el.length ) response( _loadDOM_(body) );
 			} catch(e) {/* console.log(e) */} response();
 		});
+	}
+
+/*--------------------------------------------------------------------------------------------------*/
+
+	const _loadScripts_ = async function(body){
+		const scripts = $$(body,'script[type=module],script:not([type]),script[type~=javascript]');
+		for(var i in scripts){ 
+
+			const content = scripts[i].innerHTML;
+			const file = new Blob([content],{type:'text/javascript'});
+			const source = scripts[i].getAttribute('src');
+				  scripts[i].remove();
+
+			const element = createElement('script');
+			const url = URL.createObjectURL(file);
+				  element.src = source || url;
+
+			$('head').appendChild(element);
+		}
+	}
+
+/*--------------------------------------------------------------------------------------------------*/
+
+	const _loadStyles_ = async function(body){
+		const links = $$(body,'style');
+		for(var i in links){ 
+
+			const content = links[i].innerHTML;
+			const file = new Blob([content],{type:'text/css'});
+			const source = links[i].getAttribute('src');
+				  links[i].remove();
+
+			const element = createElement('link');
+			const url = URL.createObjectURL(file);
+				element.href = source || url;
+				element.rel = 'stylesheet';
+
+			$('head').appendChild(element);
+		}
 	}
 
 /*--------------------------------------------------------------------------------------------------*/
@@ -156,13 +191,21 @@
 			if( window['_changing_'] ) return undefined;
 				window['_changing_'] = true;
 			
-			await _loadWorkers_($$('script[type=worker]'));
-			await _loadLazys_($$('*[lazy]'));
 			await _loadBases_($$('*[b64]'));
-			await _loadCode_($('html'));
+			await _loadLazys_($$('*[lazy]'));
+
+			const data = $('body').innerHTML;
+			const inp = window.XML.parse(data,'text/html');
+				  await _loadDOM_($(inp,'body'));
+				  await _loadCode_($(inp,'body'));
+				  await _loadStyles_($(inp,'body'));
+				  await _loadScripts_($(inp,'body'));
+				  await _loadWorkers_($(inp,'body'));
+			const out = $(inp,'body').innerHTML;
+
+			if( data != out ) $('body').innerHTML = out;
 
 			window['_changing_'] = false;
-    
 		} catch(e) {/* console.error(e) */}
 	}
 

@@ -9,7 +9,8 @@
 
 	//TODO: Query Variables  ---------------------------------------------------------------------//
 
-	window.device = new Object(); window.worker = new Object();
+	window.device = new Object(); 
+	window.device.worker = new Object();
 	window.query = new URLSearchParams( window.location.search );
 
 	//TODO: event  ------------------------------------------------------------------------------//
@@ -52,7 +53,9 @@
 	window.base64toBlob = require('./base64');
 	window.device.media = require('./media');
 	window.device.fetch = require('./fetch');
+	window.device.state = require('./state');
 	window.device.info = require('./info');
+	window.device.url = require('./url');
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
 	addEvent( document, 'DOMSubtreeModified', function(){ device.render(); });
