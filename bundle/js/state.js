@@ -12,6 +12,10 @@ class State {
     }
 
     set( state ){ let newState;
+        
+        const oldState = new Object();
+        const keys = Object.keys(this.state);
+        keys.map(x=>{ oldState[x]=this.state[x] });
 
         if( typeof state == 'function' ){
             newState = state( this.state ); const validator = [
@@ -20,11 +24,10 @@ class State {
             ];  if( validator.some(x=>{ if(x[0]) console.error(x[1]); return x[0] }) ) return 0;
         } else if( !state || typeof state != 'object' ) { 
             return console.error('state is not an object, please return a valid Object') 
-        } else { newState = state; } const oldState = this.state;
+        } else { newState = state; } 
 
         this.active = this.shouldUpdate(null,[this.state,newState]); 
-        for( var i in newState ){
-            this.state[i] = newState[i];
+        for( var i in newState ){ this.state[i] = newState[i];
             this.callback( i, oldState[i], newState[i] );
         }
 
