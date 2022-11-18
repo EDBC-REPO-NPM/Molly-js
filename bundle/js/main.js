@@ -21,8 +21,7 @@
 	
 	window.XML = new Object();
 	window.XML.parse = function( _string, mime="text/xml" ){ 
-		_string = _string.replace(/\<\°/gi,'#°')
-						 .replace(/\°\>/gi,'°#')
+		_string = _string.replace(/\<\°/gi,'#°').replace(/\°\>/gi,'°#')
 		return new DOMParser().parseFromString( _string,mime ); 
 	}
 	window.XML.stringify = function( _object ){ return new XMLSerializer().serializeToString( _object ); }
@@ -39,9 +38,9 @@
 	window.slugify = function( text ){
 		
 		const reg = {
-			u:'ú|ü', n:'ñ',
-			a:'á|ä', e:'é|ë',
-			i:'í|ï', o:'ó|ö',
+			a:'á|à|ã|â|ä', e:'é|è|ê|ë',
+			i:'í|ì|î|ï', o:'ó|ò|ô|õ|ö',
+			c:'ç',n:'ñ', u:'ú|ù|û|ü', 
 			'':'\\W+|\\t+|\\n+| +',
 		};
 		
