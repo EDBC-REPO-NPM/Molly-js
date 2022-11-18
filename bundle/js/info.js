@@ -58,12 +58,12 @@ output.getOS = function(){
 	
 output.getSize = function( _bool ){
 	const size = [ 
-		[150,'small'], [480,'medium'],
-		[640,'xlarge'], [720,'xxsmall'],
+		[0,'small'], [600,'medium'],
+		[900,'large'], [1100,'xlarge'],
 	];
 		
 	for( var i=size.length; i--; ){
-		if ( window.innerWidth>size[i][0] )	
+		if( window.innerWidth > size[i][0] )	
 			return !_bool ? size[i][1] : i;
 	}
 }

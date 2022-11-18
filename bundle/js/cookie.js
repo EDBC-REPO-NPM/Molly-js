@@ -9,12 +9,13 @@ output.state = new window.device.state(()=>{
     }   return state;
 });
 
-output.set = function(obj){
-    const result = new Array();
+output.set = function(obj){ 
+    const result = new Array(); let state;
+    try { state = obj(output.state.state); } 
+    catch(e) { state = obj } output.state.set(obj);
     for( var i in obj )
-        result.push(`${i}=${obj[i]}`);
+        result.push(`${i}=${obj[i]}`); 
         document.cookie = result.join(';');
-    return output.state.set(obj);
 }
 
 output.get = function(item){ return output.state.get(item) }

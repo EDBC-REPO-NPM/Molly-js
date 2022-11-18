@@ -37,58 +37,6 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
 
 /*----------------------------------------------------------------------------------------*/
 
-output.controller = function( clb ){
-
-  const worker = require('worker_threads');
-  const req = worker.workerData;
-  const res = new Object();
-
-  req.drain = ()=>{ worker.parentPort.postMessage('drain'); }
-  res.next = ()=>{ worker.parentPort.postMessage('next'); }
-  req.body = process.stdin;
-  
-  res.send = ( _status,_data,_type='html' )=>{
-    worker.parentPort.postMessage({
-      api: 'send', atr: [ _status, _data, _type ]
-    }); return true;
-  }
-
-  res.downloadFile = ( _url,_path )=>{
-    worker.parentPort.postMessage({
-      atr: [ _url,_path ], api: 'send',
-    }); return true;
-  }
-
-  res.sendFile = ( _path,status=200 )=>{
-    worker.parentPort.postMessage({
-      atr: [ _path,status ], api: 'sendFile',
-    }); return true;
-  }
-
-  res.json = ( _status,_obj )=>{
-    worker.parentPort.postMessage({
-      atr: [ _status,_obj ], api: 'json',
-    }); return true;
-  }
-
-  res.redirect = ( _path )=>{
-    worker.parentPort.postMessage({
-      atr: [ _path ], api: 'redirect',
-    }); return true;
-  }
-
-  res.raw = ( _object )=>{
-    worker.parentPort.postMessage({
-      atr: [ _object ], api: 'raw',
-    }); return true;
-  }
-
-  clb( req,res );
-
-}
-
-/*----------------------------------------------------------------------------------------*/
-
 output.createHTTPServer = function( ...args ){
 
   const numCPUs = os.cpus().length;

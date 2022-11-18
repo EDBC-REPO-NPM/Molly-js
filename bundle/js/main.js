@@ -78,6 +78,7 @@
 	window.device.cookie = require('./cookie');
 	window.device.render = require('./render'); 
 	window.device.sensors = require('./sensor');
+	window.device.storage = require('./storage');
 	window.device.clipboard = require('./clipboard');
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//

@@ -24,7 +24,7 @@ function hide( data ){
 
 async function compile( data,req,res ){
     
-    let loadr = data.match(/\#\°[^°]+\°\#/gi) || [];
+    let loadr = data.match(/\<\°[^°]+\°\>/gi) || [];
     let style = data.match(/\/\°[^°]+\°\//gi) || [];
     if( !style.length && !loadr.length ) return data;
 
@@ -42,7 +42,7 @@ async function compile( data,req,res ){
     for( var i in loadr ){ const item = loadr[i];
       try {
         
-        const raw = item.replace(/\#\°|\°\#| /gi,'');
+        const raw = item.replace(/\<\°|\°\>| /gi,'');
         const cmp = raw.match(/.+/);
 
         const inf = component( cmp );
@@ -62,19 +62,21 @@ module.exports = ( req,res,raw,mimeType )=>{
   return new Promise(async(response,reject)=>{
     
     const arr = new Array(); const data = raw.toString();
-    const style = data.match(/\/\°[^°]+\°\/|\#\°[^°]+\\\#/gi) || [];
+    const style = data.match(/\/\°[^°]+\°\/|\<\°[^°]+\°\>/gi) || [];
 
     if( (style.length>=1) && (/^text|^application/).test(mimeType) ){
 
-      if( /*process.molly.strict*/ (/javascript/).test(mimeType) )
-           arr.push( Buffer.from(hide(await compile( data,req,res ))) );
-      else arr.push( Buffer.from(await compile( data,req,res )) );
+    //if( process.molly.strict && (/javascript/).test(mimeType) )
+    //     arr.push( Buffer.from(hide(await compile( data,req,res ))) );
+    //else arr.push( Buffer.from(await compile( data,req,res )) );
+           arr.push( Buffer.from(await compile( data,req,res )) );
 
     } else {
 
-      if( /*process.molly.strict*/ (/javascript/).test(mimeType) )
-           arr.push( Buffer.from(hide(raw.toString())) );      
-      else arr.push( raw );
+    //if( process.molly.strict && (/javascript/).test(mimeType) )
+    //     arr.push( Buffer.from(hide(raw.toString())) );      
+    //else arr.push( raw );
+           arr.push( raw );
       
     }
 
