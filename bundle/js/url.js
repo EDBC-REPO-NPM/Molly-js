@@ -23,7 +23,7 @@ output.format = function( URLObject ){
               url.hash = URLObject.hash||'';
               url.pathname = URLObject.path||'/';
               url.password = URLObject.password||'';
-              url.search = formatQuery( URLObject.query );
+              url.search = formatQuery( URLObject.query||{} );
         return url.toString();
     } catch(e) {
         console.error('somethig went wrong while formating URL');
@@ -34,11 +34,11 @@ output.parse = function( URLString ){
     try {
         const url = new Object();
         const obj = new URL(URLString);
-              url.hash = obj.hash;
-              url.host = obj.origin;
+              url.hash = obj.hash||'';
               url.path = obj.pathname||'/';
               url.password = obj.password||'';
               url.query = parseQuery( obj.search );
+              url.host = obj.origin||window.location.href;
         return url;
     } catch(e) {
         console.error('something went wrong while parsing URL');

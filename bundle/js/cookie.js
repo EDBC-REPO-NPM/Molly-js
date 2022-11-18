@@ -1,13 +1,15 @@
 const output = new Object();
 
-output.state = new window.device.state(()=>{
+function getState(){
     const cookie = document.cookie.split(';');
     const state = new Object();
     for( var i in cookie ){
         const data = cookie[i].split('=');
               state[data[0]] = data[1];
     }   return state;
-});
+}
+
+output.state = new window.device.state( getState() );
 
 output.set = function(obj){ 
     const result = new Array(); let state;
