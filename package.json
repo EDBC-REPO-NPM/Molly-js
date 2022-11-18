@@ -2,7 +2,7 @@
 	"license": "MIT",
 	"main": "main.js",
 	"name": "molly-js",
-	"version": "1.1.7",
+	"version": "1.1.8",
 	"author": "becerraenmanuel",
 	"scripts": {
 		"build-molly": "./compile.sh"

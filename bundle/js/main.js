@@ -11,7 +11,6 @@
 
 	window.device = new Object(); 
 	window.device.worker = new Object();
-	window.query = new URLSearchParams( window.location.search );
 
 	//TODO: event  ------------------------------------------------------------------------------//
 	
@@ -21,8 +20,12 @@
 	//TODO: XML Parser - Serializer --------------------------------------------------------------//
 	
 	window.XML = new Object();
+	window.XML.parse = function( _string, mime="text/xml" ){ 
+		_string = _string.replace(/\<\°/gi,'#°')
+						 .replace(/\°\>/gi,'°#')
+		return new DOMParser().parseFromString( _string,mime ); 
+	}
 	window.XML.stringify = function( _object ){ return new XMLSerializer().serializeToString( _object ); }
-	window.XML.parse = function( _string, mime="text/xml" ){ return new DOMParser().parseFromString( _string,mime ); }
 	
 	//TODO: Element Modifier ---------------------------------------------------------------------//
 	
@@ -30,6 +33,24 @@
 	window.removeElement = function(...args){ args[0].parentElement.removeChild( args[0] ); }
 	window.createElement = function(...args){ return document.createElement(args); }
 	window.appendElement = function(...args){ return args[0].appendChild(args[1]); }
+
+	//TODO: Dom Modifier -------------------------------------------------------------------------//
+
+	window.slugify = function( text ){
+		
+		const reg = {
+			u:'ú|ü', n:'ñ',
+			a:'á|ä', e:'é|ë',
+			i:'í|ï', o:'ó|ö',
+			'':'\\W+|\\t+|\\n+| +',
+		};
+		
+		Object.keys(reg).map( x=>{
+			const key = new RegExp(reg[x],'gi');
+			text = text.replace(key,x);
+		});	return text.toLowerCase();
+
+	}
 
 	//TODO: Dom Modifier -------------------------------------------------------------------------//
 		
@@ -47,15 +68,17 @@
 	
 	//TODO: Web Mobile Sensors  ------------------------------------------------------------------//
 
-	window.device.clipboard = require('./clipboard');
-	window.device.sensors = require('./sensor');
-	window.device.render = require('./render'); 
-	window.base64toBlob = require('./base64');
-	window.device.media = require('./media');
-	window.device.fetch = require('./fetch');
-	window.device.state = require('./state');
-	window.device.info = require('./info');
 	window.device.url = require('./url');
+	window.device.info = require('./info');
+	window.device.state = require('./state');
+	window.device.fetch = require('./fetch');
+	window.device.media = require('./media');
+	window.device.query = require('./query');
+	window.base64toBlob = require('./base64');
+	window.device.cookie = require('./cookie');
+	window.device.render = require('./render'); 
+	window.device.sensors = require('./sensor');
+	window.device.clipboard = require('./clipboard');
 	
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
 	addEvent( document, 'DOMSubtreeModified', function(){ device.render(); });
