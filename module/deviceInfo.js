@@ -28,7 +28,7 @@ output.isMobile = (req,res)=>{
 		/Mobile/i 
 	];
 	return match.some( (item) => {
-		const data = navigator.userAgent;
+		const data = req.headers['user-agent'];
 	    return item.test(slugify(data));
 	});
 }
@@ -49,13 +49,13 @@ output.isTV = (req,res)=>{
 		/TV/i, /technisat/i,
 	];
 	return match.some( (item) => {
-		const data = navigator.userAgent;
+		const data = req.headers['user-agent'];
 	    return item.test(slugify(data));
 	});
 }
 	
 output.getBrowser = (req,res)=>{
-	const data = navigator.userAgent;
+	const data = req.headers['user-agent'];
 	var output = 'generic';
 	const match = [ 
 		/Chrome/i, /Chromium/i, 
@@ -80,56 +80,12 @@ output.getOS = (req,res)=>{
 	];
 		
 	for( var i in match ){
-		const data = navigator.userAgent;
+		const data = req.headers['user-agent'];
 		if( match[i].test(slugify(data)) )
 			return match[i].source;
 	}	return 'generic';
 }
 	
-//-----------------------------------------------------------------------------------------//
-	
-output.getSize = function( _bool ){
-	const size = [ 
-		[0,'small'], [600,'medium'],
-		[900,'large'], [1100,'xlarge'],
-	];
-		
-	for( var i=size.length; i--; ){
-		if( window.innerWidth > size[i][0] )	
-			return !_bool ? size[i][1] : i;
-	}
-}
-
-//-----------------------------------------------------------------------------------------//
-
-output.state = new device.state({
-	height: window.innerHeight,
-    width: window.innerWidth,
-	size: output.getSize(),
-	connection: 'online',
-});
-
-window.addEventListener('online',function(){
-    output.state.set({ connection: 'online' });
-});
-
-window.addEventListener('offline',function(){
-    output.state.set({ connection: 'offline' });
-});
-
-window.addEventListener('resize',function(){
-    output.state.set({
-		height: window.innerHeight,
-		width: window.innerWidth,
-		size: output.getSize()
-	});
-});
-
-output.set = function(obj){ output.state.set(obj) }
-output.get = function(item){ return output.state.get(item) }
-output.observeField = function(...args){ return output.state.observeField(...args) }
-output.unObserveField = function(...args){ return output.state.unObserveField(...args) }
-
 //-----------------------------------------------------------------------------------------//
 
 module.exports = output;

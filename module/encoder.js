@@ -1,3 +1,4 @@
+const {Buffer} = require('buffer');
 const stream = require('stream');
 const zlib = require('zlib');
 const fs = require('fs');
@@ -10,6 +11,13 @@ module.exports = (status,raw,req,res,headers)=>{
         const encoder = req.headers['accept-encoding'];
         const data = stream.Readable.from(raw);
         let lib;
+
+        /*
+        try {
+            const size = Buffer.byteLength( Buffer.from(raw) );
+            headers["Content-Length"] = size;
+        } catch(e) {  }
+        */
     
         if (/\bbr\b/.test(encoder)) {
             lib = 'createBrotliCompress';

@@ -7,6 +7,7 @@ const headers = require('./headers');
 const bundler = require('./bundler');
 const encoder = require('./encoder');
 const { Buffer } = require('buffer');
+const deviceInfo = require('./deviceInfo');
 
 function setMimeType( _path ){
 	for( var i in process.molly.keys ){
@@ -79,7 +80,6 @@ function sendStreamFile( req,res,url,status ){
 			res.writeHead( 200,{ 'Content-Type': req.query.type }); res.end();
 		} else if( !range ){
 			fetch(url).then(async(data)=>{
-			//	const length = Buffer.byteLength( Buffer.from(data.data) );
 				const mimeType = data.headers['content-type']; encoder ( 
 					status, data.data, req, res, 
 					headers.staticHeader(mimeType,true) 
@@ -100,7 +100,7 @@ function sendStreamFile( req,res,url,status ){
 				const end = +interval[1];
 
 				encoder( 206, data.data, req, res, headers.streamHeader(mimeType,start,end,size) );
-			}).catch((e)=>{ res.send(504,e?.response?.data); console.log(e) });
+			}).catch((e)=>{ res.send(504,e?.response?.data); /*console.log(e)*/ });
 
 		}
 	} catch(e) { res.send(404,e.message); }
@@ -112,12 +112,19 @@ module.exports = function( req,res,protocol ){
 	req.parse.cookie = cookieParser( req.headers.cookie );
 	req.parse.ip = req.headers['x-forwarded-for'] ||
 				   req.socket.remoteAddress || null;
+				   
 	req.parse.origin = req.headers['Referer'];
 	req.parse.hostname = req.headers['host'];
 	req.parse.params = new Array();
 	req.parse.method = req.method;
 	req.parse.protocol = protocol;
 	req.parse.host = req.url;
+
+	req.isDesktop = deviceInfo.isDesktop(req,res);
+	req.Browser = deviceInfo.getBrowser(req,res);
+	req.isMobile = deviceInfo.isMobile(req,res);
+	req.isTV = deviceInfo.isTV(req,res);
+	req.OS = deviceInfo.getOS(req,res);
 
 	const reg = new RegExp('\/[-|_:@$]\/.+','gi');
 	const api = req.parse.pathname.match(reg)?.join(''); if( api ) {
@@ -126,7 +133,6 @@ module.exports = function( req,res,protocol ){
 	};	req.params = req.parse.params;
 
 	res.send = async ( _status, _data, _type='html' )=>{
-	//	const length = Buffer.byteLength( Buffer.from(_data) );
 		const mimeType = process.molly.mimeType[_type] || 'text/plain';
 		encoder( _status, _data, req, res, headers.staticHeader(mimeType,false) );
 		return true;

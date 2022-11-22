@@ -35,7 +35,7 @@ async function compile( data,req,res ){
       } catch(e) {
         const error = `/* something went wrong: ${e} */`;
         data = data.replace( item,error );
-        console.error(e);
+        console.log(e);
       }
     }
 
@@ -51,7 +51,7 @@ async function compile( data,req,res ){
       } catch(e) {
         const error = `/* something went wrong: ${e} */`;
         data = data.replace( item,error );
-        console.error(e);
+        console.log(e);
       }
     }
     

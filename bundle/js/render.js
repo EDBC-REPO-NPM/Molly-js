@@ -53,12 +53,14 @@
 			try{ 
 
 				let data = body.innerHTML;
+					data = data.replace(/\&gt\;/gi,'>');
+					data = data.replace(/\&lt\;/gi,'<');
 				const script = data.match(/\/\°[^°]+\°\//gi);
-				const fragmt = data.match(/\#\°[^°]+\°\#/gi);
-				
+				const fragmt = data.match(/\<\°[^°]+\°\>/gi);
+
 				for( var i in fragmt ){ const x = fragmt[i];
 					try{ 
-						const code = x.replace(/\#\°|\°\#| /gi,'');
+						const code = x.replace(/\<\°|\°\>| /gi,'');
 						const res = await fetch(code);
 						const text = await res.text();
 						data = data.replace( x,text );
@@ -68,8 +70,7 @@
 				}
 
 				for( var i in script ){ const x = script[i];
-					try{ 
-						const code = x.replace(/\/\°|\°\//gi,'');
+					try{const code = x.replace(/\/\°|\°\//gi,'');
 						data = data.replace( x,eval(code) );
 					} catch(e) { console.error(e);
 						data = `/* ${e?.message} */`;
@@ -95,7 +96,7 @@
 
 	const _loadWorkers_ = function( body ){
 		try {
-			const workers = $$(body,'script[type=worker]');
+			const workers = _$(body,'script[type=worker]');
 			workers.map((wrk,i)=>{
 
 				let url = undefined;
@@ -127,7 +128,7 @@
 		return new Promise(async(response,reject)=>{
 			try{ 
 
-				const el = $$(body,'*[load]');
+				const el = _$(body,'*[load]');
 				for( var i in el ){ const x = el[i];
 					try{ 
 						const res = await fetch(x.getAttribute('load'));
@@ -147,7 +148,7 @@
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadScripts_ = async function(body){
-		const scripts = $$(body,'script[type=module],script:not([type]),script[type~=javascript]');
+		const scripts = _$(body,'script[type=module],script:not([type]),script[type~=javascript]');
 		for(var i in scripts){ 
 
 			const content = scripts[i].innerHTML;
@@ -166,7 +167,7 @@
 /*--------------------------------------------------------------------------------------------------*/
 
 	const _loadStyles_ = async function(body){
-		const links = $$(body,'style');
+		const links = _$(body,'style');
 		for(var i in links){ 
 
 			const content = links[i].innerHTML;
@@ -191,17 +192,20 @@
 			if( window['_changing_'] ) return undefined;
 				window['_changing_'] = true;
 			
-			await _loadBases_($$('*[b64]'));
-			await _loadLazys_($$('*[lazy]'));
+			await _loadBases_(_$('*[b64]'));
+			await _loadLazys_(_$('*[lazy]'));
 
 			const data = $('body').innerHTML;
-			const inp = window.XML.parse(data,'text/html');
-				  await _loadDOM_($(inp,'body'));
-				  await _loadCode_($(inp,'body'));
-				  await _loadStyles_($(inp,'body'));
-				  await _loadScripts_($(inp,'body'));
-				  await _loadWorkers_($(inp,'body'));
-			const out = $(inp,'body').innerHTML;
+			const element = createElement('body');
+				  element.innerHTML = data;
+
+				  await _loadDOM_(element);
+				  await _loadCode_(element);
+				  await _loadStyles_(element);
+				  await _loadScripts_(element);
+				  await _loadWorkers_(element);
+				  
+			const out = element.innerHTML;
 
 			if( data != out ) $('body').innerHTML = out;
 

@@ -1,34 +1,30 @@
+(function(){
 
-	//TODO: polyfills ----------------------------------------------------------------------------//
+	//TODO: Dom Modifier -------------------------------------------------------------------------//
 	
-	//require("@babel/polyfill/noConflict");
-	//if( !window.fetch ) require('fetch-polyfill');
-	//if( !window.clipboard ) require('clipboard-polyfill');
-	//if( !window.IntersectionObserver) require('intersection-observer');
-	//if( !window.URLSearchParams ) require('url-search-params-polyfill');
+	window.$ = function( ...args ){
+		return ( args.length > 1 ) ? 
+			args[0].querySelector(args[1]):
+			document.querySelector(args[0]);
+	};
 
-	//TODO: Query Variables  ---------------------------------------------------------------------//
+	window._$ = function( ...args ){
+		return ( args.length > 1 ) ? 
+			Array.from(args[0].querySelectorAll(args[1])):
+			Array.from(document.querySelectorAll(args[0]));
+	};
 
-	window.device = new Object(); 
-	window.device.worker = new Object();
-
-	//TODO: event  ------------------------------------------------------------------------------//
-	
-	window.addEvent = function( ...args ){ args[0].addEventListener( args[1],args[2],true ); return args; }
-	window.removeEvent = function( args ){ args[0].removeEventListener( args[1],args[2],true ); return args; }
-	
 	//TODO: XML Parser - Serializer --------------------------------------------------------------//
 	
 	window.XML = new Object();
-	window.XML.parse = function( _string, mime="text/xml" ){ 
-		_string = _string.replace(/\<\°/gi,'#°').replace(/\°\>/gi,'°#')
-		return new DOMParser().parseFromString( _string,mime ); 
-	}
+	window.XML.parse = function( _string, mime="text/xml" ){ return new DOMParser().parseFromString( _string,mime ); }
 	window.XML.stringify = function( _object ){ return new XMLSerializer().serializeToString( _object ); }
 	
 	//TODO: Element Modifier ---------------------------------------------------------------------//
 	
-	window.replaceElement = function(...args){ args[1].parentElement.replaceChild( args[0],args[1] ); }
+	window.removeEvent = function( args ){ args[0].removeEventListener( args[1],args[2],true ); return args; }
+	window.addEvent = function( ...args ){ args[0].addEventListener( args[1],args[2],true ); return args; }
+	window.replaceElement= function(...args){ args[1].parentElement.replaceChild( args[0],args[1] ); }
 	window.removeElement = function(...args){ args[0].parentElement.removeChild( args[0] ); }
 	window.createElement = function(...args){ return document.createElement(args); }
 	window.appendElement = function(...args){ return args[0].appendChild(args[1]); }
@@ -38,9 +34,9 @@
 	window.slugify = function( text ){
 		
 		const reg = {
-			a:'á|à|ã|â|ä', e:'é|è|ê|ë',
-			i:'í|ì|î|ï', o:'ó|ò|ô|õ|ö',
-			c:'ç',n:'ñ', u:'ú|ù|û|ü', 
+			a:'á|à|ã|â|ä',e:'é|è|ê|ë',
+			o:'ó|ò|ô|õ|ö',i:'í|ì|î|ï',  
+			c:'ç',n:'ñ',  u:'ú|ù|û|ü', 
 			'':'\\W+|\\t+|\\n+| +',
 		};
 		
@@ -50,36 +46,35 @@
 		});	return text.toLowerCase();
 
 	}
-
-	//TODO: Dom Modifier -------------------------------------------------------------------------//
-		
-	window.$$ = function( ...args ){ let elements;
-		if( args.length > 1 ) elements = args[0].querySelectorAll(args[1]);
-		else elements = document.querySelectorAll(args[0]);
-		return Array.from(elements);
-	}
-	
-	window.$ = function( ...args ){ let elements;
-		if( args.length > 1 ) elements = args[0].querySelector(args[1]);
-		else elements = document.querySelector(args[0]);
-		return elements;
-	}
 	
 	//TODO: Web Mobile Sensors  ------------------------------------------------------------------//
 
+	window.device = new Object();
+
+	//TODO: Query Variables  ---------------------------------------------------------------------//
+
+	window.device.worker = new Object();
+	window.device.state = require('./state');
+
 	window.device.url = require('./url');
 	window.device.info = require('./info');
-	window.device.state = require('./state');
 	window.device.fetch = require('./fetch');
 	window.device.media = require('./media');
 	window.device.query = require('./query');
-	window.base64toBlob = require('./base64');
+	window.device.focus = require('./focus');
 	window.device.cookie = require('./cookie');
-	window.device.render = require('./render'); 
 	window.device.sensors = require('./sensor');
 	window.device.storage = require('./storage');
 	window.device.clipboard = require('./clipboard');
+	window.device.base64toBlob = require('./base64');
 	
+	window.device.render = require('./render'); 
+
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
-	addEvent( document, 'DOMSubtreeModified', function(){ device.render(); });
-	addEvent( document, 'DOMContentLoaded', function(){ device.render(); });
+	
+	document.addEventListener( 'DOMSubtreeModified', function(){ window.device.render() } );
+	document.addEventListener( 'DOMContentLoaded', function(){ window.device.render() });
+
+	//TODO: OnLoadEvent --------------------------------------------------------------------------//
+
+})();
