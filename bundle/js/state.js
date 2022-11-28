@@ -46,11 +46,12 @@ class State {
 
     forceUpdate( item ){
         for( var i in this.events ){
-            const field = this.events[i][0]
-            this.events[i][1](
-                this.state[field],
-                this.state[field]
-            );
+            const field = this.events[i][0];
+            if( this.events[i][0] == item )
+                this.events[i][1](
+                    this.state[field],
+                    this.state[field]
+                );
         }
     }
 

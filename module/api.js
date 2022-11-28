@@ -47,7 +47,6 @@ function sendStaticFile( req,res,url,status ){
 			
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send(404,'Oops file not found'); }
-			//	const length = Buffer.byteLength( Buffer.from(data) );
 				return encoder ( 
 					status, await bundler(req,res,data,mimeType),
 					req, res, headers.staticHeader(mimeType,true)
@@ -88,19 +87,23 @@ function sendStreamFile( req,res,url,status ){
 		} else { 
 
 			const interval = range.match(/\d+/gi);
-				
-			let chunk = +interval[0] + process.molly.chunkSize;
-			url.headers['range'] = interval[1] ? range : range+chunk;
+			const size  = process.molly.chunkSize;
+			const chunk = Number(interval[0])+size;
+			const start = +interval[0];
+			const end = +start+chunk;
+			
+			url.headers['range'] = `bytes=${start}-${end}`;
 
 			fetch(url).then((data)=>{
 				const interval = data.headers['content-range'].match(/\d+/gi);
 				const mimeType = data.headers['content-type'];
+				
 				const start = +interval[0]; 
 				const size = +interval[2];	
 				const end = +interval[1];
 
 				encoder( 206, data.data, req, res, headers.streamHeader(mimeType,start,end,size) );
-			}).catch((e)=>{ res.send(504,e?.response?.data); /*console.log(e)*/ });
+			}).catch((e)=>{ res.send(100,e?.response?.data) });
 
 		}
 	} catch(e) { res.send(404,e.message); }

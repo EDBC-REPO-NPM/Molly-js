@@ -1,4 +1,6 @@
 
+/*--------------------------------------------------------------------------------------------------*/
+
 	let observer = undefined; try{
 		observer = new IntersectionObserver( (entries, observer)=>{
 			entries.map( entry=>{
@@ -186,6 +188,24 @@
 
 /*--------------------------------------------------------------------------------------------------*/
 
+	const _loadToggle_ = async function(element){
+
+		function toggle(id) {
+			_$(id).map( x=> x.hidden = x.hidden ? false : true );
+		}
+
+		for( var i in element ){ 
+			const id = element[i].getAttribute('toggle');
+			element[i].removeAttribute('toggle');
+			element[i].addEventListener('click',()=>{
+				toggle( id );
+			});
+		}
+
+	}
+
+/*--------------------------------------------------------------------------------------------------*/
+
 	const _loadComponents_ = async function(){ 
 		try{
 
@@ -194,6 +214,7 @@
 			
 			await _loadBases_(_$('*[b64]'));
 			await _loadLazys_(_$('*[lazy]'));
+			await _loadToggle_(_$('*[toggle]'));
 
 			const data = $('body').innerHTML;
 			const element = createElement('body');

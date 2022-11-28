@@ -35,8 +35,8 @@ output.isMobile = (req,res)=>{
 
 output.isDesktop = (req,res)=>{
 	return [
-		!output.isMobile(req,res),
 		!output.isTV(req,res),
+		!output.isMobile(req,res),
 	].every( x=>x );
 }
 
@@ -46,7 +46,7 @@ output.isTV = (req,res)=>{
 		/HbbTV/i, /LG Browser/i, /Viera/i,
 		/PhilipsTV/i, /POV_TV/i, /Roku/i, 
 		/AppleTV/i, /GoogleTV/i, 
-		/TV/i, /technisat/i,
+		/technisat/i, /TV/i,
 	];
 	return match.some( (item) => {
 		const data = req.headers['user-agent'];

@@ -20,7 +20,6 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
   process.molly = new Object();
     
   process.molly.mimeType = JSON.parse( fs.readFileSync(`${__dirname}/json/mimetype.json`) );
-  try{ process.molly.ui = require('molly-ui'); } catch(e) {  }
   process.molly.keys = Object.keys( process.molly.mimeType );
     
   process.molly.backend = `${process.cwd()}/Controller`;

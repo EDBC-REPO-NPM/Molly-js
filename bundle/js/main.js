@@ -57,6 +57,7 @@
 	window.device.state = require('./state');
 
 	window.device.url = require('./url');
+	window.device.hash = require('./hash');
 	window.device.info = require('./info');
 	window.device.fetch = require('./fetch');
 	window.device.media = require('./media');
@@ -67,13 +68,14 @@
 	window.device.storage = require('./storage');
 	window.device.clipboard = require('./clipboard');
 	window.device.base64toBlob = require('./base64');
-	
+
 	window.device.render = require('./render'); 
 
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
 	
 	document.addEventListener( 'DOMSubtreeModified', function(){ window.device.render() } );
 	document.addEventListener( 'DOMContentLoaded', function(){ window.device.render() });
+	window.addEventListener( 'load',function(){ window.device.hash(); } )
 
 	//TODO: OnLoadEvent --------------------------------------------------------------------------//
 
