@@ -78,7 +78,7 @@ output.focus = function( element ){
                     behavior: 'smooth',
                 }); parent = parent.parentElement;
             } catch(e) { break; }
-        } while ( parent != $('body') );   
+        } while ( parent != $('html') );   
           return setFocus(element);
     }   
     

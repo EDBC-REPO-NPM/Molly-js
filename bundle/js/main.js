@@ -14,6 +14,8 @@
 			Array.from(document.querySelectorAll(args[0]));
 	};
 
+	window.$$ = window._$;
+
 	//TODO: XML Parser - Serializer --------------------------------------------------------------//
 	
 	window.XML = new Object();
@@ -66,6 +68,7 @@
 	window.device.cookie = require('./cookie');
 	window.device.sensors = require('./sensor');
 	window.device.storage = require('./storage');
+	window.device.session = require('./session');
 	window.device.clipboard = require('./clipboard');
 	window.device.base64toBlob = require('./base64');
 
