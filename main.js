@@ -23,7 +23,6 @@ const globalConfig = {
   controller: path.join( process.cwd(), 'Controller' ),
   view: path.join( process.cwd(), 'View' ),
   threads: os.cpus().length,
-  showFileList: false,
 
   chunkSize: Math.pow( 10,6 ) * 10,
   timeout: 1000 * 60 * 2,
