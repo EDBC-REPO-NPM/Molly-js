@@ -6,8 +6,8 @@ let globalConfig = undefined;
 
 function Meta( config ){
   const dir = path.join(__dirname,'../bundle/meta.html');
-  const meta = fs.readFileSync(dir)
-        .replace(/KEYWORDS/g,config.keywords.join())
+  return fs.readFileSync(dir).toString()
+        .replace(/KEYWORDS/g,config.keywords?.join())
         .replace(/DESCRIPTION/g,config.description)
         .replace(/CANONICAL/g,config.url)
         .replace(/AUTHOR/g,config.author)
