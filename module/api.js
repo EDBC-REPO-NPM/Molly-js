@@ -9,11 +9,13 @@ const encoder = require('./encoder');
 const { Buffer } = require('buffer');
 const deviceInfo = require('./deviceInfo');
 
+let globalConfig = undefined;
+
 function setMimeType( _path ){
-	for( var i in process.molly.keys ){
-		let key = process.molly.keys[i];
+	for( var i in globalConfig.keys ){
+		let key = globalConfig.keys[i];
 		if( _path.endsWith(key) ) 
-            return process.molly.mimeType[key];
+            return globalConfig.mimeType[key];
 	}	return 'text/plain';
 }
 
@@ -48,21 +50,21 @@ function sendStaticFile( req,res,url,status ){
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send(404,'Oops file not found'); }
 				return encoder ( 
-					status, await bundler(req,res,data,mimeType),
-					req, res, headers.staticHeader(mimeType,true)
+					status, await bundler(req,res,data,mimeType,globalConfig),
+					req, res, headers.staticHeader(globalConfig,mimeType,true)
 				); 	
 			});
             
 		} else { 
 			const interval = range.match(/\d+/gi);
-			const chuckSize = process.molly.chunkSize;
+			const chuckSize = globalConfig.chunkSize;
 
 			let start = +interval[0]; 
 			let end = interval[1] ? +interval[1]:
 				Math.min(chuckSize+start,size-1);
 
 			const data = fs.createReadStream( url,{start,end} );
-			encoder( 206, data, req, res, headers.streamHeader(mimeType,start,end,size) );
+			encoder( 206, data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
 			
 		}
 	} catch(e) { res.send(404,e); }
@@ -81,13 +83,13 @@ function sendStreamFile( req,res,url,status ){
 			fetch(url).then(async(data)=>{
 				const mimeType = data.headers['content-type']; encoder ( 
 					status, data.data, req, res, 
-					headers.staticHeader(mimeType,true) 
+					headers.staticHeader(globalConfig,mimeType,true) 
 				);
 			}).catch((e)=>{ res.send(504,e?.response?.data); });	
 		} else { 
 
 			const interval = range.match(/\d+/gi);
-			const size  = process.molly.chunkSize;
+			const size  = globalConfig.chunkSize;
 			const chunk = Number(interval[0])+size;
 			const start = +interval[0];
 			const end = +start+chunk;
@@ -102,14 +104,16 @@ function sendStreamFile( req,res,url,status ){
 				const size = +interval[2];	
 				const end = +interval[1];
 
-				encoder( 206, data.data, req, res, headers.streamHeader(mimeType,start,end,size) );
+				encoder( 206, data.data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
 			}).catch((e)=>{ res.send(100,e?.response?.data) });
 
 		}
 	} catch(e) { res.send(404,e.message); }
 }
 
-module.exports = function( req,res,protocol ){
+module.exports = function( req,res,config,protocol ){
+
+	globalConfig = config;
 
     req.parse = url.parse(req.url,true); req.query = req.parse.query; 
 	req.parse.cookie = cookieParser( req.headers.cookie );
@@ -136,8 +140,8 @@ module.exports = function( req,res,protocol ){
 	};	req.params = req.parse.params;
 
 	res.send = async ( _status, _data, _type='html' )=>{
-		const mimeType = process.molly.mimeType[_type] || 'text/plain';
-		encoder( _status, _data, req, res, headers.staticHeader(mimeType,false) );
+		const mimeType = globalConfig.mimeType[_type] || 'text/plain';
+		encoder( _status, _data, req, res, headers.staticHeader(globalConfig,mimeType,false) );
 		return true;
 	}
 		

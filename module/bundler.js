@@ -1,25 +1,21 @@
 const { Buffer } = require('buffer');
+const path = require('path');
 const fs = require('fs');
 
-function component( path ){
-  path = `${process.molly.frontend}/${path}`;
-  path = path.replace('./','');
-  return fs.readFileSync(path);
+let globalConfig = undefined;
+
+function Component( dir ){
+  console.log(dir);
+  dir = path.join(globalConfig.view,dir);
+  dir = path.normalize(dir);
+  return fs.readFileSync(dir);
 }
 
-function hide( data ){
-
-  const b64 = new Array();
-  const chunk = new Array();
-  const line = data.split('\n');
-  
-  for( var i in line ) b64.push(Buffer.from(line[i]).toString('base64'));
-  const result = (`eval(function(c,o,d,e){
-    e = new Array(); o = c.split('||').reverse();
-    for( var i in o ) e.push(atob(o[i])); return e.join('\\n');
-  }('${b64.reverse().join('||')}'))`).replace(/\n|\t/gi,'');
-
-  return result;
+function Loop( size, callback ){
+  const result = new Array();
+  for( var i=0; i<=size; i++ )
+    result.push( callback(i) );
+  return result.join('');
 }
 
 async function compile( data,req,res ){
@@ -31,7 +27,7 @@ async function compile( data,req,res ){
     for( var i in style ){ const item = style[i];
       try {
         let path = item.replace(/\/\°|\°\//gi,'');
-        data = data.replace( item,await eval(path) );
+        data = data.replace( item,eval(path)||'');
       } catch(e) {
         const error = `/* something went wrong: ${e} */`;
         data = data.replace( item,error );
@@ -43,9 +39,9 @@ async function compile( data,req,res ){
       try {
         
         const raw = item.replace(/\<\°|\°\>| /gi,'');
-        const cmp = raw.match(/.+/);
+        const cmp = raw.match(/.+/gi).join('');
 
-        const inf = component( cmp );
+        const inf = Component( cmp );
 				data = data.replace( item,inf );
 
       } catch(e) {
@@ -58,27 +54,17 @@ async function compile( data,req,res ){
     return compile( data,req,res );
 }
 
-module.exports = ( req,res,raw,mimeType )=>{
+module.exports = ( req,res,raw,mimeType,config )=>{
   return new Promise(async(response,reject)=>{
+
+    globalConfig = config
     
     const arr = new Array(); const data = raw.toString();
     const style = data.match(/\/\°[^°]+\°\/|\<\°[^°]+\°\>/gi) || [];
 
-    if( (style.length>=1) && (/^text|^application/).test(mimeType) ){
-
-    //if( process.molly.strict && (/javascript/).test(mimeType) )
-    //     arr.push( Buffer.from(hide(await compile( data,req,res ))) );
-    //else arr.push( Buffer.from(await compile( data,req,res )) );
-           arr.push( Buffer.from(await compile( data,req,res )) );
-
-    } else {
-
-    //if( process.molly.strict && (/javascript/).test(mimeType) )
-    //     arr.push( Buffer.from(hide(raw.toString())) );      
-    //else arr.push( raw );
-           arr.push( raw );
-      
-    }
+    if( (style.length>=1) && (/^text|^application/).test(mimeType) )
+         arr.push( Buffer.from(await compile( data,req,res )) );
+    else arr.push( raw );
 
     return response( arr[0] );
   });

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 function runModule( _path,req,res,protocol ){
 	try{const __module__ = require(_path);
@@ -6,20 +7,20 @@ function runModule( _path,req,res,protocol ){
 	} catch(e) { console.log(e) }
 }
 
-module.exports = async function(I,O,P){
+module.exports = async function(I,O,C,P){
 	
-    const {req,res} = require(`${__dirname}/api`)(I,O,P);
+    const {req,res} = require( path.join(__dirname,'api') )(I,O,C,P);
 
     const cond = [
-        `${process.molly.frontend}${req.parse.pathname}/index.html`,
-        `${process.molly.frontend}${req.parse.pathname}.html`,
-        `${process.molly.backend}${req.parse.pathname}.js`,
-        `${process.molly.frontend}${req.parse.pathname}`,
-        `${process.molly.frontend}/404.html`,
+        path.join( C.view, req.parse.pathname, 'index.html' ),
+		path.join( C.controller,  req.parse.pathname+'js' ),
+        path.join( C.view, req.parse.pathname+'.html' ),
+		path.join( C.view, req.parse.pathname ),
+		path.join( C.view, '404.html' )
     ];
 
 	try{ 
-		const path = `${process.molly.backend}/main.js`;
+		const path = path.join(C.controller,'main.js');
 		if( fs.existsSync(path) ) {
 			const done = await runModule( path,req,res,P ); 
 			if( done ) return 0; 
@@ -28,10 +29,10 @@ module.exports = async function(I,O,P){
 	
 	try{
 	
-			 if( req.parse.pathname == '/molly.js' ) 	return res.sendFile(`${process.molly.root}/bundle/bundle.js`);
-        else if( fs.existsSync(cond[2]) ) 				return runModule( cond[2],req,res,P );
+			 if( req.parse.pathname == '/molly.js' ) 	return res.sendFile( path.join(C.root,'/bundle/bundle.js') );
+        else if( fs.existsSync(cond[1]) ) 				return runModule( cond[1],req,res,P );
 		else if( fs.existsSync(cond[0]) ) 				return res.sendFile(cond[0]);
-		else if( fs.existsSync(cond[1]) ) 				return res.sendFile(cond[1]);
+		else if( fs.existsSync(cond[2]) ) 				return res.sendFile(cond[2]);
 		else if( fs.existsSync(cond[3]) ) 				return res.sendFile(cond[3]);
 		else if( fs.existsSync(cond[4]) ) 				return res.sendFile(cond[4],404);
 		else 							 				return res.send(404,'Oops 404 not found');

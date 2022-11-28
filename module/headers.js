@@ -1,5 +1,6 @@
 
 const output = new Object();
+let globalConfig = undefined
 
 function expirationAge(){
 
@@ -11,13 +12,13 @@ function expirationAge(){
     tomrw.setMinutes(0); tomrw.setMilliseconds(0);
     timeout = (tomrw.getTime()-today.getTime())/Math.pow(10,3);
 
-	return process.molly.maxAge || parseInt( timeout );
+	return globalConfig.maxAge || parseInt( timeout );
 
 }
 
 output.headerExtention = ( headers,cache,size )=>{
 
-	if( process.molly.strict ){
+	if( globalConfig.strict ){
 		headers["Content-Security-Policy-Reporn-Only"] = "default-src 'self'; font-src 'self'; img-src 'self'; frame-src 'self';";
 		headers["referrer-policy"] = "origin-when-cross-origin, strict-origin-when-cross-origin";
 		headers["Strict-Transport-Security"] = `max-age=${ expirationAge() }; preload`;
@@ -27,7 +28,7 @@ output.headerExtention = ( headers,cache,size )=>{
 		headers["Cache-Control"] = `public, max-age=${ expirationAge() }`;
 		headers["Set-Cookie"] = 'cross-site-cookie=whatever; SameSite=None; Secure';
 
-	if( process.molly.cors ){ 
+	if( globalConfig.cors ){ 
 		headers["Access-Control-Allow-Headers"] = "Origin, X-Requested-With, Content-Type, Accept";
 		headers["Access-Control-Allow-Methods"] = "OPTIONS, POST, GET";
 		headers["cross-origin-resource-policy"] = "cross-origin";
@@ -35,13 +36,13 @@ output.headerExtention = ( headers,cache,size )=>{
 		headers["Access-Control-Allow-Origin"] = "*"; 
 	}	
 
-	if( process.molly.iframe ) 
-		headers["x-frame-options"] = process.molly.iframe;
+	if( globalConfig.iframe ) 
+		headers["x-frame-options"] = globalConfig.iframe;
 	if( size!=0 ) headers["Content-Length"] = size;
 		headers["powered-by"] = "molly-js";
 		headers["x-xss-protection"] = 0;
 		
-	if( process.molly.headers )
+	if( globalConfig.headers )
 		Object.keys( process.headers ).forEach( (key)=>{
 			headers[key] = process.headers[key];
 		});
@@ -49,12 +50,14 @@ output.headerExtention = ( headers,cache,size )=>{
 	return headers;			
 }
 	
-output.staticHeader = function( mimeType,cache=true ){
+output.staticHeader = function( config,mimeType,cache=true ){
+	globalConfig = config;
 	const headers = { "Content-Type":mimeType }; 
 	return output.headerExtention( headers,cache,0 );
 }
 
-output.streamHeader = function( mimeType,start,end,size ){
+output.streamHeader = function( config,mimeType,start,end,size ){
+	globalConfig = config;
 	const length = end-start+1; const headers = {
 		"Content-Range":`bytes ${start}-${end}/${size}`,
 		"Accept-Ranges":"bytes", "Content-Type": mimeType,
