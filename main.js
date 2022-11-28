@@ -40,8 +40,8 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
 output.createHTTPServer = function( ...args ){
 
   const numCPUs = os.cpus().length;
-  const port= args[1] || HTTP; 
-  const clb = args[0];
+  const port= args[0] || HTTP; 
+  const clb = args[1];
 
   if (cluster.isPrimary) {
 
@@ -68,11 +68,11 @@ output.createHTTPSServer = function( ...args ){
   let key,clb,port;
 
   if( args.length > 1 ){
-    key = args[0]; clb = args[1];
-    port= args[2] || HTTPS; 
-  } else {
-    clb = args[0]; key = ssl();
+    key = args[0]; clb = args[2];
     port= args[1] || HTTPS; 
+  } else {
+    clb = args[1]; key = ssl();
+    port= args[0] || HTTPS; 
   }
 
   if (cluster.isPrimary) {
@@ -100,11 +100,11 @@ output.createHTTP2Server = function( ...args ){
   let key,clb,port;
 
   if( args.length > 1 ){
-    key = args[0]; clb = args[1];   
-    port= args[2] || HTTP2; 
-  } else {
-    clb = args[0]; key = ssl();
+    key = args[0]; clb = args[2];   
     port= args[1] || HTTP2; 
+  } else {
+    clb = args[1]; key = ssl();
+    port= args[0] || HTTP2; 
   }
 
   if (cluster.isPrimary) {
