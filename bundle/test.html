@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="./bundle.js"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        
+        <div focus="size:3; loop:true">
+            <a focus-item href="#1">1</a>
+            <a focus-item href="#2">2</a>
+            <a focus-item href="#3">3</a>
+            <br>
+            <a focus-item href="#4">4</a>
+            <a focus-item href="#5" onclick="alert('hola mundo')">5</a>
+            <a focus-item href="#6">6</a>
+            <br>
+            <a focus-item href="#7">7</a>
+            <a focus-item href="#8">8</a>
+            <a focus-item href="#9">9</a>
+            <br>
+        </div>
+
+        <div hash="1"> numero 1 </div>
+        <div hash="2"> numero 2 </div>
+        <div hash="3"> numero 3 </div>
+        <div hash="4"> numero 4 </div>
+        <div hash="5"> numero 5 </div>
+        <div hash="6"> numero 6 </div>
+        <div hash="7"> numero 7 </div>
+        <div hash="8"> numero 8 </div>
+        <div hash="9"> numero 9 </div>
+
+        <style>
+            [focus-item]{ border-radius: 10px; }
+            [focused=true]{ 
+                background-color: blue; 
+                color: white;
+            }
+        </style>
+
+    </body>
+</html>

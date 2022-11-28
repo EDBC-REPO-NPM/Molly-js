@@ -1,8 +1,9 @@
 const output = new Object();
 
 function getState(){
-    const cookie = document.cookie.split(';');
     const state = new Object();
+    const cookie = document.cookie.split(';');
+    if( document.cookie == '' ) return state;
     for( var i in cookie ){
         const data = cookie[i].split('=');
               state[data[0]] = data[1];

@@ -56,21 +56,21 @@
 	//TODO: Query Variables  ---------------------------------------------------------------------//
 
 	window.device.worker = new Object();
-	window.device.state = require('./state');
-
 	window.device.url = require('./url');
-	window.device.hash = require('./hash');
-	window.device.info = require('./info');
-	window.device.fetch = require('./fetch');
-	window.device.media = require('./media');
-	window.device.query = require('./query');
+	window.device.state = require('./state');
 	window.device.focus = require('./focus');
-	window.device.cookie = require('./cookie');
-	window.device.sensors = require('./sensor');
-	window.device.storage = require('./storage');
-	window.device.session = require('./session');
-	window.device.clipboard = require('./clipboard');
+	
 	window.device.base64toBlob = require('./base64');
+	window.device.clipboard = require('./clipboard');
+	window.device.session = require('./session');
+	window.device.storage = require('./storage');
+	window.device.sensors = require('./sensor');
+	window.device.cookie = require('./cookie');
+	window.device.query = require('./query');
+	window.device.media = require('./media');
+	window.device.fetch = require('./fetch');
+	window.device.info = require('./info');
+	window.device.hash = require('./hash');
 
 	window.device.render = require('./render'); 
 

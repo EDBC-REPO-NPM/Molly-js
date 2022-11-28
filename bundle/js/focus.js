@@ -20,6 +20,7 @@ output.unObserveField = function(...args){ return output.state.unObserveField(..
 output.state.observeField('target',(a,b)=>{
     a?.setAttribute('focused',false);
     b?.setAttribute('focused',true);
+    a?.removeAttribute('focused');
 });
 
 const options = {
@@ -38,9 +39,7 @@ function parseOpt( element ){
                         .replace(/\t|\n| /gi,'')
                         .split(';');
     const obj = new Object();
-    for( var i in options ){
-        obj[i] = options[i];
-    }
+    for( var i in options ) obj[i] = options[i];
     for( var i in attr ){
         const data = attr[i].split(':');
         if(!data[1]) continue; 
