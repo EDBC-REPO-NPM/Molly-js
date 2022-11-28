@@ -7,9 +7,9 @@ const http2 = require('http2');
 const cluster = require('cluster');
 
 const app = require('./module/app');
-const ssl = require('./module/ssl');
+const key = require('./module/ssl');
 
-const output = new Object(); const key = ssl();
+const output = new Object(); const ssl = key();
 const HTTP = process.env.HTTP || process.env.PORT || 3000;
 const HTTPS = process.env.HTTPS || process.env.PORT || 4000;
 const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
@@ -84,7 +84,7 @@ output.createHTTPSServer = function( ...args ){
 
   const config = copy( globalConfig, args[0] );
   const port = config.port || HTTPS;
-  const key = config.key || key;
+  const key = config.key || ssl;
 
   if (cluster.isPrimary) {
 
@@ -115,7 +115,7 @@ output.createHTTP2Server = function( ...args ){
 
   const config = copy( globalConfig, args[0] );
   const port = config.port || HTTP2; 
-  const key = config.key || key;
+  const key = config.key || ssl;
 
   if (cluster.isPrimary) {
 

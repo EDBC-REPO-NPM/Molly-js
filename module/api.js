@@ -128,7 +128,7 @@ module.exports = function( req,res,config,protocol ){
 	req.parse.host = req.url;
 
 	req.isDesktop = deviceInfo.isDesktop(req,res);
-	req.Browser = deviceInfo.getBrowser(req,res);
+	req.browser = deviceInfo.getBrowser(req,res);
 	req.isMobile = deviceInfo.isMobile(req,res);
 	req.isTV = deviceInfo.isTV(req,res);
 	req.OS = deviceInfo.getOS(req,res);

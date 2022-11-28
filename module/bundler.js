@@ -4,6 +4,18 @@ const fs = require('fs');
 
 let globalConfig = undefined;
 
+function Meta( config ){
+  const dir = path.join(__dirname,'../bundle/meta.html');
+  const meta = fs.readFileSync(dir)
+        .replace(/KEYWORDS/g,config.keywords.join())
+        .replace(/DESCRIPTION/g,config.description)
+        .replace(/CANONICAL/g,config.url)
+        .replace(/AUTHOR/g,config.author)
+        .replace(/IMAGE/g,config.image)
+        .replace(/TITLE/g,config.title)
+        .replace(/ICON/g,config.icon)
+}
+
 function Component( dir ){
   console.log(dir);
   dir = path.join(globalConfig.view,dir);

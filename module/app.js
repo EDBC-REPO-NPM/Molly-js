@@ -13,7 +13,7 @@ module.exports = async function(I,O,C,P){
 
     const cond = [
         path.join( C.view, req.parse.pathname, 'index.html' ),
-		path.join( C.controller,  req.parse.pathname+'js' ),
+		path.join( C.controller, req.parse.pathname+'.js' ),
         path.join( C.view, req.parse.pathname+'.html' ),
 		path.join( C.view, req.parse.pathname ),
 		path.join( C.view, '404.html' )

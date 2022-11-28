@@ -28,7 +28,7 @@ output.isMobile = (req,res)=>{
 		/Mobile/i 
 	];
 	return match.some( (item) => {
-		const data = req.headers['user-agent'];
+		const data = req.headers['sec-ch-ua-platform'];
 	    return item.test(slugify(data));
 	});
 }
@@ -49,7 +49,7 @@ output.isTV = (req,res)=>{
 		/technisat/i, /TV/i,
 	];
 	return match.some( (item) => {
-		const data = req.headers['user-agent'];
+		const data = req.headers['sec-ch-ua-platform'];
 	    return item.test(slugify(data));
 	});
 }
@@ -80,7 +80,7 @@ output.getOS = (req,res)=>{
 	];
 		
 	for( var i in match ){
-		const data = req.headers['user-agent'];
+		const data = req.headers['sec-ch-ua-platform'];
 		if( match[i].test(slugify(data)) )
 			return match[i].source;
 	}	return 'generic';
