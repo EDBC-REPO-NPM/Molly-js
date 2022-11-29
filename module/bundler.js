@@ -17,7 +17,6 @@ function Meta( config ){
 }
 
 function Component( dir ){
-  console.log(dir);
   dir = path.join(globalConfig.view,dir);
   dir = path.normalize(dir);
   return fs.readFileSync(dir);
