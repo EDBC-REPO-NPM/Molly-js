@@ -4,65 +4,53 @@ const fs = require('fs');
 
 let globalConfig = undefined;
 
-function Meta( config ){
-  const dir = path.join(__dirname,'../bundle/meta.html');
-  return fs.readFileSync(dir).toString()
-        .replace(/KEYWORDS/g,config.keywords?.join())
-        .replace(/DESCRIPTION/g,config.description)
-        .replace(/CANONICAL/g,config.url)
-        .replace(/AUTHOR/g,config.author)
-        .replace(/IMAGE/g,config.image)
-        .replace(/TITLE/g,config.title)
-        .replace(/ICON/g,config.icon)
-}
-
 function Component( dir ){
   dir = path.join(globalConfig.view,dir);
   dir = path.normalize(dir);
   return fs.readFileSync(dir);
 }
 
-function Loop( size, callback ){
-  const result = new Array();
-  for( var i=0; i<=size; i++ )
-    result.push( callback(i) );
-  return result.join('');
+function matchScript( data ){
+  const result = new Array(); const index = [0,0];
+  Array.from(data).map((x,i)=>{
+         if((/\/\°/i).test(data[i]+data[i+1])) index[0] = i;
+    else if((/\°\//i).test(data[i]+data[i+1])){
+        index[1] = i+2; result.push(
+          data.slice(index[0],index[1])
+        );
+    }
+  }); return result;
 }
 
 async function compile( data,req,res ){
     
-    let loadr = data.match(/\<\°[^°]+\°\>/gi) || [];
-    let style = data.match(/\/\°[^°]+\°\//gi) || [];
-    if( !style.length && !loadr.length ) return data;
+  const style = matchScript(data) || [];
+  const loadr = data.match(/\<\°[^°]+\°\>/gi) || [];
+  if( !style.length && !loadr.length ) return data;
 
-    for( var i in style ){ const item = style[i];
-      try {
-        let path = item.replace(/\/\°|\°\//gi,'');
-        data = data.replace( item,eval(path)||'');
-      } catch(e) {
-        const error = `/* something went wrong: ${e} */`;
-        data = data.replace( item,error );
-        console.log(e);
-      }
+  for( var i in style ){ const item = style[i];
+    try {
+      const path = item.replace(/\/\°|\°\//gi,'');
+      data = data.replace( item,eval(path)||'');
+    } catch(e) {
+      const error = `/* something went wrong: ${e} */`;
+      data = data.replace( item,error );
+      console.log(e);
     }
+  }
 
-    for( var i in loadr ){ const item = loadr[i];
-      try {
-        
-        const raw = item.replace(/\<\°|\°\>| /gi,'');
-        const cmp = raw.match(/.+/gi).join('');
-
-        const inf = Component( cmp );
-				data = data.replace( item,inf );
-
-      } catch(e) {
-        const error = `/* something went wrong: ${e} */`;
-        data = data.replace( item,error );
-        console.log(e);
-      }
+  for( var i in loadr ){ const item = loadr[i];
+    try {
+      const raw = item.replace(/\<\°|\°\>| /gi,'');
+	  	data = data.replace( item,Component( raw ) );
+    } catch(e) {
+      const error = `/* something went wrong: ${e} */`;
+      data = data.replace( item,error );
+      console.log(e);
     }
+  }
     
-    return compile( data,req,res );
+  return compile( data,req,res );
 }
 
 module.exports = ( req,res,raw,mimeType,config )=>{
@@ -71,9 +59,9 @@ module.exports = ( req,res,raw,mimeType,config )=>{
     globalConfig = config
     
     const arr = new Array(); const data = raw.toString();
-    const style = data.match(/\/\°[^°]+\°\/|\<\°[^°]+\°\>/gi) || [];
+    const style = data.match(/\/\°|\°\/|\<\°|\°\>/gi) || [];
 
-    if( (style.length>=1) && (/^text|^application/).test(mimeType) )
+    if( (style.length>=1) && !(/audio|video/).test(mimeType) )
          arr.push( Buffer.from(await compile( data,req,res )) );
     else arr.push( raw );
 

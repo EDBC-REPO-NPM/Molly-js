@@ -1,6 +1,6 @@
 
 const output = new Object();
-let globalConfig = undefined
+let globalConfig = undefined;
 
 function expirationAge(){
 

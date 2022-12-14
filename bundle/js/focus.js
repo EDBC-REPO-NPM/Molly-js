@@ -1,6 +1,6 @@
 const output = new Object();
 
-//-----------------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 output.state = new device.state({
     parent: null, target: null,
@@ -8,14 +8,14 @@ output.state = new device.state({
     event:'', topology:null,
 });
 
-//-----------------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 output.set = function(obj){ output.state.set(obj) }
 output.get = function(item){ return output.state.get(item) }
 output.observeField = function(...args){ return output.state.observeField(...args) }
 output.unObserveField = function(...args){ return output.state.unObserveField(...args) }
 
-//-----------------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 output.state.observeField('target',(a,b)=>{
     a?.setAttribute('focused',false);
@@ -88,7 +88,7 @@ output.focus = function( element ){
 
 } 
 
-//-----------------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function setTarget( X,Y ){
     try{
@@ -161,7 +161,7 @@ output.state.observeField('button',(a,b)=>{
 
 });
 
-//-----------------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 window.addEventListener('keydown',({key})=>{ output.state.set({ key: key });
     if( (/enter/i).test(key) )      return output.state.set({ button: 'ok' });
@@ -173,7 +173,7 @@ window.addEventListener('keydown',({key})=>{ output.state.set({ key: key });
     if( (/arrowright/i).test(key))  return output.state.set({ button: 'right' });
 });
 
-//-----------------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 window.focus = output.focus;
 module.exports = output;

@@ -35,8 +35,8 @@ module.exports = async function(I,O,C,P){
 		else if( fs.existsSync(cond[2]) ) 				return res.sendFile(cond[2]);
 		else if( fs.existsSync(cond[3]) ) 				return res.sendFile(cond[3]);
 		else if( fs.existsSync(cond[4]) ) 				return res.sendFile(cond[4],404);
-		else 							 				return res.send(404,'Oops 404 not found');
+		else 							 				return res.send('Oops 404 not found',404);
 		
-	} catch(e) { res.send(404,e.message); /* console.log(e);*/ }
+	} catch(e) { res.send(e.message,404); /* console.log(e);*/ }
 			
 }

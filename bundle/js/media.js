@@ -1,7 +1,7 @@
 const output = new Object();
 
-//TODO: Desktop ------------------------------------------------------------------------------//
-		
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
 output.getScreen = function( _obj ){
     if( !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) )
         return console.error('screen recorder is not suported');
@@ -15,7 +15,7 @@ output.getScreen = function( _obj ){
     return navigator.mediaDevices.getDisplayMedia( _obj );
 }
 
-//TODO: Camera  ------------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
     
 output.getCamera = function( _obj ){
     if( !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) )
@@ -30,7 +30,7 @@ output.getCamera = function( _obj ){
     return navigator.mediaDevices.getUserMedia( _obj );
 }
 
-//TODO: Microphone  --------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
     
 output.getMicrophone = function( _obj ){
     if( !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) )
@@ -45,11 +45,11 @@ output.getMicrophone = function( _obj ){
     return navigator.mediaDevices.getUserMedia( _obj );
 }
 
-//TODO: stopStream ---------------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 output.stopMediaStream = function( _stream ){ _stream.getTracks().forEach(item=>item.stop()) }
 	
-//TODO: Record Element  ----------------------------------------------------------------------//
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 output.stopRecording = function( _recorder ){ _recorder.mediaRecorder.stop(); }
 output.startRecording = function( _recorder ){

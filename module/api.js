@@ -9,7 +9,11 @@ const encoder = require('./encoder');
 const { Buffer } = require('buffer');
 const deviceInfo = require('./deviceInfo');
 
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
 let globalConfig = undefined;
+
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function setMimeType( _path ){
 	for( var i in globalConfig.keys ){
@@ -34,6 +38,8 @@ function cookieParser( _cookie ){
 	} catch(e) { return new Object(); }
 }
 
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
 function sendStaticFile( req,res,url,status ){
 	try{ req.setEncoding('utf8');
 
@@ -48,7 +54,7 @@ function sendStaticFile( req,res,url,status ){
 			const header = { "Content-Type":mimeType };
 			
 			fs.readFile( url,async(error,data)=>{
-				if( error ){ return res.send(404,'Oops file not found'); }
+				if( error ){ return res.send('Oops file not found',404); }
 				return encoder ( 
 					status, await bundler(req,res,data,mimeType,globalConfig),
 					req, res, headers.staticHeader(globalConfig,mimeType,true)
@@ -67,8 +73,10 @@ function sendStaticFile( req,res,url,status ){
 			encoder( 206, data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
 			
 		}
-	} catch(e) { res.send(404,e); }
+	} catch(e) { res.send(e,404); }
 } 
+
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function sendStreamFile( req,res,url,status ){
 	try{
@@ -85,7 +93,7 @@ function sendStreamFile( req,res,url,status ){
 					status, data.data, req, res, 
 					headers.staticHeader(globalConfig,mimeType,true) 
 				);
-			}).catch((e)=>{ res.send(504,e?.response?.data); });	
+			}).catch((e)=>{ res.send(e?.response?.data,504); });	
 		} else { 
 
 			const interval = range.match(/\d+/gi);
@@ -105,11 +113,35 @@ function sendStreamFile( req,res,url,status ){
 				const end = +interval[1];
 
 				encoder( 206, data.data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
-			}).catch((e)=>{ res.send(100,e?.response?.data) });
+			}).catch((e)=>{ res.send(e?.response?.data,100) });
 
 		}
-	} catch(e) { res.send(404,e.message); }
+	} catch(e) { res.send(e.message,404); }
 }
+
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
+function parseParameters( ...args ){
+	
+	const obj = { mime: 'html', status: 200, data: '' };
+
+	for( var i in args ){
+		switch( typeof args[i] ){
+			case 'number': obj['status'] = args[i]; break;
+			case 'string': obj['mime'] = args[i]; break;
+			default: obj['data'] = args[i]; break;
+		}
+	}	return obj;
+
+}
+
+function parseData( data ){
+	if( typeof data === 'object' )
+		 return JSON.stringify(data);
+	else return data;
+}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 module.exports = function( req,res,config,protocol ){
 
@@ -139,20 +171,23 @@ module.exports = function( req,res,config,protocol ){
 		req.parse.params.push(...api.slice(3).split('/'));
 	};	req.params = req.parse.params;
 
-	res.send = async ( _status, _data, _type='html' )=>{
-		const mimeType = globalConfig.mimeType[_type] || 'text/plain';
-		encoder( _status, _data, req, res, headers.staticHeader(globalConfig,mimeType,false) );
+	res.send = async ( _data, ...args )=>{ 
+		const d = parseData( _data );
+		const v = parseParameters( ...args );
+		const mimeType = globalConfig.mimeType[v.mime] || 
+						 typeof d === 'object' ? 'application/json' : 'text/plain';
+		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,false) );
 		return true;
 	}
-		
-	res.sendFile = ( _path,status=200 )=>{
-		if(typeof _path === 'object') sendStreamFile( req,res,_path,status );
-		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,status );
-		else res.send( 404,'0ops something went wrong' ); return true;
+
+	res.sendFile = ( _path, ...args )=>{ //status=200
+		const v = parseParameters( ...args );
+		if(typeof _path === 'object') sendStreamFile( req,res,_path,v.status );
+		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
+		else res.send( '0ops something went wrong',404 ); return true;
 	}
     
-	res.json = ( _status,_obj ) =>{ res.send( _status, JSON.stringify(_obj) ); return true; }
-	res.redirect = ( _url )=>{ res.writeHead(302, {'location':_url}); res.end(); return true; }
+	res.redirect = ( _url )=>{ res.writeHead(301, {'location':_url}); res.end(); return true; }
 	res.raw = async ( _object )=>{ encoder( _object.status, _object.data, req, res, _object.headers ); return true; }
      
     return { req:req, res:res }
