@@ -13,8 +13,8 @@ function slugify( text ){
 	
 	Object.keys(reg).map( x=>{
 		const key = new RegExp(reg[x],'gi');
-		text = text.replace(key,x);
-	});	return text.toLowerCase();
+		text = text?.replace(key,x);
+	});	return text?.toLowerCase();
 
 }
 
