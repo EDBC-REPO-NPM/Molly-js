@@ -216,7 +216,7 @@
 			await _loadLazys_(_$('*[lazy]'));
 			await _loadToggle_(_$('*[toggle]'));
 
-			$$($('body'),'script').map((x)=>x.remove() );
+			$$($('body'),'script').map((x)=>x.remove());
 
 			const data = $('body').innerHTML;
 			const element = createElement('body');
