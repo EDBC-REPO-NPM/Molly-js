@@ -76,9 +76,10 @@
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 	
-	document.addEventListener( 'DOMSubtreeModified', function(){ window.device.render() } );
-	document.addEventListener( 'DOMContentLoaded', function(){ window.device.render() });
-	window.addEventListener( 'load',function(){ window.device.hash(); } )
+	window.addEventListener( 'load',()=>{
+		document.addEventListener( 'DOMSubtreeModified', function(){ window.device.render() } );
+		(()=>{ window.device.hash(); window.device.render(); })();
+	});
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
