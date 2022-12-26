@@ -20,9 +20,9 @@ module.exports = async function(I,O,C,P){
     ];
 
 	try{ 
-		const path = path.join(C.controller,'main.js');
-		if( fs.existsSync(path) ) {
-			const done = await runModule( path,req,res,P ); 
+		const dir = path.join(C.controller,'main.js');
+		if( fs.existsSync(dir) ) {
+			const done = await runModule( dir,req,res,P ); 
 			if( done ) return 0; 
 		}
 	} catch(e) {  }
