@@ -168,7 +168,7 @@ module.exports = function( req,res,config,protocol ){
 
 	res.send = async ( _data, ...args )=>{ 
 		const d = parseData( _data ); const v = parseParameters( ...args );
-		const mimeType = globalConfig.mimeType[v.mime][v.mime] || d === 'object' ? 'application/json' : req.parse.mimetype;
+		const mimeType = globalConfig.mimeType[v.mime] || d === 'object' ? 'application/json' : req.parse.mimetype;
 		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,false) );
 		return true;
 	}
