@@ -16,10 +16,9 @@ let globalConfig = undefined;
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function setMimeType( _path ){
-	for( var i in globalConfig.keys ){
-		let key = globalConfig.keys[i];
-		if( _path.endsWith(key) ) 
-            return globalConfig.mimeType[key];
+	if( !(/\.\w+$/).test(_path) ) return 'text/html';
+	for(var i in globalConfig.keys){ let key = globalConfig.keys[i];
+		if( _path.endsWith(key) ) return globalConfig.mimeType[key];
 	}	return 'text/plain';
 }
 
@@ -36,6 +35,22 @@ function cookieParser( _cookie ){
 		}); return object;
 
 	} catch(e) { return new Object(); }
+}
+
+function parseParameters( ...args ){
+	const obj = { status: 200 }; for( var i in args ){
+		switch( typeof args[i] ){
+			case 'number': obj['status'] = args[i]; break;
+			case 'string': obj['mime'] = args[i]; break;
+			default: break;
+		}
+	}	return obj;
+}
+
+function parseData( data ){
+	if( typeof data === 'object' )
+		 return JSON.stringify(data);
+	else return data;
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -121,28 +136,6 @@ function sendStreamFile( req,res,url,status ){
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
-function parseParameters( ...args ){
-	
-	const obj = { mime: 'html', status: 200, data: '' };
-
-	for( var i in args ){
-		switch( typeof args[i] ){
-			case 'number': obj['status'] = args[i]; break;
-			case 'string': obj['mime'] = args[i]; break;
-			default: obj['data'] = args[i]; break;
-		}
-	}	return obj;
-
-}
-
-function parseData( data ){
-	if( typeof data === 'object' )
-		 return JSON.stringify(data);
-	else return data;
-}
-
-// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
-
 module.exports = function( req,res,config,protocol ){
 
 	globalConfig = config;
@@ -154,9 +147,7 @@ module.exports = function( req,res,config,protocol ){
 	
 	req.parse.host = `${req.headers['host']}${req.parse.path}`;
 	req.parse.referer = req.headers['Referer'];
-	req.parse.mimetype = !(/\.html$|\/$/).test(req.url) ? 
-							setMimeType(req.url) : 
-							'text/html';
+	req.parse.mimetype = setMimeType(req.url);
 
 	req.parse.hostname = req.headers['host'];
 	req.parse.params = new Array();
@@ -177,8 +168,7 @@ module.exports = function( req,res,config,protocol ){
 
 	res.send = async ( _data, ...args )=>{ 
 		const d = parseData( _data ); const v = parseParameters( ...args );
-		const mimeType = globalConfig.mimeType[v.mime] || 
-						 typeof d === 'object' ? 'application/json' : 'text/plain';
+		const mimeType = globalConfig.mimeType[v.mime][v.mime] || d === 'object' ? 'application/json' : req.parse.mimetype;
 		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,false) );
 		return true;
 	}
@@ -191,8 +181,8 @@ module.exports = function( req,res,config,protocol ){
 	}
 
 	res.stream = ( _data, ...args )=>{//status=200
-		const mimetype = req.parse.mimetype; const v = parseParameters( ...args ); 
-		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimetype,true) );
+		const v = parseParameters( ...args ); const mimeType = globalConfig.mimeType[v.mime] || req.parse.mimetype;
+		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimeType,true) );
 		return true;
 	}
 
