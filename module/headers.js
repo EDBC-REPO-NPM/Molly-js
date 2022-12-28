@@ -1,4 +1,3 @@
-
 const output = new Object();
 let globalConfig = undefined;
 

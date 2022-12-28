@@ -154,6 +154,10 @@ module.exports = function( req,res,config,protocol ){
 	
 	req.parse.host = `${req.headers['host']}${req.parse.path}`;
 	req.parse.referer = req.headers['Referer'];
+	req.parse.mimetype = !(/\.html$|\/$/).test(req.url) ? 
+							setMimeType(req.url) : 
+							'text/html';
+
 	req.parse.hostname = req.headers['host'];
 	req.parse.params = new Array();
 	req.parse.method = req.method;
@@ -172,8 +176,7 @@ module.exports = function( req,res,config,protocol ){
 	};	req.params = req.parse.params;
 
 	res.send = async ( _data, ...args )=>{ 
-		const d = parseData( _data );
-		const v = parseParameters( ...args );
+		const d = parseData( _data ); const v = parseParameters( ...args );
 		const mimeType = globalConfig.mimeType[v.mime] || 
 						 typeof d === 'object' ? 'application/json' : 'text/plain';
 		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,false) );
@@ -185,6 +188,12 @@ module.exports = function( req,res,config,protocol ){
 		if(typeof _path === 'object') sendStreamFile( req,res,_path,v.status );
 		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
 		else res.send( '0ops something went wrong',404 ); return true;
+	}
+
+	res.stream = ( _data, ...args )=>{//status=200
+		const mimetype = req.parse.mimetype; const v = parseParameters( ...args ); 
+		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimetype,true) );
+		return true;
 	}
 
 	res.raw = async ( _object )=>{ encoder( _object.status, _object.data, req, res, _object.headers ); return true; }
