@@ -10,6 +10,8 @@ function runModule( _path,req,res,protocol ){
 module.exports = async function(I,O,C,P){
 	
     const {req,res} = require( path.join(__dirname,'api') )(I,O,C,P);
+	if( P=='HTTP' && C.HTTPSredirect ) return res.HTTPSredirect();
+	if( P=='HTTPS' && C.HTTPredirect ) return res.HTTPredirect();
 
     const cond = [
         path.join( C.view, req.parse.pathname, 'index.html' ),

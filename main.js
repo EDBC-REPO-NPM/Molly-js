@@ -22,7 +22,7 @@ const globalConfig = {
 
   controller: path.join( process.cwd(), 'Controller' ),
   view: path.join( process.cwd(), 'View' ),
-  threads: os.cpus().length,
+  thread: os.cpus().length,
 
   chunkSize: Math.pow( 10,6 ) * 10,
   timeout: 1000 * 60 * 2,
@@ -56,7 +56,7 @@ output.createHTTPServer = function( ...args ){
 
   if (cluster.isPrimary) {
 
-    for( let i=config.threads; i--; ) { cluster.fork(); }
+    for( let i=config.thread; i--; ) { cluster.fork(); }
     cluster.on('exit', (worker, code, signal) => { cluster.fork();
       console.log(`worker ${worker.process.pid} died by: ${code}`);
     });
@@ -88,7 +88,7 @@ output.createHTTPSServer = function( ...args ){
 
   if (cluster.isPrimary) {
 
-    for( let i=config.threads; i--; ) { cluster.fork(); }
+    for( let i=config.thread; i--; ) { cluster.fork(); }
     cluster.on('exit', (worker, code, signal) => { cluster.fork();
       console.log(`worker ${worker.process.pid} died by: ${code}`);
     });
@@ -120,7 +120,7 @@ output.createHTTP2Server = function( ...args ){
 
   if (cluster.isPrimary) {
 
-    for( let i=config.threads; i--; ) { cluster.fork(); }
+    for( let i=config.thread; i--; ) { cluster.fork(); }
     cluster.on('exit', (worker, code, signal) => { cluster.fork();
       console.log(`worker ${worker.process.pid} died by: ${code}`);
     });

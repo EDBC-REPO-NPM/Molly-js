@@ -151,13 +151,13 @@ module.exports = function( req,res,config,protocol ){
 	req.parse.cookie = cookieParser( req.headers.cookie );
 	req.parse.ip = req.headers['x-forwarded-for'] ||
 				   req.socket.remoteAddress || null;
-				   
-	req.parse.origin = req.headers['Referer'];
+	
+	req.parse.host = `${req.headers['host']}${req.parse.path}`;
+	req.parse.referer = req.headers['Referer'];
 	req.parse.hostname = req.headers['host'];
 	req.parse.params = new Array();
 	req.parse.method = req.method;
 	req.parse.protocol = protocol;
-	req.parse.host = req.url;
 
 	req.isDesktop = deviceInfo.isDesktop(req,res);
 	req.browser = deviceInfo.getBrowser(req,res);
@@ -186,9 +186,11 @@ module.exports = function( req,res,config,protocol ){
 		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
 		else res.send( '0ops something went wrong',404 ); return true;
 	}
-    
-	res.redirect = ( _url )=>{ res.writeHead(301, {'location':_url}); res.end(); return true; }
+
 	res.raw = async ( _object )=>{ encoder( _object.status, _object.data, req, res, _object.headers ); return true; }
+	res.redirect = ( _url )=>{ res.writeHead(301, {'location':_url}); res.end(); return true; }
+	res.HTTPSredirect = ()=>{ res.redirect(`https://${req.parse.host}`); }
+	res.HTTPredirect = ()=>{ res.redirect(`http://${req.parse.host}`); }
      
     return { req:req, res:res }
 }
