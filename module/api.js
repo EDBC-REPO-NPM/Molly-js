@@ -62,9 +62,10 @@ function sendStaticFile( req,res,url,status ){
         const mimeType = setMimeType( url );
 		const range = req.headers.range;
 
-		if( (/audio|video/i).test(req.query?.type) && !range ){
-			res.writeHead( 200,{ 'Content-Type': mimeType }); res.end();
-		} else if( !range || (/htmp/i).test(mimeType) ){
+		if( (/audio|video/i).test(req.query?.type||mimeType) && !range ){
+			res.writeHead( 200,{ 'Content-Type': req.query?.type||mimeType }); 
+			res.end();
+		} else if ( (/html/i).test(mimeType) || !range ){
 
 			const header = { "Content-Type":mimeType };
 			
@@ -94,15 +95,18 @@ function sendStaticFile( req,res,url,status ){
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function sendStreamFile( req,res,url,status ){
-	try{
-		url.responseType = 'stream';
+	try{ 
+
 		const range = req.headers.range;
+        const mimeType = setMimeType( url );
 		if( !url.headers ) url.headers = new Object();
+		req.setEncoding('utf8'); url.responseType = 'stream';
 		url.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
-		if( (/audio|video/i).test(req.query?.type) && !range ){
-			res.writeHead( 200,{ 'Content-Type': req.query.type }); res.end();
-		} else if( !range ){
+		if( (/audio|video/i).test(req.query?.type||mimeType) && !range ){
+			res.writeHead( 200,{ 'Content-Type': req.query.type||mimeType }); 
+			res.end();
+		} else if( (/html/i).test(mimeType) || !range ){
 			fetch(url).then(async(data)=>{
 				const mimeType = data.headers['content-type']; encoder ( 
 					status, data.data, req, res, 
@@ -121,7 +125,7 @@ function sendStreamFile( req,res,url,status ){
 
 			fetch(url).then((data)=>{
 				const interval = data.headers['content-range'].match(/\d+/gi);
-				const mimeType = data.headers['content-type'];
+				const mimeType = data.headers['content-type'] || 'text/plain';
 				
 				const start = +interval[0]; 
 				const size = +interval[2];	
