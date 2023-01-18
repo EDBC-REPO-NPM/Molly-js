@@ -61,7 +61,7 @@ module.exports = ( req,res,raw,mimeType,config )=>{
     const arr = new Array(); const data = raw.toString();
     const style = data.match(/\/\°|\°\/|\<\°|\°\>/gi) || [];
 
-    if( (style.length>=1) && !(/audio|video/).test(mimeType) )
+    if( (style.length>=1) && !(/audio|video/).test(mimeType) && config.bundler )
          arr.push( Buffer.from(await compile( data,req,res )) );
     else arr.push( raw );
 

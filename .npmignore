@@ -1,6 +1,8 @@
+test.js
 compiler
 README.md
 bundle/js
 compile.sh
 bundle/css
+testServer
 node_modules

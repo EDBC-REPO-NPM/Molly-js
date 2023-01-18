@@ -9,6 +9,8 @@ const cluster = require('cluster');
 const app = require('./module/app');
 const key = require('./module/ssl');
 
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
 const output = new Object(); const ssl = key();
 const HTTP = process.env.HTTP || process.env.PORT || 3000;
 const HTTPS = process.env.HTTPS || process.env.PORT || 4000;
@@ -17,17 +19,15 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 const globalConfig = {
-
   mimeType: JSON.parse( fs.readFileSync( path.join(__dirname,'json/mimetype.json') ) ),
-
   controller: path.join( process.cwd(), 'Controller' ),
-  view: path.join( process.cwd(), 'View' ),
-  thread: os.cpus().length,
-
+  viewer: path.join( process.cwd(), 'Viewer' ),
   chunkSize: Math.pow( 10,6 ) * 10,
+  thread: os.cpus().length,
   timeout: 1000 * 60 * 2,
   root: __dirname,
-
+  security: true,
+  bundler: true,
 }
 
 globalConfig.keys = Object.keys(globalConfig.mimeType)

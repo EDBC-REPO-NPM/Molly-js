@@ -78,8 +78,8 @@ function sendStaticFile( req,res,url,status ){
 			});
             
 		} else { 
-			const interval = range.match(/\d+/gi);
 			const chuckSize = globalConfig.chunkSize;
+			const interval = range.match(/\d+/gi);
 
 			let start = +interval[0]; 
 			let end = interval[1] ? +interval[1]:
@@ -116,21 +116,17 @@ function sendStreamFile( req,res,url,status ){
 		} else { 
 
 			const interval = range.match(/\d+/gi);
-			const size  = globalConfig.chunkSize;
-			const chunk = Number(interval[0])+size;
+			const size = globalConfig.chunkSize;
+			const chunk = +interval[0]+size;
 			const start = +interval[0];
 			const end = +start+chunk;
 			
 			url.headers['range'] = `bytes=${start}-${end}`;
 
 			fetch(url).then((data)=>{
-				const interval = data.headers['content-range'].match(/\d+/gi);
 				const mimeType = data.headers['content-type'] || 'text/plain';
-				
-				const start = +interval[0]; 
-				const size = +interval[2];	
-				const end = +interval[1];
-
+				const interval = data.headers['content-range'].match(/\d+/gi);
+				const start = +interval[0], size = +interval[2], end = +interval[1];
 				encoder( 206, data.data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
 			}).catch((e)=>{ res.send(e?.response?.data,100) });
 
@@ -172,20 +168,23 @@ module.exports = function( req,res,config,protocol ){
 
 	res.send = async ( _data, ...args )=>{ 
 		const d = parseData( _data ); const v = parseParameters( ...args );
-		const mimeType = globalConfig.mimeType[v.mime] || d === 'object' ? 'application/json' : req.parse.mimetype;
+		req.parse.mimetype = globalConfig.mimeType[v.mime]||req.parse.mimetype;
+		const mimeType = d === 'object' ? 'application/json' : req.parse.mimetype;
 		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,false) );
 		return true;
 	}
 
-	res.sendFile = ( _path, ...args )=>{ //status=200
-		const v = parseParameters( ...args );
+	res.sendFile = ( _path, ...args )=>{
+		const v = parseParameters( ...args ); 
+		req.parse.mimetype = globalConfig.mimeType[v.mime]||req.parse.mimetype;
 		if(typeof _path === 'object') sendStreamFile( req,res,_path,v.status );
 		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
 		else res.send( '0ops something went wrong',404 ); return true;
 	}
 
-	res.stream = ( _data, ...args )=>{//status=200
-		const v = parseParameters( ...args ); const mimeType = globalConfig.mimeType[v.mime] || req.parse.mimetype;
+	res.stream = ( _data, ...args )=>{
+		const v = parseParameters( ...args );
+		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
 		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimeType,true) );
 		return true;
 	}
