@@ -52,6 +52,7 @@ output.createHTTPServer = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
+  const host = config.host || '0.0.0.0';
   const port = config.port || HTTP;
 
   if (cluster.isPrimary) {
@@ -63,7 +64,7 @@ output.createHTTPServer = function( ...args ){
     
   } else {
     const server = http.createServer( (req,res)=>{ app(req,res,config,'HTTP') } );
-          server.listen( port,'0.0.0.0',()=>{ console.log({
+          server.listen( port,host,()=>{ console.log({
         protocol: 'HTTP', status: 'started',
         workerID: process.pid, port: port
       }); if(clb) clb(server);
@@ -83,6 +84,7 @@ output.createHTTPSServer = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
+  const host = config.host || '0.0.0.0';
   const port = config.port || HTTPS;
   const key = config.key || ssl;
 
@@ -95,7 +97,7 @@ output.createHTTPSServer = function( ...args ){
 
   } else {
     const server = https.createServer( key,(req,res)=>{ app(req,res,config,'HTTPS') } );
-          server.listen( port,'0.0.0.0',()=>{ console.log({
+          server.listen( port,host,()=>{ console.log({
         protocol: 'HTTPS', status: 'started',
         workerID: process.pid, port: port
       }); if( clb ) clb(server);
@@ -115,8 +117,10 @@ output.createHTTP2Server = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
+  const host = config.host || '0.0.0.0';
   const port = config.port || HTTP2; 
   const key = config.key || ssl;
+        key.allowHTTP1 = config.allowHTTP1 || false;
 
   if (cluster.isPrimary) {
 
@@ -127,7 +131,7 @@ output.createHTTP2Server = function( ...args ){
 
   } else {
     const server = http2.createSecureServer( key,(req,res)=>{ app(req,res,config,'HTTP2') } );
-          server.listen( port,'0.0.0.0',()=>{ console.log({
+          server.listen( port,host,()=>{ console.log({
         protocol: 'HTTP2', status: 'started',
         workerID: process.pid, port: port
       }); if( clb ) clb(server);
