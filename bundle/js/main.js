@@ -1,5 +1,3 @@
-(function(){
-
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 	
 	window.$ = function( ...args ){
@@ -14,18 +12,45 @@
 			Array.from(document.querySelectorAll(args[0]));
 	};
 
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
 	window.$$ = window._$;
+	window._events = new Array(); 
+    function eventID(){
+        const item = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
+        const result = new Array(); for( var i=64; i--; ){
+            const index = Math.floor( Math.random()*item.length );
+            result.push( item[index] );
+        }   return result.join('');
+    }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 	
 	window.XML = new Object();
-	window.XML.parse = function( _string, mime="text/xml" ){ return new DOMParser().parseFromString( _string,mime ); }
 	window.XML.stringify = function( _object ){ return new XMLSerializer().serializeToString( _object ); }
+	window.XML.parse = function( _string, mime="text/xml" ){ return new DOMParser().parseFromString( _string,mime ); }
 	
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 	
-	window.removeEvent = function( args ){ args[0].removeEventListener( args[1],args[2],true ); return args; }
-	window.addEvent = function( ...args ){ args[0].addEventListener( args[1],args[2],true ); return args; }
+	window.removeEvent = function( ID ){ 
+		for( let i in window._events ){
+			const x = window._events[i]; if( x[3] == ID ){
+				x[0].removeEventListener( x[1],x[2],true ); 
+				window._events.splice(i,1);				
+				return 0; 
+			}
+		}
+	}
+
+	window.addEvent = function( ...args ){ 
+		args[0].addEventListener( args[1],args[2],true ); 
+		const data = [...args,eventID()];
+		window._events.push( data) ;
+		return data[3]; 
+	}
+
+// ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
+
 	window.replaceElement= function(...args){ args[1].parentElement.replaceChild( args[0],args[1] ); }
 	window.removeElement = function(...args){ args[0].parentElement.removeChild( args[0] ); }
 	window.createElement = function(...args){ return document.createElement(args); }
@@ -83,4 +108,21 @@
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
-})();
+module.exports = {
+	$: window.$,
+	$$: window._$,
+	_$: window._$,
+	XML: window.XML,
+	device: window.device,
+	event: {
+		addEvent: window.addEvent,
+		removeEvent: window.removeEvent,
+	},
+	element: {
+		createElement: window.createElement,
+		removeElement: window.removeElement,
+		appendElement: window.appendElement,
+		replaceElement: window.replaceElement,
+	},
+	slugify: window.slugify,
+};
