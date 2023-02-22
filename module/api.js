@@ -99,6 +99,7 @@ function sendStreamFile( req,res,url,status ){
 
 		const range = req.headers.range;
         const mimeType = setMimeType( url );
+		
 		if( !url.headers ) url.headers = new Object();
 		req.setEncoding('utf8'); url.responseType = 'stream';
 		url.httpsAgent = new https.Agent({ rejectUnauthorized: false });
@@ -177,6 +178,7 @@ module.exports = function( req,res,config,protocol ){
 	res.sendFile = ( _path, ...args )=>{
 		const v = parseParameters( ...args ); 
 		req.parse.mimetype = globalConfig.mimeType[v.mime]||req.parse.mimetype;
+		if((/^http/i).test(_path)) _path = { url:_path };
 		if(typeof _path === 'object') sendStreamFile( req,res,_path,v.status );
 		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
 		else res.send( '0ops something went wrong',404 ); return true;
