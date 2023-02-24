@@ -5,7 +5,7 @@ const fs = require('fs');
 let globalConfig = undefined;
 
 function Component( dir ){
-  dir = path.join(globalConfig.view,dir);
+  dir = path.join(globalConfig.viewer,dir);
   dir = path.normalize(dir);
   return fs.readFileSync(dir);
 }
