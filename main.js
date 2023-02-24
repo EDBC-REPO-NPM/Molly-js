@@ -64,10 +64,9 @@ output.createHTTPServer = function( ...args ){
     
   } else {
     const server = http.createServer( (req,res)=>{ app(req,res,config,'HTTP') } );
-          server.listen( port,host,()=>{ console.log({
-        protocol: 'HTTP', status: 'started',
-        workerID: process.pid, port: port
-      }); if(clb) clb(server);
+      server.listen( port,host,()=>{ console.log(JSON.stringify({
+        name: 'molly-js', protocol: 'HTTP', port: port, host: host 
+      })); if(clb) clb(server);
     }).setTimeout( config.timeout );
   }
 
@@ -97,10 +96,9 @@ output.createHTTPSServer = function( ...args ){
 
   } else {
     const server = https.createServer( key,(req,res)=>{ app(req,res,config,'HTTPS') } );
-          server.listen( port,host,()=>{ console.log({
-        protocol: 'HTTPS', status: 'started',
-        workerID: process.pid, port: port
-      }); if( clb ) clb(server);
+      server.listen( port,host,()=>{ console.log(JSON.stringify({
+        name: 'molly-js', protocol: 'HTTPS', port: port, host: host 
+      })); if( clb ) clb(server);
     }).setTimeout( config.timeout );
   }
 
@@ -131,10 +129,9 @@ output.createHTTP2Server = function( ...args ){
 
   } else {
     const server = http2.createSecureServer( key,(req,res)=>{ app(req,res,config,'HTTP2') } );
-          server.listen( port,host,()=>{ console.log({
-        protocol: 'HTTP2', status: 'started',
-        workerID: process.pid, port: port
-      }); if( clb ) clb(server);
+      server.listen( port,host,()=>{ console.log(JSON.stringify({
+        name: 'molly-js', protocol: 'HTTP2', port: port, host: host 
+      })); if( clb ) clb(server);
     }).setTimeout( config.timeout );
   }
 
