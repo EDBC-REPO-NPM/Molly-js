@@ -184,15 +184,30 @@ module.exports = function( req,res,config,protocol ){
 		else res.send( '0ops something went wrong',404 ); return true;
 	}
 
-	res.stream = ( _data, ...args )=>{
+	res.sendStream = ( _data, ...args )=>{
 		const v = parseParameters( ...args );
 		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
 		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimeType,true) );
 		return true;
 	}
 
-	res.raw = async ( _object )=>{ encoder( _object.status, _object.data, req, res, _object.headers ); return true; }
-	res.redirect = ( _url )=>{ res.writeHead(301, {'location':_url}); res.end(); return true; }
+	res.stream = ( ...args )=>{
+		const v = parseParameters( ...args );
+		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
+		res.writeHead( v.status, headers.staticHeader(globalConfig,mimeType,true) ); 
+		return res; 
+	}
+
+	res.sendRaw = async ( _object )=>{ 
+		encoder( _object.status, _object.data, req, res, _object.headers ); 
+		return true; 
+	}
+
+	res.redirect = ( _url )=>{ 
+		res.writeHead(301, {'location':_url}); 
+		res.end(); return true; 
+	}
+
 	res.HTTPSredirect = ()=>{ res.redirect(`https://${req.parse.host}`); }
 	res.HTTPredirect = ()=>{ res.redirect(`http://${req.parse.host}`); }
      
