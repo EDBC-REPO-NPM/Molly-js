@@ -26,7 +26,7 @@ const globalConfig = {
   thread: os.cpus().length,
   timeout: 1000 * 60 * 2,
   root: __dirname,
-  security: true,
+  security: false,
   bundler: true,
 }
 
