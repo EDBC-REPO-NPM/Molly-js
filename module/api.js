@@ -62,13 +62,24 @@ function sendStaticFile( req,res,url,status ){
         const mimeType = setMimeType( url );
 		const range = req.headers.range;
 
-		if( (/audio|video/i).test(req.query?.type||mimeType) && !range ){
-			res.writeHead( 200,{ 'Content-Type': req.query?.type||mimeType }); 
-			res.end();
-		} else if ( (/html/i).test(mimeType) || !range ){
+		if( range ) {
+			const interval = range.match(/\d+/gi);
+			const chuckSize = globalConfig.chunkSize;
 
-			const header = { "Content-Type":mimeType };
-			
+			let start = +interval[0]; 
+			let end = interval[1] ? +interval[1]:
+				Math.min(chuckSize+start,size-1);
+
+			const headers = headers.streamHeader(globalConfig,mimeType,start,end,size);
+			const data = fs.createReadStream( url,{start,end} );
+			encoder( 206, data, req, res, headers );
+			return 0;
+		}
+
+		if( (/audio|video/i).test(mimeType) && !range ){
+			res.writeHead( 200,{ 'Content-Type': mimeType }); 
+			res.end();
+		} else if ( (/text|xml/i).test(mimeType) ){			
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send('Oops file not found',404); }
 				return encoder ( 
@@ -76,18 +87,9 @@ function sendStaticFile( req,res,url,status ){
 					req, res, headers.staticHeader(globalConfig,mimeType,true)
 				); 	
 			});
-            
 		} else { 
-			const chuckSize = globalConfig.chunkSize;
-			const interval = range.match(/\d+/gi);
-
-			let start = +interval[0]; 
-			let end = interval[1] ? +interval[1]:
-				Math.min(chuckSize+start,size-1);
-
-			const data = fs.createReadStream( url,{start,end} );
-			encoder( 206, data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
-			
+			res.writeHead( status, headers.staticHeader(globalConfig,mimeType,true) );
+			const str = fs.createReadStream(url); str.pipe(res);
 		}
 	} catch(e) { res.send(e,404); }
 } 
@@ -95,26 +97,12 @@ function sendStaticFile( req,res,url,status ){
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function sendStreamFile( req,res,url,status ){
-	try{ 
+	try { 
 
 		const range = req.headers.range;
-        const mimeType = setMimeType( url );
+		url.responseType = 'stream';
 		
-		if( !url.headers ) url.headers = new Object();
-		req.setEncoding('utf8'); url.responseType = 'stream';
-		url.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-
-		if( (/audio|video/i).test(req.query?.type||mimeType) && !range ){
-			res.writeHead( 200,{ 'Content-Type': req.query.type||mimeType }); 
-			res.end();
-		} else if( (/html/i).test(mimeType) || !range ){
-			fetch(url).then(async(data)=>{
-				const mimeType = data.headers['content-type']; encoder ( 
-					status, data.data, req, res, 
-					headers.staticHeader(globalConfig,mimeType,true) 
-				);
-			}).catch((e)=>{ res.send(e?.response?.data,504); });	
-		} else { 
+		if( range ){
 
 			const interval = range.match(/\d+/gi);
 			const size = globalConfig.chunkSize;
@@ -124,14 +112,22 @@ function sendStreamFile( req,res,url,status ){
 			
 			url.headers['range'] = `bytes=${start}-${end}`;
 
-			fetch(url).then((data)=>{
+			return fetch(url).then((data)=>{
 				const mimeType = data.headers['content-type'] || 'text/plain';
 				const interval = data.headers['content-range'].match(/\d+/gi);
 				const start = +interval[0], size = +interval[2], end = +interval[1];
 				encoder( 206, data.data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
 			}).catch((e)=>{ res.send(e?.response?.data,100) });
 
-		}
+		} else {
+			fetch(url).then(async(data)=>{
+				const mimeType = data.headers['content-type']; encoder ( 
+					status, data.data, req, res, 
+					headers.staticHeader(globalConfig,mimeType,true) 
+				);
+			}).catch((e)=>{ res.send(e?.response?.data,504); });	
+		} 
+
 	} catch(e) { res.send(e.message,404); }
 }
 
