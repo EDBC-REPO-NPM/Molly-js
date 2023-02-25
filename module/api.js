@@ -99,6 +99,7 @@ function sendStaticFile( req,res,url,status ){
 function sendStreamFile( req,res,url,status ){
 	try { 
 
+		if( !url.headers ) url.headers = new Object();
 		const range = req.headers.range;
 		url.responseType = 'stream';
 		
@@ -110,7 +111,7 @@ function sendStreamFile( req,res,url,status ){
 			const start = +interval[0];
 			const end = +start+chunk;
 			
-			url.headers['range'] = `bytes=${start}-${end}`;
+			url.headers.range = `bytes=${start}-${end}`;
 
 			return fetch(url).then((data)=>{
 				const mimeType = data.headers['content-type'] || 'text/plain';
