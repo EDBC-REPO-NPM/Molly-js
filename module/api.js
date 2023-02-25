@@ -191,7 +191,7 @@ module.exports = function( req,res,config,protocol ){
 		return true;
 	}
 
-	res.stream = ( ...args )=>{
+	res.getStream = ( ...args )=>{
 		const v = parseParameters( ...args );
 		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
 		res.writeHead( v.status, headers.staticHeader(globalConfig,mimeType,true) ); 
