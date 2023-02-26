@@ -105,14 +105,7 @@ function sendStreamFile( req,res,url,status ){
 		
 		if( range ){
 
-			const interval = range.match(/\d+/gi);
-			const size = globalConfig.chunkSize;
-			const chunk = +interval[0]+size;
-			const start = +interval[0];
-			const end = +start+chunk;
-			
-			url.headers.range = `bytes=${start}-${end}`;
-
+			url.chunkSize = globalConfig.chunkSize;
 			return fetch(url).then((data)=>{
 				const mimeType = data.headers['content-type'] || 'text/plain';
 				const interval = data.headers['content-range'].match(/\d+/gi);
