@@ -105,11 +105,13 @@ function sendStreamFile( req,res,url,status ){
 		
 		if( range ){
 
+			url.headers.range = req.headers.range;
 			url.chunkSize = globalConfig.chunkSize;
+
 			return fetch(url).then((data)=>{
 				const mimeType = data.headers['content-type'] || 'text/plain';
 				const interval = data.headers['content-range'].match(/\d+/gi);
-				const start = +interval[0], size = +interval[2], end = +interval[1];
+				const start=+interval[0], size=+interval[2], end=+interval[1];
 				encoder( 206, data.data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
 			}).catch((e)=>{ res.send(e?.response?.data,100) });
 
