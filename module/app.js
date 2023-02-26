@@ -21,7 +21,7 @@ module.exports = async function(I,O,C,P){
 		path.join( C.controller, req.parse.pathname+'.js' ),
         path.join( C.viewer, req.parse.pathname+'.html' ),
 		path.join( C.viewer, req.parse.pathname ),
-		path.join(C.root,'/bundle/bundle.js'),
+		path.join( C.root,'/bundle/bundle.js' ),
 		path.join( C.viewer, '404.html' ),
     ];
 

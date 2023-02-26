@@ -153,11 +153,11 @@ output.state.observeField('button',(a,b)=>{
     else if( b == 'left' ) setTarget(-1, 0);
     else if( b == 'right') setTarget( 1, 0);
     else if( b == 'back' )  
-        return output.set({ event: 'back' });
-    else if( b == 'ok' ){
+        output.set({ event: 'back' });
+    else if( b == 'ok' ){ try {
+        output.set({ event: 'ok' });
         output.state.get('target').click();
-        return output.set({ event: 'ok' });
-    } 
+    } catch(e) {} } 
 
 });
 

@@ -38,9 +38,11 @@ function cookieParser( _cookie ){
 }
 
 function parseParameters( ...args ){
-	const obj = { status: 200 }; for( var i in args ){
+	const obj = { status: 200, cache: false }; 
+	for( var i in args ){
 		switch( typeof args[i] ){
 			case 'number': obj['status'] = args[i]; break;
+			case 'boolean':obj['cache'] = args[i]; break;
 			case 'string': obj['mime'] = args[i]; break;
 			default: break;
 		}
@@ -74,11 +76,6 @@ function sendStaticFile( req,res,url,status ){
 			const data = fs.createReadStream( url,{start,end} );
 			encoder( 206, data, req, res, headers );
 			return 0;
-		}
-
-		if( (/audio|video/i).test(mimeType) && !range ){
-			res.writeHead( 200,{ 'Content-Type': mimeType }); 
-			res.end();
 		} else if ( (/text|xml/i).test(mimeType) ){			
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send('Oops file not found',404); }
@@ -163,7 +160,7 @@ module.exports = function( req,res,config,protocol ){
 		const d = parseData( _data ); const v = parseParameters( ...args );
 		req.parse.mimetype = globalConfig.mimeType[v.mime]||req.parse.mimetype;
 		const mimeType = typeof d === 'object' ? 'application/json' : req.parse.mimetype;
-		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,false) );
+		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,v.cache) );
 		return true;
 	}
 
@@ -179,14 +176,14 @@ module.exports = function( req,res,config,protocol ){
 	res.sendStream = ( _data, ...args )=>{
 		const v = parseParameters( ...args );
 		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
-		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimeType,true) );
+		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimeType,v.cache) );
 		return true;
 	}
 
 	res.getStream = ( ...args )=>{
 		const v = parseParameters( ...args );
 		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
-		res.writeHead( v.status, headers.staticHeader(globalConfig,mimeType,true) ); 
+		res.writeHead( v.status, headers.staticHeader(globalConfig,mimeType,v.cache) ); 
 		return res; 
 	}
 

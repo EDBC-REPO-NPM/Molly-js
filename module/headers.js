@@ -49,7 +49,7 @@ output.headerExtention = ( headers,cache,size )=>{
 	return headers;			
 }
 	
-output.staticHeader = function( config,mimeType,cache=true ){
+output.staticHeader = function( config,mimeType,cache ){
 	globalConfig = config;
 	const headers = { "Content-Type":mimeType }; 
 	return output.headerExtention( headers,cache,0 );
@@ -60,7 +60,7 @@ output.streamHeader = function( config,mimeType,start,end,size ){
 	const length = end-start+1; const headers = {
 		"Content-Range":`bytes ${start}-${end}/${size}`,
 		"Accept-Ranges":"bytes", "Content-Type": mimeType,
-	};	return output.headerExtention( headers,false,length );
+	};	return output.headerExtention( headers,true,length );
 }
 
 module.exports = output;
