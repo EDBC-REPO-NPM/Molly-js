@@ -1,7 +1,6 @@
 
 const fs = require('fs');
 const url = require('url');
-const https = require('https');
 const fetch = require('molly-fetch');
 const headers = require('./headers');
 const bundler = require('./bundler');
@@ -17,8 +16,9 @@ let globalConfig = undefined;
 
 function setMimeType( _path ){
 	if( !(/\.\w+$/).test(_path) ) return 'text/html';
-	for(var i in globalConfig.keys){ let key = globalConfig.keys[i];
-		if( _path.endsWith(key) ) return globalConfig.mimeType[key];
+	const keys = Object.keys(globalConfig.mimeType)
+	for( let key of keys ){ if( _path.endsWith(key) ) 
+		return globalConfig.mimeType[key];
 	}	return 'text/plain';
 }
 
@@ -96,30 +96,22 @@ function sendStaticFile( req,res,url,status ){
 function sendStreamFile( req,res,url,status ){
 	try { 
 
-		if( !url.headers ) url.headers = new Object();
-		const range = req.headers.range;
+		url.headers = !url.header ? req.headers : 
+									url.headers;
+		url.method = !url.method ? req.method : 
+								   url.method;
 		url.responseType = 'stream';
+		url.decode = false;
+		url.body = req;
 		
-		if( range ){
-
-			url.headers.range = req.headers.range;
-			url.chunkSize = globalConfig.chunkSize;
-
-			return fetch(url).then((data)=>{
-				const mimeType = data.headers['content-type'] || 'text/plain';
-				const interval = data.headers['content-range'].match(/\d+/gi);
-				const start=+interval[0], size=+interval[2], end=+interval[1];
-				encoder( 206, data.data, req, res, headers.streamHeader(globalConfig,mimeType,start,end,size) );
-			}).catch((e)=>{ res.send(e?.response?.data,100) });
-
-		} else {
-			fetch(url).then(async(data)=>{
-				const mimeType = data.headers['content-type']; encoder ( 
-					status, data.data, req, res, 
-					headers.staticHeader(globalConfig,mimeType,true) 
-				);
-			}).catch((e)=>{ res.send(e?.response?.data,504); });	
-		} 
+		return fetch(url).then((rej)=>{
+			res.writeHeader( rej.status, rej.headers );
+			rej.data.pipe( res );
+		}).catch((rej)=>{ 
+			if( url.headers.range ) rej.status = 100;
+			res.writeHeader( rej.status, rej.headers );
+			rej.data.pipe( res );
+		});
 
 	} catch(e) { res.send(e.message,404); }
 }

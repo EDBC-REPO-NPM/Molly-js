@@ -1,4 +1,3 @@
-const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -23,11 +22,9 @@ const globalConfig = {
   controller: path.join( process.cwd(), 'Controller' ),
   viewer: path.join( process.cwd(), 'Viewer' ),
   chunkSize: Math.pow( 10,6 ) * 10,
-  thread: os.cpus().length,
+  root: __dirname, security: false,
+  bundler: true, thread: 1,
   timeout: 1000 * 60 * 2,
-  root: __dirname,
-  security: false,
-  bundler: true,
 }
 
 globalConfig.keys = Object.keys(globalConfig.mimeType)
@@ -65,7 +62,7 @@ output.createHTTPServer = function( ...args ){
   } else {
     const server = http.createServer( (req,res)=>{ app(req,res,config,'HTTP') } );
       server.listen( port,host,()=>{ console.log(JSON.stringify({
-        name: 'molly-js', protocol: 'HTTP', port: port, host: host 
+        name: 'molly-js', protocol: 'HTTP', port: port, host: host
       })); if(clb) clb(server);
     }).setTimeout( config.timeout );
   }
@@ -97,7 +94,7 @@ output.createHTTPSServer = function( ...args ){
   } else {
     const server = https.createServer( key,(req,res)=>{ app(req,res,config,'HTTPS') } );
       server.listen( port,host,()=>{ console.log(JSON.stringify({
-        name: 'molly-js', protocol: 'HTTPS', port: port, host: host 
+        name: 'molly-js', protocol: 'HTTPS', port: port, host: host
       })); if( clb ) clb(server);
     }).setTimeout( config.timeout );
   }
@@ -116,7 +113,7 @@ output.createHTTP2Server = function( ...args ){
 
   const config = copy( globalConfig, args[0] );
   const host = config.host || '0.0.0.0';
-  const port = config.port || HTTP2; 
+  const port = config.port || HTTP2;
   const key = config.key || ssl;
         key.allowHTTP1 = config.allowHTTP1 || false;
 
@@ -130,7 +127,7 @@ output.createHTTP2Server = function( ...args ){
   } else {
     const server = http2.createSecureServer( key,(req,res)=>{ app(req,res,config,'HTTP2') } );
       server.listen( port,host,()=>{ console.log(JSON.stringify({
-        name: 'molly-js', protocol: 'HTTP2', port: port, host: host 
+        name: 'molly-js', protocol: 'HTTP2', port: port, host: host
       })); if( clb ) clb(server);
     }).setTimeout( config.timeout );
   }
