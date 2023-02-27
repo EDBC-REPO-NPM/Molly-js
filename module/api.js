@@ -96,7 +96,7 @@ function sendStaticFile( req,res,url,status ){
 function sendStreamFile( req,res,url,status ){
 	try { 
 
-		url.headers = !url.header ? req.headers : 
+		url.headers = !url.headers ? req.headers : 
 									url.headers;
 		url.method = !url.method ? req.method : 
 								   url.method;
