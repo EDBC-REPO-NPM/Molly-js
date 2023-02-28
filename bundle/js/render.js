@@ -88,9 +88,10 @@
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 	const _loadLazys_ = function( lazys ){
-		try{ lazys.map( lazy=>{ 
-				 observer.observe( lazy );
-			 });
+		try{ 
+			lazys.map( lazy=>{ 
+				observer.observe( lazy );
+			});
 		} catch(e) {/* console.log(e); */} 
 	}
 	
@@ -130,12 +131,12 @@
 		return new Promise(async(response,reject)=>{
 			try{ 
 
-				const el = _$(body,'*[load]');
+				const el = _$(body,'load[src]');
 				for( var i in el ){ const x = el[i];
 					try{ 
-						const res = await fetch(x.getAttribute('load'));
+						const res = await fetch(x.getAttribute('src'));
 						const text = await res.text();
-						x.removeAttribute('load');
+						x.removeAttribute('src');
 						x.innerHTML = text;
 					} catch(e) { console.error(e);
 						data = `/* ${e?.message} */`;
@@ -216,18 +217,18 @@
 			await _loadLazys_(_$('*[lazy]'));
 			await _loadToggle_(_$('*[toggle]'));
 
-			$$($('body'),'script').map((x)=>x.remove());
+			_$($('body'),'script').map((x)=>x.remove());
 
 			const data = $('body').innerHTML;
 			const element = createElement('body');
 				  element.innerHTML = data;
-
-				  await _loadDOM_(element);
+			
+			//	  await _loadDOM_(element);
 				  await _loadCode_(element);
 				  await _loadStyles_(element);
 				  await _loadScripts_(element);
-				  await _loadWorkers_(element);
-				  
+			//	  await _loadWorkers_(element);
+			
 			const out = element.innerHTML;
 
 			if( data != out ) $('body').innerHTML = out;

@@ -18,16 +18,13 @@ const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 const globalConfig = {
-  mimeType: JSON.parse( fs.readFileSync( path.join(__dirname,'json/mimetype.json') ) ),
+  mimetype: JSON.parse( fs.readFileSync( path.join(__dirname,'json/mimetype.json') ) ),
   controller: path.join( process.cwd(), 'Controller' ),
   viewer: path.join( process.cwd(), 'Viewer' ),
-  chunkSize: Math.pow( 10,6 ) * 10,
   root: __dirname, security: false,
   bundler: true, thread: 1,
   timeout: 1000 * 60 * 2,
 }
-
-globalConfig.keys = Object.keys(globalConfig.mimeType)
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 

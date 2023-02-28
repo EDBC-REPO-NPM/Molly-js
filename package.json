@@ -2,7 +2,7 @@
 	"license": "MIT",
 	"main": "main.js",
 	"name": "molly-js",
-	"version": "1.2.12",
+	"version": "1.2.14",
 	"author": "becerraenmanuel",
 	"scripts": {
 		"build-molly": "./compile.sh"
@@ -24,6 +24,6 @@
 		"babelify": "^10.0.0"
 	},
 	"dependencies": {
-		"molly-fetch": "^1.1.3"
+		"molly-fetch": "^1.1.7"
 	}
 }

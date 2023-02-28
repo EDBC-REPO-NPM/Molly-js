@@ -21,16 +21,16 @@ module.exports = (status,raw,req,res,headers)=>{
     
         if (/\bbr\b/.test(encoder)) {
             lib = 'createBrotliCompress';
-            headers["Content-Encoding"] = 'br'; 
+            headers["content-encoding"] = 'br'; 
             headers["Vary"] = "Accept-Encoding";
         } else if (/\bgzip\b/.test(encoder)) {
             lib = 'createGzip';
             headers["Vary"] = "Accept-Encoding";
-            headers["Content-Encoding"] = 'gzip'; 
+            headers["content-encoding"] = 'gzip'; 
         } else if ((/\bdeflate\b/).test(encoder)) {
             lib = 'createDeflate';
             headers["Vary"] = "Accept-Encoding";
-            headers["Content-Encoding"] = 'deflate';
+            headers["content-encoding"] = 'deflate';
         }
         
         res.writeHead( status, headers );

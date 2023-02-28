@@ -1,8 +1,8 @@
 
 const fs = require('fs');
 const url = require('url');
+const header = require('./header');
 const fetch = require('molly-fetch');
-const headers = require('./headers');
 const bundler = require('./bundler');
 const encoder = require('./encoder');
 const { Buffer } = require('buffer');
@@ -14,11 +14,11 @@ let globalConfig = undefined;
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
-function setMimeType( _path ){
+function setMimetype( _path ){
 	if( !(/\.\w+$/).test(_path) ) return 'text/html';
-	const keys = Object.keys(globalConfig.mimeType)
+	const keys = Object.keys(globalConfig.mimetype)
 	for( let key of keys ){ if( _path.endsWith(key) ) 
-		return globalConfig.mimeType[key];
+		return globalConfig.mimetype[key];
 	}	return 'text/plain';
 }
 
@@ -49,6 +49,14 @@ function parseParameters( ...args ){
 	}	return obj;
 }
 
+function getInterval( range,chunkSize,size ){
+	const interval = range.match(/\d+/gi);
+	const start = Math.floor(+interval[0]/chunkSize)*chunkSize; 
+	const end = !interval[1] ? Math.min( chunkSize+start, size-1 ) :
+				+interval[1];
+	return { start, end };
+}
+
 function parseData( data ){
 	if( typeof data === 'object' )
 		 return JSON.stringify(data);
@@ -58,34 +66,29 @@ function parseData( data ){
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 function sendStaticFile( req,res,url,status ){
-	try{ req.setEncoding('utf8');
-
+	try{
+ 
+		const chunkSize = +req.headers['chunk-size'] || 
+						  Math.pow(10,6) * 10;
 		const size = fs.statSync( url ).size;
-        const mimeType = setMimeType( url );
+        const mimetype = setMimetype( url );
 		const range = req.headers.range;
 
 		if( range ) {
-			const interval = range.match(/\d+/gi);
-			const chuckSize = globalConfig.chunkSize;
-
-			let start = +interval[0]; 
-			let end = interval[1] ? +interval[1]:
-				Math.min(chuckSize+start,size-1);
-
-			const headers = headers.streamHeader(globalConfig,mimeType,start,end,size);
+			const {start,end} = getInterval( range, chunkSize, size );
+			const headers = header.stream(globalConfig,mimetype,start,end,size);
 			const data = fs.createReadStream( url,{start,end} );
-			encoder( 206, data, req, res, headers );
-			return 0;
-		} else if ( (/text|xml/i).test(mimeType) ){			
+			encoder( 206, data, req, res, header ); return 0;
+		} else if ( (/text|xml/i).test(mimetype) ){			
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send('Oops file not found',404); }
 				return encoder ( 
-					status, await bundler(req,res,data,mimeType,globalConfig),
-					req, res, headers.staticHeader(globalConfig,mimeType,true)
+					status, await bundler(req,res,data,mimetype,globalConfig),
+					req, res, header.static(globalConfig,mimetype,true)
 				); 	
 			});
 		} else { 
-			res.writeHead( status, headers.staticHeader(globalConfig,mimeType,true) );
+			res.writeHead( status, header.static(globalConfig,mimetype,true) );
 			const str = fs.createReadStream(url); str.pipe(res);
 		}
 	} catch(e) { res.send(e,404); }
@@ -96,10 +99,10 @@ function sendStaticFile( req,res,url,status ){
 function sendStreamFile( req,res,url,status ){
 	try { 
 
-		url.headers = !url.headers ? req.headers : 
-									url.headers;
-		url.method = !url.method ? req.method : 
-								   url.method;
+		url.headers = !url.headers ? req.headers : url.headers;
+		url.method = !url.method ? req.method : url.method;
+		url.chunkSize = +req.headers['chunk-size'] || 
+						Math.pow(10,6)*10;
 		url.responseType = 'stream';
 		url.decode = false;
 		url.body = req;
@@ -108,9 +111,14 @@ function sendStreamFile( req,res,url,status ){
 			res.writeHeader( rej.status, rej.headers );
 			rej.data.pipe( res );
 		}).catch((rej)=>{ 
-			if( url.headers.range ) rej.status = 100;
-			res.writeHeader( rej.status, rej.headers );
-			rej.data.pipe( res );
+			try {
+				if( url.headers.range ) rej.status = 100;
+				res.writeHeader( rej.status, rej.headers );
+				rej.data.pipe( res );
+			} catch(e) {
+				res.writeHeader( 404, {'content-type':'text/plain'} );
+				res.end(e.message);
+			}
 		});
 
 	} catch(e) { res.send(e.message,404); }
@@ -123,18 +131,18 @@ module.exports = function( req,res,config,protocol ){
 	globalConfig = config;
 
     req.parse = url.parse(req.url,true); req.query = req.parse.query; 
-	req.parse.cookie = cookieParser( req.headers.cookie );
-	req.parse.ip = req.headers['x-forwarded-for'] ||
-				   req.socket.remoteAddress || null;
-	
-	req.parse.host = `${req.headers['host']}${req.parse.path}`;
-	req.parse.referer = req.headers['Referer'];
-	req.parse.mimetype = setMimeType(req.url);
 
-	req.parse.hostname = req.headers['host'];
+	req.parse.ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+	req.parse.host = req.headers['x-forwarded-host'] || req.headers['host'];
+	req.parse.protocol = req.headers['x-forwarded-proto'] || protocol;
+	req.parse.cookie = cookieParser( req.headers.cookie );
+	delete req.parse.hostname; delete req.parse.slashes;
+	delete req.parse.port;
+
+	req.parse.referer = req.headers['referer'];
+	req.parse.mimetype = setMimetype(req.url);
 	req.parse.params = new Array();
 	req.parse.method = req.method;
-	req.parse.protocol = protocol;
 
 	req.isDesktop = deviceInfo.isDesktop(req,res);
 	req.browser = deviceInfo.getBrowser(req,res);
@@ -150,15 +158,15 @@ module.exports = function( req,res,config,protocol ){
 
 	res.send = async ( _data, ...args )=>{ 
 		const d = parseData( _data ); const v = parseParameters( ...args );
-		req.parse.mimetype = globalConfig.mimeType[v.mime]||req.parse.mimetype;
-		const mimeType = typeof d === 'object' ? 'application/json' : req.parse.mimetype;
-		encoder( v.status, d, req, res, headers.staticHeader(globalConfig,mimeType,v.cache) );
+		req.parse.mimetype = globalConfig.mimetype[v.mime]||req.parse.mimetype;
+		const mimetype = typeof d === 'object' ? 'application/json' : req.parse.mimetype;
+		encoder( v.status, d, req, res, header.static(globalConfig,mimetype,v.cache) );
 		return true;
 	}
 
 	res.sendFile = ( _path, ...args )=>{
 		const v = parseParameters( ...args ); 
-		req.parse.mimetype = globalConfig.mimeType[v.mime]||req.parse.mimetype;
+		req.parse.mimetype = globalConfig.mimetype[v.mime]||req.parse.mimetype;
 		if((/^http/i).test(_path)) _path = { url:_path };
 		if(typeof _path === 'object') sendStreamFile( req,res,_path,v.status );
 		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
@@ -167,15 +175,15 @@ module.exports = function( req,res,config,protocol ){
 
 	res.sendStream = ( _data, ...args )=>{
 		const v = parseParameters( ...args );
-		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
-		encoder( v.status, _data, req, res, headers.staticHeader(globalConfig,mimeType,v.cache) );
+		const mimetype = globalConfig.mimetype[v.mime]||req.parse.mimetype;
+		encoder( v.status, _data, req, res, header.static(globalConfig,mimetype,v.cache) );
 		return true;
 	}
 
 	res.getStream = ( ...args )=>{
 		const v = parseParameters( ...args );
-		const mimeType = globalConfig.mimeType[v.mime]||req.parse.mimetype;
-		res.writeHead( v.status, headers.staticHeader(globalConfig,mimeType,v.cache) ); 
+		const mimetype = globalConfig.mimetype[v.mime]||req.parse.mimetype;
+		res.writeHead( v.status, header.static(globalConfig,mimetype,v.cache) ); 
 		return res; 
 	}
 
