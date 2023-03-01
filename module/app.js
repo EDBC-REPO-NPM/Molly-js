@@ -5,7 +5,7 @@ const path = require('path');
 function runModule( _path,req,res,protocol ){
 	try{ const __module__ = require(_path);
 		return __module__(req,res,protocol);
-	} catch(e) { console.log(e) }
+	} catch(e) { console.log(e); return 0; }
 }
 
 setInterval(()=>Object.keys(db).map(x=>delete db[x]),1000*60);
@@ -25,17 +25,17 @@ module.exports = async function(I,O,C,P){
 		path.join( C.viewer, '404.html' ),
     ];
 
-	try{ 
+	try{
 		const dir = path.join(C.controller,'main.js');
 		const sec = path.join(__dirname,'security.js');
 		if( req.parse.pathname == '/main' ) return res.redirect( '/' );
-		if( C.security && await runModule( sec,req,res,db ) ) return 0;
-		if( fs.existsSync(dir) && await runModule( dir,req,res,P )) return 0;
+		if( fs.existsSync(dir) && runModule( dir,req,res,P )) return 0;
+		if( C.security && runModule( sec,req,res,db ) ) return 0;
 	} catch(e) {  }
 	
 	try{
-			 if( req.parse.pathname == '/molly' ) 		return res.sendFile( cond[4] );
-        else if( fs.existsSync(cond[1]) ) 				return runModule( cond[1],req,res,P );
+        	 if( fs.existsSync(cond[1]) ) 				return runModule(cond[1],req,res,P);
+		else if( req.parse.pathname == '/molly' ) 		return res.sendFile(cond[4]);
 		else if( fs.existsSync(cond[0]) ) 				return res.sendFile(cond[0]);
 		else if( fs.existsSync(cond[2]) ) 				return res.sendFile(cond[2]);
 		else if( fs.existsSync(cond[3]) ) 				return res.sendFile(cond[3]);
