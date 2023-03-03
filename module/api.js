@@ -112,9 +112,9 @@ function sendStreamFile( req,res,url,status ){
 			rej.data.pipe( res );
 		}).catch((rej)=>{ 
 			try {
-				if( url.headers.range ) rej.status = 100;
-				res.writeHeader( rej.status, rej.headers );
-				rej.data.pipe( res );
+				if( url.headers.range && !(/text/i).test(url.headers['content-type']) ) 
+					rej.status = 100; res.writeHeader( rej.status, rej.headers );
+					rej.data.pipe( res );
 			} catch(e) {
 				res.writeHeader( 404, {'content-type':'text/plain'} );
 				res.end(e.message);
