@@ -6,7 +6,7 @@ const http2 = require('http2');
 const cluster = require('cluster');
 
 const app = require('./module/app');
-const key = require('./module/ssl');
+const ssl = require('./module/ssl');
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
@@ -76,10 +76,10 @@ output.createHTTPSServer = function( ...args ){
   const cfg = typeof args[0] == 'object' ? args[0] :
               typeof args[1] == 'object' ? args[1] : null;
 
-  const config = copy( globalConfig, args[0] );
-  const host = config.host || '0.0.0.0';
-  const port = config.port || HTTPS;
-  const key = config.key || ssl;
+  const key = ssl.parse(cfg.key) || ssl.default();
+  const host = cfg.host || '0.0.0.0';
+  const port = cfg.port || HTTP2; 
+  const th = cfg.thread || 1;
 
   if (cluster.isPrimary) {
 
@@ -108,11 +108,12 @@ output.createHTTP2Server = function( ...args ){
   const cfg = typeof args[0] == 'object' ? args[0] :
               typeof args[1] == 'object' ? args[1] : null;
 
-  const config = copy( globalConfig, args[0] );
-  const host = config.host || '0.0.0.0';
-  const port = config.port || HTTP2;
-  const key = config.key || ssl;
-        key.allowHTTP1 = config.allowHTTP1 || false;
+  const key = ssl.parse(cfg.key) || ssl.default();
+  const host = cfg.host || '0.0.0.0';
+  const port = cfg.port || HTTP2; 
+  const th = cfg.thread || 1;
+  
+  key.allowHTTP1 = cfg.allowHTTP1 || false;
 
   if (cluster.isPrimary) {
 

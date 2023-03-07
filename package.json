@@ -2,7 +2,7 @@
 	"license": "MIT",
 	"main": "main.js",
 	"name": "molly-js",
-	"version": "1.2.18",
+	"version": "1.2.19",
 	"author": "becerraenmanuel",
 	"scripts": {
 		"build-molly": "./compile.sh"
@@ -19,11 +19,11 @@
 		"nodejs-http-server"
 	],
 	"devDependencies": {
-		"@babel/core": "^7.20.2",
 		"@babel/preset-env": "^7.20.2",
+		"@babel/core": "^7.20.2",
 		"babelify": "^10.0.0"
 	},
 	"dependencies": {
-		"molly-fetch": "^1.1.7"
+		"molly-fetch": "^1.1.11"
 	}
 }
