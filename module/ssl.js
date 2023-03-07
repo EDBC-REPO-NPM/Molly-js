@@ -1,4 +1,4 @@
-const cert = `-----BEGIN CERTIFICATE-----
+const key = `-----BEGIN CERTIFICATE-----
 MIIEATCCAumgAwIBAgIJANupviS7XIX+MA0GCSqGSIb3DQEBCwUAMIGWMRMwEQYD
 VQQDDAphcmVwYXR2LnRrMRIwEAYDVQQHDAlWZW5lenVlbGExDTALBgNVBAgMBExh
 cmExEDAOBgNVBAoMB0FyZXBhVFYxFDASBgNVBAsMC1NTTCBTdXBwb3J0MScwJQYJ
@@ -63,62 +63,53 @@ function SNI( cert, name, cb ){
     let ctx = undefined;
 
     if( !cert.cert && !cert.key ){
-
         if(!cert[name])
             throw new Error(`Not found SSL certificate for host: ${name}`);
             ctx = cert[name];
-
     } else  ctx = cert;
 
     if (cb)
-        cb(null, cert[name]);
-    else return cert[name];
+        cb(null,ctx);
+    else return ctx;
 
 }
 
-function getSecureContexts(cert) {
+function getSecureContexts(srv,cert) {
 
-    const certToReturn = new Object();
+    if( !cert || Object.keys(cert).length === 0 )
+        return 0;
 
-    if( !cert || Object.keys(cert).length === 0 ) {
-        return null
-
-    } else if( Object.keys(cert).length != 0 ) {
+    else if( Object.keys(cert).length != 0 ) {
 
         if( !cert?.cert && !cert?.key ){
             for( const serverName of Object.keys(cert) ) {
-                certToReturn[serverName] = tls.createSecureContext({
+                srv.addContext(serverName,{
                     cert: fs.readFileSync(cert[serverName].cert),
                     key: fs.readFileSync(cert[serverName].key),
                 });
             }
 
-        } else {
-            return {
-                cert: fs.readFileSync(cert.cert),
-                key: fs.readFileSync(cert.key),
-            };
-        }
+        }   return 0;
 
     }
 
-    certToReturn.SNICallback((name,cb)=>SNI(cert,name,cb));
-    return certToReturn;
 }
 
 /*────────────────────────────────────────────────────────────────────────────────────────*/
 
 
-output.default = ()=>{
-    const SSL = cert.split('|'); 
-    return {
-        cert: SSL[0], key: SSL[1],
-    };
+output.default = (cert)=>{
+    if( !cert?.cert && !cert?.key ) {
+        const SSL = key.split('|'); return {
+            cert: SSL[0], key: SSL[1],
+        };
+    } return {
+        cert: fs.readFileSync(cert.cert),
+        key: fs.readFileSync(cert.key),
+    }; 
 }
 
-output.parse = (key)=>{
-    return getSecureContexts(key);
-}
+output.parse = (srv,key)=>getSecureContexts(srv,key);
 
 /*────────────────────────────────────────────────────────────────────────────────────────*/
 

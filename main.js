@@ -10,7 +10,7 @@ const ssl = require('./module/ssl');
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
-const output = new Object(); const ssl = key();
+const output = new Object();
 const HTTP = process.env.HTTP || process.env.PORT || 3000;
 const HTTPS = process.env.HTTPS || process.env.PORT || 4000;
 const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
@@ -76,10 +76,10 @@ output.createHTTPSServer = function( ...args ){
   const cfg = typeof args[0] == 'object' ? args[0] :
               typeof args[1] == 'object' ? args[1] : null;
 
-  const key = ssl.parse(cfg.key) || ssl.default();
-  const host = cfg.host || '0.0.0.0';
-  const port = cfg.port || HTTP2; 
-  const th = cfg.thread || 1;
+  const host = cfg.host   || '0.0.0.0';
+  const key  = ssl.default(cfg.key);
+  const port = cfg.port   || HTTP2; 
+  const th   = cfg.thread || 1;
 
   if (cluster.isPrimary) {
 
@@ -92,7 +92,7 @@ output.createHTTPSServer = function( ...args ){
     const server = https.createServer( key,(req,res)=>{ app(req,res,config,'HTTPS') } );
       server.listen( port,host,()=>{ console.log(JSON.stringify({
         name: 'molly-js', protocol: 'HTTPS', port: port, host: host
-      })); if( clb ) clb(server);
+      })); if( clb ) clb(server); ssl.parse( server, cfg.key );
     }).setTimeout( config.timeout );
   }
 
@@ -108,12 +108,10 @@ output.createHTTP2Server = function( ...args ){
   const cfg = typeof args[0] == 'object' ? args[0] :
               typeof args[1] == 'object' ? args[1] : null;
 
-  const key = ssl.parse(cfg.key) || ssl.default();
-  const host = cfg.host || '0.0.0.0';
-  const port = cfg.port || HTTP2; 
-  const th = cfg.thread || 1;
-  
-  key.allowHTTP1 = cfg.allowHTTP1 || false;
+  const host = cfg.host   || '0.0.0.0';
+  const key  = ssl.default(cfg.key);
+  const port = cfg.port   || HTTP2; 
+  const th   = cfg.thread || 1;
 
   if (cluster.isPrimary) {
 
@@ -126,7 +124,7 @@ output.createHTTP2Server = function( ...args ){
     const server = http2.createSecureServer( key,(req,res)=>{ app(req,res,config,'HTTP2') } );
       server.listen( port,host,()=>{ console.log(JSON.stringify({
         name: 'molly-js', protocol: 'HTTP2', port: port, host: host
-      })); if( clb ) clb(server);
+      })); if( clb ) clb(server); ssl.parse( server, cfg.key );
     }).setTimeout( config.timeout );
   }
 
