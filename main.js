@@ -11,7 +11,7 @@ const ssl = require('./module/ssl');
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
 const output = new Object();
-const HTTP = process.env.HTTP || process.env.PORT || 3000;
+const HTTP  = process.env.HTTP  || process.env.PORT || 3000;
 const HTTPS = process.env.HTTPS || process.env.PORT || 4000;
 const HTTP2 = process.env.HTTP2 || process.env.PORT || 5000;
 
@@ -23,7 +23,7 @@ const globalConfig = {
   viewer: path.join( process.cwd(), 'Viewer' ),
   root: __dirname, security: false,
   bundler: true, thread: 1,
-  timeout: 1000 * 60 * 2,
+  timeout: 1000 * 60,
 }
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
@@ -46,8 +46,9 @@ output.createHTTPServer = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
-  const host = config.host || '0.0.0.0';
-  const port = config.port || HTTP;
+  const host = config.host   || '0.0.0.0';
+  const port = config.port   || HTTP;
+  const th   = config.thread || 1;
 
   if (cluster.isPrimary) {
 
@@ -57,11 +58,12 @@ output.createHTTPServer = function( ...args ){
     });
     
   } else {
-    const server = http.createServer( (req,res)=>{ app(req,res,config,'HTTP') } );
-      server.listen( port,host,()=>{ console.log(JSON.stringify({
+    const server = http.createServer((req,res)=>{ app(req,res,config,'HTTP') });
+    server.listen( port,host,()=>{
+      server.timeout = config.timeout; console.log(JSON.stringify({
         name: 'molly-js', protocol: 'HTTP', port: port, host: host
-      })); if(clb) clb(server);
-    }).setTimeout( config.timeout );
+      })); if(clb) clb(server); 
+    });
   }
 
 }
@@ -76,10 +78,11 @@ output.createHTTPSServer = function( ...args ){
   const cfg = typeof args[0] == 'object' ? args[0] :
               typeof args[1] == 'object' ? args[1] : null;
 
-  const host = cfg.host   || '0.0.0.0';
-  const key  = ssl.default(cfg.key);
-  const port = cfg.port   || HTTP2; 
-  const th   = cfg.thread || 1;
+  const config = copy( globalConfig, args[0] );
+  const host = config.host   || '0.0.0.0';
+  const key  = ssl.default(config.key);
+  const port = config.port   || HTTPS; 
+  const th   = config.thread || 1;
 
   if (cluster.isPrimary) {
 
@@ -90,10 +93,11 @@ output.createHTTPSServer = function( ...args ){
 
   } else {
     const server = https.createServer( key,(req,res)=>{ app(req,res,config,'HTTPS') } );
-      server.listen( port,host,()=>{ console.log(JSON.stringify({
+    server.listen( port,host,()=>{ 
+        server.timeout = config.timeout; console.log(JSON.stringify({
         name: 'molly-js', protocol: 'HTTPS', port: port, host: host
-      })); if( clb ) clb(server); ssl.parse( server, cfg.key );
-    }).setTimeout( config.timeout );
+      })); if( clb ) clb(server); ssl.parse( server, config.key );
+    });
   }
 
 }
@@ -108,10 +112,11 @@ output.createHTTP2Server = function( ...args ){
   const cfg = typeof args[0] == 'object' ? args[0] :
               typeof args[1] == 'object' ? args[1] : null;
 
-  const host = cfg.host   || '0.0.0.0';
-  const key  = ssl.default(cfg.key);
-  const port = cfg.port   || HTTP2; 
-  const th   = cfg.thread || 1;
+  const config = copy( globalConfig, args[0] );
+  const host = config.host   || '0.0.0.0';
+  const key  = ssl.default(config.key);
+  const port = config.port   || HTTP2; 
+  const th   = config.thread || 1;
 
   if (cluster.isPrimary) {
 
@@ -122,10 +127,11 @@ output.createHTTP2Server = function( ...args ){
 
   } else {
     const server = http2.createSecureServer( key,(req,res)=>{ app(req,res,config,'HTTP2') } );
-      server.listen( port,host,()=>{ console.log(JSON.stringify({
+    server.listen( port,host,()=>{ 
+      server.timeout = config.timeout; console.log(JSON.stringify({
         name: 'molly-js', protocol: 'HTTP2', port: port, host: host
-      })); if( clb ) clb(server); ssl.parse( server, cfg.key );
-    }).setTimeout( config.timeout );
+      })); if( clb ) clb(server); ssl.parse( server, config.key );
+    })
   }
 
 }
