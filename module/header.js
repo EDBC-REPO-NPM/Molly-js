@@ -21,7 +21,6 @@ output.header = ( headers,cache,size )=>{ const age = expirationAge();
 	
 	if( cache ) 
 		headers["cache-control"] = `public, max-age=${ age }`;
-		headers["set-cookie"] = 'cross-site-cookie=whatever; SameSite=None; Secure';
 
 	if( globalConfig.cors ){ 
 		headers["access-control-allow-headers"] = "Origin, X-Requested-With, content-type, Accept";
