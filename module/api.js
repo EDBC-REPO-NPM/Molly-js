@@ -171,7 +171,7 @@ module.exports = function( req,res,config,protocol ){
 		if((/^http/i).test(_path)) _path = { url:_path };
 		if(typeof _path === 'object') sendStreamFile( req,res,_path,v.status );
 		else if(fs.existsSync(_path)) sendStaticFile( req,res,_path,v.status );
-		else res.send( '0ops something went wrong',404 ); return true;
+		else res.send( '0ops 404 file not found',404 ); return true;
 	}
 
 	res.sendStream = ( _data, ...args )=>{

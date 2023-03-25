@@ -30,8 +30,8 @@ const globalConfig = {
 
 function copy( A,B ){
   const result = new Object();
-  for( var i in A ) result[i] = A[i];
-  for( var i in B ) result[i] = B[i];
+  for( let i in A ) result[i] = A[i];
+  for( let i in B ) result[i] = B[i];
   return result;
 }
 

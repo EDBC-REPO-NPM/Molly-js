@@ -1,4 +1,4 @@
-const { Buffer } = require('buffer');
+const stream = require('stream');
 const path = require('path');
 const fs = require('fs');
 
@@ -56,15 +56,12 @@ async function compile( data,req,res ){
 module.exports = ( req,res,raw,mimeType,config )=>{
   return new Promise(async(response,reject)=>{
 
-    globalConfig = config
-    
-    const arr = new Array(); const data = raw.toString();
+    globalConfig = config; const data = raw.toString();
     const style = data.match(/\/\°|\°\/|\<\°|\°\>/gi) || [];
 
     if( (style.length>=1) && !(/audio|video/).test(mimeType) && config.bundler )
-         arr.push( Buffer.from(await compile( data,req,res )) );
-    else arr.push( raw );
+         return response( stream.Readable.from(await compile( data,req,res )) );
+    else return response( raw );
 
-    return response( arr[0] );
   });
 };
