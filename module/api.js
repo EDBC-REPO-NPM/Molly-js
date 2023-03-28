@@ -74,7 +74,7 @@ function sendStaticFile( req,res,url,status ){
         const mimetype = setMimetype( url );
 		const range = req.headers.range;
 
-		if ( (/text|xml/i).test(mimetype) ){			
+		if ( (/json|text|xml/i).test(mimetype) ){			
 			fs.readFile( url,async(error,data)=>{
 				if( error ){ return res.send('Oops file not found',404); }
 				return encoder ( 
