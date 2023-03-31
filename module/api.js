@@ -16,10 +16,11 @@ let globalConfig = undefined;
 
 function setMimetype( _path ){
 	if( !(/\.\w+$/).test(_path) ) return 'text/html';
-	const keys = Object.keys(globalConfig.mimetype)
+	const keys = Object.keys(globalConfig.mimetype);
+	const type = _path.match(/\.\w+$/);
 	for( let key of keys ){ if( _path.endsWith(key) ) 
 		return globalConfig.mimetype[key];
-	}	return 'text/plain';
+	}	return `application/${type}`;
 }
 
 function cookieParser( _cookie ){
