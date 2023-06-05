@@ -42,14 +42,14 @@ function parseURL( _args ){
     opt.referrerPolicy = "strict-origin-when-cross-origin";
     process.chunkSize = _args[1]?.chunkSize || _args[0]?.chunkSize || Math.pow(10,6) * 3;
 
-    for( var i in headers ){ 
+    for( let i in headers ){ 
         const key = i.match(/\w+/gi).map(x=>{
             const st = x.match(/^\w/gi).join('');
             return x.replace(st,st.toLowerCase());
         }).join('-'); opt.headers[key] = headers[i]
     }
 
-    for( var i in tmp_headers ){ 
+    for( let i in tmp_headers ){ 
         const key = i.match(/\w+/gi).map(x=>{
             const st = x.match(/^\w/gi).join('');
             return x.replace(st,st.toLowerCase());

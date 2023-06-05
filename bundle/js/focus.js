@@ -39,8 +39,8 @@ function parseOpt( element ){
                         .replace(/\t|\n| /gi,'')
                         .split(';');
     const obj = new Object();
-    for( var i in options ) obj[i] = options[i];
-    for( var i in attr ){
+    for( let i in options ) obj[i] = options[i];
+    for( let i in attr ){
         const data = attr[i].split(':');
         if(!data[1]) continue; 
         obj[data[0]]= data[1];
@@ -69,7 +69,7 @@ function parseFocus( element ){
 output.focus = function( element ){
     
     if( !element.hasAttribute('focus') ){
-        var parent = element.parentElement;
+        let parent = element.parentElement;
         do {
             try{parent.scrollTo({ 
                     left: element.offsetLeft-(element.clientWidth/2),

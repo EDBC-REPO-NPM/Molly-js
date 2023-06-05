@@ -3,7 +3,7 @@ const output = new Object();
 function getState(){
     const state = new Object();
     const storage = window.localStorage;
-    for( var i=storage.length; i--; ){
+    for( let i=storage.length; i--; ){
         const key = storage.key(i);
         const data = storage.getItem(key);
         state[key] = data;
@@ -15,7 +15,7 @@ output.state = new window.device.state( getState() );
 output.set = function(obj){ let state;
     try { state = obj(output.state.state); } 
     catch(e) { state = obj } output.state.set(obj);
-    for( var i in state ) window.localStorage.setItem(i,state[i]);
+    for( let i in state ) window.localStorage.setItem(i,state[i]);
 }
 
 output.clear = function(){ 

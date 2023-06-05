@@ -3,7 +3,7 @@ const output = new Object();
 function formatQuery( search ){
     const result = new Array();
     if( search.length == 0 ) return '';
-    for( var i in search ){
+    for( let i in search ){
         result.push(`${i}=${search[i]}`);
     }   return `?${ result.join('&') }`;
 }
@@ -11,7 +11,7 @@ function formatQuery( search ){
 function parseQuery( search ){ const obj = new Object();
     const query = search.replace(/\?/i,'').split(/\&/gi);
     if( search == '' ) return new Object();
-    for( var i=query.length; i--; ){
+    for( let i=query.length; i--; ){
         const params = query[i].split(/\=/i);
               obj[params[0]] = params[1];
     }   return obj;

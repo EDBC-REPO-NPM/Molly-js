@@ -17,8 +17,8 @@
 	window.$$ = window._$;
 	window._events = new Array(); 
     function eventID(){
-        const item = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
-        const result = new Array(); for( var i=64; i--; ){
+        const item = 'abcdefghijklmn0123456789'.split('');
+        const result = new Array(); for( let i=64; i--; ){
             const index = Math.floor( Math.random()*item.length );
             result.push( item[index] );
         }   return result.join('');
@@ -80,17 +80,18 @@
 
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
-	window.device.worker = new Object();
 	window.device.url = require('./url');
 	window.device.state = require('./state');
 	window.device.focus = require('./focus');
 	
 	window.device.base64toBlob = require('./base64');
 	window.device.clipboard = require('./clipboard');
+	window.device.bluetooth = require('./bluetooth');
 	window.device.session = require('./session');
 	window.device.storage = require('./storage');
 	window.device.sensors = require('./sensor');
 	window.device.cookie = require('./cookie');
+	window.device.serial = require('./serial');
 	window.device.query = require('./query');
 	window.device.media = require('./media');
 	window.device.fetch = require('./fetch');

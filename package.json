@@ -5,6 +5,7 @@
 	"version": "1.2.23",
 	"author": "becerraenmanuel",
 	"scripts": {
+		"test": "node test",
 		"build-molly": "./compile.sh"
 	},
 	"repository": "https://github.com/EDBC-REPO-NPM/Molly-js",
@@ -18,7 +19,7 @@
 		"backend-server",
 		"nodejs-http-server"
 	],
-	"devDependencies": {
+	"_devDependencies": {
 		"@babel/preset-env": "^7.20.2",
 		"@babel/core": "^7.20.2",
 		"babelify": "^10.0.0"

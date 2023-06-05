@@ -6,7 +6,7 @@ class State {
     active = true;
 
     constructor( state ){
-        for( var i in state ){
+        for( let i in state ){
             this.state[i] = state[i];
         }
     }
@@ -27,7 +27,7 @@ class State {
         } else { newState = state; } 
 
         this.active = this.shouldUpdate(null,[this.state,newState]); 
-        for( var i in newState ){ this.state[i] = newState[i];
+        for( let i in newState ){ this.state[i] = newState[i];
             this.callback( i, oldState[i], newState[i] );
         }
 
@@ -45,7 +45,7 @@ class State {
     }
 
     forceUpdate( item ){
-        for( var i in this.events ){
+        for( let i in this.events ){
             const field = this.events[i][0];
             if( this.events[i][0] == item )
                 this.events[i][1](
@@ -57,7 +57,7 @@ class State {
 
     callback( item, prev, act ){
         if( !this.active ) return 0; 
-        for( var i in this.events ){
+        for( let i in this.events ){
             if( this.events[i][0] == item )
                 this.events[i][1]( prev,act );
         }
@@ -70,7 +70,7 @@ class State {
     }
 
     unObserveField( eventID ){
-        for( var i in this.events ){
+        for( let i in this.events ){
             if( this.events[i][2] == eventID ){
                 this.events.splice(i,1);
                 return true;
@@ -79,8 +79,8 @@ class State {
     }
 
     eventID(){
-        const item = 'abcdefghijklmnopqrstuvwxyz0123456789'.split('');
-        const result = new Array(); for( var i=64; i--; ){
+        const item = 'abcdefghijklmn0123456789'.split('');
+        const result = new Array(); for( let i=64; i--; ){
             const index = Math.floor( Math.random()*item.length );
             result.push( item[index] );
         }   return result.join('');

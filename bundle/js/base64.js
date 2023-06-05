@@ -3,7 +3,7 @@ module.exports = function( b64Data, contentType='text/plain', sliceSize=512 ) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    for(let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
         const slice = byteCharacters.slice(offset, offset + sliceSize);
 
         const byteNumbers = new Array(slice.length);

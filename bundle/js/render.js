@@ -97,36 +97,6 @@
 	
 // ────────────────────────────────────────────────────────────────────────────────────────────────────────────────── //
 
-	const _loadWorkers_ = function( body ){
-		try {
-			const workers = _$(body,'script[type=worker]');
-			workers.map((wrk,i)=>{
-
-				let url = undefined;
-				let thread = undefined;
-				const id = wrk.getAttribute('id');
-
-				if( !id ) return console.error('please set a worker id attribute');
-
-				if( !wrk.getAttribute('src') ){
-					const data = wrk.innerText;
-					const blob = new Blob([data],{type: 'text/javascript'});
-						  url = URL.createObjectURL(blob);
-				} else { url = wrk.getAttribute('src'); }
-
-				if( wrk.hasAttribute('shared') )
-					 thread = new SharedWorker(url);
-				else thread = new Worker(url);
-
-				window.device.worker[id] = {
-					data: url, id: id,
-					worker: thread,
-				};	wrk.remove();
-
-			});
-		} catch(e) {/* console.log(e) */}
-	}
-
 	async function _loadDOM_(body){
 		return new Promise(async(response,reject)=>{
 			try{ 
@@ -227,7 +197,6 @@
 				  await _loadCode_(element);
 				  await _loadStyles_(element);
 				  await _loadScripts_(element);
-			//	  await _loadWorkers_(element);
 			
 			const out = element.innerHTML;
 

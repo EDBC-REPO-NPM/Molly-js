@@ -22,10 +22,9 @@ function slugify( text ){
 	
 output.isMobile = (req,res)=>{
 	const match = [ 
-		/Windows Phone/i, /BlackBerry/i, 
-		/webOS/i, /iPad/i, /iPod/i,
-		/Android/i, /iPhone/i, 
-		/Mobile/i 
+		/Windows Phone/i, /BlackBerry/i, /webOS/i, 
+		/iPad/i,          /iPod/i,       /Android/i, 
+		/iPhone/i,        /Mobile/i 
 	];
 	return match.some( (item) => {
 		const data = navigator.userAgent;
@@ -42,10 +41,10 @@ output.isDesktop = (req,res)=>{
 
 output.isTV = (req,res)=>{
 	const match = [ 
-		/SmartTV/i, /Espial/i, /Opera TV/i, /inetTV/i,
-		/HbbTV/i, /LG Browser/i, /Viera/i,
-		/PhilipsTV/i, /POV_TV/i, /Roku/i, 
-		/AppleTV/i, /GoogleTV/i, 
+		/SmartTV/i,   /Espial/i,    /Opera TV/i, 
+		/inetTV/i,    /HbbTV/i,     /LG Browser/i, 
+		/Viera/i,     /PhilipsTV/i, /POV_TV/i, 
+		/Roku/i,      /AppleTV/i,   /GoogleTV/i, 
 		/technisat/i, /TV/i,
 	];
 	return match.some( (item) => {
@@ -56,14 +55,12 @@ output.isTV = (req,res)=>{
 	
 output.getBrowser = (req,res)=>{
 	const data = navigator.userAgent;
-	var output = 'generic';
 	const match = [ 
-		/Chrome/i, /Chromium/i, 
-		/Safari/i, /Opera/i, 
-		/Mozilla/i, 
+		/Chrome/i, /Chromium/i, /Safari/i, 
+		/Opera/i,  /Mozilla/i, 
 	];
 
-	for( var i in match ){		
+	for( let i in match ){		
 		if( match[i].test(slugify(data)) )
 			return match[i].source;
 	}	return 'generic';
@@ -72,14 +69,14 @@ output.getBrowser = (req,res)=>{
 output.getOS = (req,res)=>{
 	const match = [ 
 		/Windows Phone/i, /BlackBerry/i, /Android/i,
-		/iPhone/i, /webOS/i, /iPad/i, 
-		/iPod/i, /Linux/i, /MacOS/i,
-		/LG/i, /SmartTV/i, /Roku/i,
-		/windows/i, /ChromeOS/i,
-		/Philips/i, /Apple/i
+		/iPhone/i,        /webOS/i,      /iPad/i, 
+		/iPod/i,          /Linux/i,      /MacOS/i,
+		/LG/i,            /SmartTV/i,    /Roku/i,
+		/windows/i,       /ChromeOS/i,   /Philips/i,       
+		/Apple/i
 	];
 		
-	for( var i in match ){
+	for( let i in match ){
 		const data = navigator.userAgent;
 		if( match[i].test(slugify(data)) )
 			return match[i].source;
@@ -94,7 +91,7 @@ output.getSize = function( _bool ){
 		[900,'large'], [1100,'xlarge'],
 	];
 		
-	for( var i=size.length; i--; ){
+	for( let i=size.length; i--; ){
 		if( window.innerWidth > size[i][0] )	
 			return !_bool ? size[i][1] : i;
 	}
