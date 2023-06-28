@@ -68,28 +68,34 @@ function parseData( data ){
 function sendStaticFile( req,res,url,status ){
 	try{
  
-		const chunkSize = +req.headers['chunk-size'] || 
+		const chunkSize =+req.headers['chunk-size'] || 
 						  Math.pow(10,6) * 10;
 		const size = fs.statSync( url ).size;
         const mimetype = setMimetype( url );
 		const range = req.headers.range;
 
-		if ( (/json|text|xml/i).test(mimetype) ){			
-			fs.readFile( url,async(error,data)=>{
-				if( error ){ return res.send('Oops file not found',404); }
-				return encoder ( 
-					status, await bundler(req,res,data,mimetype,globalConfig),
-					req, res, header.static(globalConfig,mimetype,true)
-				); 	
-			});
-		} else if( range ) {
-			const {start,end} = getInterval( range, chunkSize, size );
+		if( !range ){ 
+			if( (/text|xml/i).test(mimetype) )
+				fs.readFile( url,async(error,data)=>{
+					if( error ){ return res.send('Oops file not found',404); }
+					return encoder ( 
+						status, await bundler(req,res,data,mimetype,globalConfig),
+						req, res, header.static(globalConfig,mimetype,true)
+					); 		
+				});
+
+			else if( !(/audio|video/i).test(mimetype) ){
+				const headers = header.static(globalConfig,mimetype,true);
+				const data = fs.createReadStream( url );
+				return encoder( 200, data, req, res, headers );
+			}
+
+			else return res.send('',200);
+		} else {
+			const { start, end } = getInterval( range, chunkSize, size );
 			const headers = header.stream(globalConfig,mimetype,start,end,size);
 			const data = fs.createReadStream( url,{start,end} );
-			encoder( 206, data, req, res, header ); return 0;
-		} else { 
-			res.writeHead( status, header.static(globalConfig,mimetype,true) );
-			const str = fs.createReadStream(url); str.pipe(res);
+			encoder( 206, data, req, res, headers ); return 0;
 		}
 		
 	} catch(e) { res.send(e,404); }

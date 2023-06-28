@@ -35,7 +35,7 @@ module.exports = async function(I,O,C,P){
 	
 	try{
         	 if( fs.existsSync(cond[1]) ) 				return runModule(cond[1],req,res,P);
-		else if( req.parse.pathname == '/molly.js' ) 		return res.sendFile(cond[4]);
+		else if( req.parse.pathname == '/molly.js' )	return res.sendFile(cond[4]);
 		else if( fs.existsSync(cond[0]) ) 				return res.sendFile(cond[0]);
 		else if( fs.existsSync(cond[2]) ) 				return res.sendFile(cond[2]);
 		else if( fs.existsSync(cond[3]) ) 				return res.sendFile(cond[3]);
