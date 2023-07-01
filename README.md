@@ -1,36 +1,36 @@
 # Molly-js
 
-Molly-js es un framework de servidor web para Node.js que permite a los desarrolladores crear aplicaciones web de forma rápida y sencilla. Con una API similar a la popular biblioteca Express.js, Molly-js facilita la creación de servidores HTTP y HTTPS, y su arquitectura bien diseñada y optimizada para la transmisión de video permite una experiencia fluida para los usuarios.
+Molly-js is a web server framework for Node.js that allows developers to quickly and easily create web applications. With an API similar to the popular Express.js library, Molly-js makes it easy to create HTTP and HTTPS servers, and its well-designed architecture optimized for video streaming provides a smooth experience for users.
 
-Además, Molly-js ofrece la capacidad de crear múltiples instancias del servidor en varios hilos, lo que lo hace ideal para aplicaciones de alta carga. Basado en el patrón de diseño MVC, este framework fomenta una estructura organizada y escalable para tus aplicaciones web. Además, viene integrado con un generador de sitios estáticos, lo que facilita la creación de contenido estático para tus aplicaciones.
+In addition, Molly-js offers the ability to create multiple instances of the server in multiple threads, making it ideal for high-load applications. Based on the MVC design pattern, this framework encourages an organized and scalable structure for your web applications. It also comes integrated with a static site generator, making it easier to create static content for your applications.
 
-Con Molly-js, los desarrolladores pueden enfocarse en la creación de aplicaciones web de alta calidad y no preocuparse por la complejidad de la infraestructura subyacente. Únete a la comunidad de desarrollo de Molly-js y comienza a crear aplicaciones web impresionantes con facilidad.
+With Molly-js, developers can focus on creating high-quality web applications without worrying about the complexity of the underlying infrastructure. Join the Molly-js development community and start creating impressive web applications with ease.
 
-## Características principales
+## Key Features
 
-- API similar a Express.js
-- Basado en el patrón de diseño MVC
-- Optimizado para transmisión de Videos
-- Integrado con un generador de sitios estáticos
-- Capacidad para crear múltiples instancias del servidor en varios hilos
+- API similar to Express.js
+- Based on the MVC design pattern
+- Optimized for video streaming
+- Integrated with a static site generator
+- Ability to create multiple instances of the server in multiple threads
 
-## Instalación
+## Installation
 
-Para instalar Molly-js en tu proyecto, simplemente ejecuta el siguiente comando en tu terminal:
+To install Molly-js in your project, simply run the following command in your terminal:
 
 ```bash
-  npm install molly-js 
+npm install molly-js 
 ```
 
-## Uso
+## Usage
 
-Para comenzar a usar Molly-js en tu proyecto, primero debes requerirlo en tu archivo de entrada:
+To start using Molly-js in your project, you first need to require it in your entry file:
 
 ```javascript
 const molly = require('molly-js');
 ```
 
-A partir de ahí, tienes que definir las rutas de los **controladores**, la ruta de los archivos **estaticos** y la cantidad de intanicas o threads del servidor:
+From there, you need to define the routes of the **controllers**, the path to the static files and the number of instances or threads of the server:
 
 ```javascript
 molly.createHTTPServer({
@@ -40,43 +40,47 @@ molly.createHTTPServer({
 });
 ```
 
-Luego, para crear una nuevo controlador, simplemente creas un nuevo archivo `.js` dentro de la carpera `controlador` y defines el comportamiento del contrlador:
+Then, to create a new controller, simply create a new `.js` file inside the `controller` folder and define the behavior of the controller:
+
 ```javascript
 module.exports = (req,res)=>{
     res.send(req.params,200);   
 }
 ```
 
-Para crear una pagina con generasion estatica, simplemente tienes que usar las etiquetas `/°°/` para generar codigo  o la etiqueta `<°°>`:
+To create a page with static generation, you simply have to use the `/°°/` tags to generate code or the `<°°>` tag:
 
-- Aqui un ejemplo para generar una pagina usando la etiqueta `/°°/`:
+- Here's an example of how to generate a page using the `/°°/` tag:
+
 ```html
-    <body>
-        /°(()=>{
-            const result = new Array();
-            for( var i=100; i--; ){
-                result.push(`
-                    <a style="background: #222; color: white" > hola mundo ${i} </a> <br>
-                `);
-            } return result.join('');
-        })()°/    
-    </body>
+<body>
+    /°(()=>{
+        const result = new Array();
+        for( var i=100; i--; ){
+            result.push(`
+                <a style="background: #222; color: white" > hello world ${i} </a> <br>
+            `);
+        } return result.join('');
+    })()°/    
+</body>
 ```
 
-- Aqui un ejemplo para generar una pagina usando la etiqueta `<°°>`:
+- Here's an example of how to generate a page using the `<°°>` tag:
+
 ```html
-    <body>
-        <°PATH/TO/A/HTML_MODULE°>
-    </body>
+<body>
+    <°PATH/TO/A/HTML_MODULE°>
+</body>
 ```
 
-# Ejemplo
-[aqui un ejemplo sencillo en Molly-js](https://github.com/EDBC-REPO-NPM/Molly-js/tree/main/example)
+## Example
 
-## Contribución
+[Here's a simple example using Molly-js.](https://github.com/EDBC-REPO-NPM/Molly-js/tree/main/example)
 
-¡Estamos abiertos a contribuciones! Si deseas ayudar a mejorar Molly-js, por favor envía un pull request o abre un issue en nuestro repositorio en GitHub.
+## Contribution
 
-## Licencia
+We welcome contributions! If you'd like to help improve Molly-js, please submit a pull request or open an issue on our GitHub repository.
 
-Molly-js está disponible bajo la licencia MIT. Consulta el archivo LICENSE.md para obtener más información.
+## License
+
+Molly-js is available under the MIT License. See the LICENSE.md file for more information.
