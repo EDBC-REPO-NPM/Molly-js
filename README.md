@@ -30,7 +30,7 @@ Para comenzar a usar Molly-js en tu proyecto, primero debes requerirlo en tu arc
 const molly = require('molly-js');
 ```
 
-A partir de ahí, puedes crear una instancia del servidor HTTP o HTTPS y comenzar a definir tus rutas y controladores:
+A partir de ahí, tienes que definir las rutas de los **controladores**, la ruta de los archivos **estaticos** y la cantidad de intanicas o threads del servidor:
 
 ```javascript
 molly.createHTTPServer({
@@ -38,6 +38,36 @@ molly.createHTTPServer({
   viewer: path.join(__dirname,'testServer','Viewer'),        //Viewer Components Paths
   thread: 1                                                  //Number of instances
 });
+```
+
+Luego, para crear una nuevo controlador, simplemente creas un nuevo archivo `.js` y defines el comportamiento del contrlador:
+```javascript
+module.exports = (req,res)=>{
+    res.send(req.params,200);   
+}
+```
+
+Para crear una pagina con generasion estatica, simplemente tienes que usar las etiquetas `/°°/` para generar codigo  o la etiqueta `<°°>`:
+
+- Aqui un ejemplo para generar una pagina usando la etiqueta `/°°/`:
+```html
+    <body>
+        /°(()=>{
+            const result = new Array();
+            for( var i=100; i--; ){
+                result.push(`
+                    <a style="background: #222; color: white" > hola mundo ${i} </a> <br>
+                `);
+            } return result.join('');
+        })()°/    
+    </body>
+```
+
+- Aqui un ejemplo para generar una pagina usando la etiqueta `<°°>`:
+```html
+    <body>
+        <°PATH/TO/A/HTML_MODULE°>
+    </body>
 ```
 
 [aqui un ejemplo sencillo en Molly-js]()
