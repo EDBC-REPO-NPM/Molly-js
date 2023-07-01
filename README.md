@@ -40,6 +40,8 @@ molly.createHTTPServer({
 });
 ```
 
+[aqui un ejemplo sencillo en Molly-js]()
+
 ## Contribución
 
 ¡Estamos abiertos a contribuciones! Si deseas ayudar a mejorar Molly-js, por favor envía un pull request o abre un issue en nuestro repositorio en GitHub.
