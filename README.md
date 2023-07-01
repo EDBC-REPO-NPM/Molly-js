@@ -18,7 +18,7 @@ Con Molly-js, los desarrolladores pueden enfocarse en la creación de aplicacion
 
 Para instalar Molly-js en tu proyecto, simplemente ejecuta el siguiente comando en tu terminal:
 
-``` 
+```bash
   npm install molly-js 
 ```
 
@@ -40,7 +40,7 @@ molly.createHTTPServer({
 });
 ```
 
-Luego, para crear una nuevo controlador, simplemente creas un nuevo archivo `.js` y defines el comportamiento del contrlador:
+Luego, para crear una nuevo controlador, simplemente creas un nuevo archivo `.js` dentro de la carpera `controlador` y defines el comportamiento del contrlador:
 ```javascript
 module.exports = (req,res)=>{
     res.send(req.params,200);   
