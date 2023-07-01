@@ -70,7 +70,8 @@ Para crear una pagina con generasion estatica, simplemente tienes que usar las e
     </body>
 ```
 
-[aqui un ejemplo sencillo en Molly-js]()
+# Ejemplo
+[aqui un ejemplo sencillo en Molly-js](https://github.com/EDBC-REPO-NPM/Molly-js/tree/main/example)
 
 ## Contribución
 
