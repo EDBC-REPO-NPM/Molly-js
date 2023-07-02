@@ -46,7 +46,7 @@ output.createHTTPServer = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
-  const host = config.host   || '0.0.0.0';
+  const host = config.host   || '127.0.0.1';
   const port = config.port   || HTTP;
   const th   = config.thread || 1;
 
@@ -79,7 +79,7 @@ output.createHTTPSServer = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
-  const host = config.host   || '0.0.0.0';
+  const host = config.host   || '127.0.0.1';
   const key  = ssl.default(config.key);
   const port = config.port   || HTTPS; 
   const th   = config.thread || 1;
@@ -113,7 +113,7 @@ output.createHTTP2Server = function( ...args ){
               typeof args[1] == 'object' ? args[1] : null;
 
   const config = copy( globalConfig, args[0] );
-  const host = config.host   || '0.0.0.0';
+  const host = config.host   || '127.0.0.1';
   const key  = ssl.default(config.key);
   const port = config.port   || HTTP2; 
   const th   = config.thread || 1;
