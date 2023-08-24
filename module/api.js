@@ -74,14 +74,20 @@ function sendStaticFile( req,res,url,status ){
         const mimetype = setMimetype( url );
 		const range = req.headers.range;
 
+		const headers = header.static(globalConfig,mimetype,true);
+
 		if( !range ){ 
 			if( (/text|xml/i).test(mimetype) )
 				fs.readFile( url,async(error,data)=>{
 					if( error ){ return res.send('Oops file not found',404); }
-					return encoder ( 
-						status, await bundler(req,res,data,mimetype,globalConfig),
-						req, res, header.static(globalConfig,mimetype,true)
-					); 		
+					if( size > 65536 ){
+						return encoder( status, data, req, res, headers );
+					} else {
+						return encoder ( 
+							status, await bundler(req,res,data,mimetype,globalConfig),
+							req, res, headers
+						);
+					}
 				});
 
 			else if( !(/audio|video/i).test(mimetype) ){

@@ -7,21 +7,24 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <script src="/molly"></script>
+        <link rel="stylesheet" href="./bundle.css">
+        <script src="./bundle.js"></script>
 
         <title> Test Molly Server </title>
 
     </head>
 
     <body>
+
         /°(()=>{
             const result = new Array();
             for( var i=100; i--; ){
                 result.push(`
-                    <a style="background: #222; color: white" > hola mundo ${i} </a> <br>
+                    <a class="uk-button uk-secondary uk-margin-small" > hola mundo ${i} </a> <br>
                 `);
             } return result.join('');
-        })()°/    
+        })()°/
+
     </body>
 
 </html>
